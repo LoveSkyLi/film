@@ -23,14 +23,6 @@ return [
     // 密码
     'password'        => Env::get('database.password', ''),
 
-    // // 服务器地址
-    // 'hostname'        => Env::get('database.hostname', '47.93.7.208'),
-    // // 数据库名
-    // 'database'        => Env::get('database.database', 'fy_film'),
-    // // 用户名
-    // 'username'        => Env::get('database.username', 'fymysqltest'),
-    // // 密码
-    // 'password'        => Env::get('database.password', 'qf1sW2Yb5Kj2mGk6D434'),
 
 
     // 端口
