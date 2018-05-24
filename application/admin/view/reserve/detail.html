@@ -1,0 +1,333 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+    <div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="#">管理后台</a></li>
+                        <li><a href="__ROOT__/admin/order/index">订单管理</a></li>
+                        <li>订单详情</li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    订单详情
+                </h2>
+                <small>管理小程序里面的订单</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+            <div class="col-lg-12" style="">
+                <div class="hpanel">
+                    <div class="panel-heading">
+
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <label class="col-sm-1 control-label">订单号</label>
+                            <div class="col-sm-4">
+                                {$model.order_sn}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-1 control-label">订单状态</label>
+                            <div class="col-sm-4">
+                                {$model.order_status}
+                            </div>
+                        </div>
+                        
+                        {if condition="$model.payment_status gt 0"}
+                        <div class="row">
+                            <label class="col-sm-1 control-label">总金额</label>
+                            <div class="col-sm-4">
+                                ￥{$model.money_amount}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-1 control-label">支付金额</label>
+                            <div class="col-sm-4">
+                                ￥{$model.pay_amount}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-1 control-label">押金</label>
+                            <div class="col-sm-4">
+                                ￥{$marker.rent.deposit}
+                            </div>
+                        </div>
+                        {/if}
+                        <div class="row">
+                            <label class="col-sm-1 control-label">创建时间</label>
+                            <div class="col-sm-4">
+                                {$model.create_time}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-1 control-label">配送方式</label>
+                            <div class="col-sm-4">
+                                {$express}
+                            </div>
+                        </div>
+                        {if condition="$express eq 2 or $express eq 3"}
+                            <div class="row">
+                                <label class="col-sm-1 control-label">收货人</label>
+                                <div class="col-sm-4">
+                                    {$model.buyer_name}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-1 control-label">联系电话</label>
+                                <div class="col-sm-4">
+                                    {$model.buyer_mobile}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-1 control-label">城市</label>
+                                <div class="col-sm-4">
+                                    {$model.buyer_city}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-1 control-label">地址</label>
+                                <div class="col-sm-4">
+                                    {$model.buyer_address}
+                                </div>
+                            </div>
+                        {elseif condition="$express eq 1"}
+                            <div class="row">
+                                <label class="col-sm-1 control-label">店铺地址</label>
+                                <div class="col-sm-4">
+                                    {$company.address}
+                                </div>
+                            </div>
+                            
+                        {/if}
+                        {if condition="$model.payment_status eq 2 or $model.payment_status eq 3"}
+                        <div class="row">
+                            <label class="col-sm-1 control-label">退款原因</label>
+                            <div class="col-sm-4">
+                                {$refund.reason}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-1 control-label">备注信息</label>
+                            <div class="col-sm-4">
+                                {$refund.memo}
+                            </div>
+                        </div>
+                        {/if}
+                        
+                    </div>
+                    <div class="panel-heading">
+
+                    </div>
+
+                    <div class="panel-body">
+                    
+                    <div class="row">
+                        <label class="col-sm-1 control-label">品牌</label>
+                        <div class="col-sm-4">
+                            {$model.sort.name}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-1 control-label">类别</label>
+                        <div class="col-sm-4">
+                            {$model.attr.attr_name}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-1 control-label">型号</label>
+                        <div class="col-sm-4">
+                            {$model.marker.marker_name}
+                        </div>
+                    </div>
+
+                    </div>
+                        <!-- <div class="row">
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                    <table id="example2" class="table" role="grid" cellpadding="1" cellspacing="1">
+                                        <thead>
+                                        <tr role="row">
+                                            <th style="width: 30%;">品牌</th>
+                                            <th style="width: 30%;">商品价格</th>
+                                            <th style="width: 30%;">商品数量</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr role="row" class="odd">
+                                            <td style="vertical-align:middle;"></td>
+                                            <td style="vertical-align:middle;"></td>
+                                            <td style="vertical-align:middle;"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="dataTables_info"></div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="row">
+                                    <label class="col-sm-6 control-label">商品总额：</label>
+                                    <div class="col-sm-6">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-6 control-label">运　　费：</label>
+                                    <div class="col-sm-6">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-6 control-label">应付总额：</label>
+                                    <div class="col-sm-6">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="panel-heading">
+                        操作订单状态
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- 订单状态 1已支付，2已发货，3已归还，4申请退款，5已退款 -->
+                                <a href="javascript:void(0);" class="btn btn-info action-prompt" data-toggle="modal" data-target="#addSort" data-id="{$model.order_sn}" data-status="2">订单发货</a>
+
+                                <a href="javascript:void(0);" class="btn btn-info action-button" data-id="{$model.order_sn}" data-status="3">订单完成</a>
+
+                                <a href="javascript:void(0);" class="btn btn-info action-button" data-id="{$model.order_sn}" data-status="5">已退款</a>
+
+                                <a href="javascript:void(0);" class="btn btn-info action-button" data-id="{$model.order_sn}" data-status="6">已退押金</a>
+
+                                <a href="javascript:void(0);" class="btn btn-success action-prompt" data-toggle="modal" data-target="#look" data-id="{$model.order_sn}" data-status="4">查看退款单号</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="addSort" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="hpanel">
+            <div class="color-line" style="background: #3498db;"></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">请填写快递单号</div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="row">
+                    <div class="col-sm-12"><textarea name="express_number" id="express_number" rows="5" placeholder="请填写/修改快递单号" class="form-control"></textarea></div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-12" style="text-align:right;">
+                            <input type="hidden" id="orderSn" value="{$model.order_sn}">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right:10px;">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="addPost()">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="look" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="hpanel">
+            <div class="color-line" style="background: #3498db;"></div>
+            <div class="panel-body">
+                <div class="row">
+                    <label class="col-sm-3 control-label">租金退款单号</label>
+                    <div class="col-sm-4">
+                        {if condition="$model.is_car eq 1"}
+                            {$model.car_sn}
+                        {else}
+                            {$model.order_sn}
+                        {/if}
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                
+                <div class="form-horizontal">
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-12" style="text-align:right;">
+                            <!-- <input type="hidden" id="orderSn" value="{$model.order_sn}"> -->
+                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right:10px;">关闭</button>
+                            <!-- <button type="button" class="btn btn-primary" onclick="addPost()">提交</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="common/footer" /}
+<script type="text/javascript">
+    function addPost() {
+        var express_number = $("#express_number").val();
+        var orderSn = $("#orderSn").val();
+        if (!express_number) {
+            layer.msg('请填写快递单号');
+            return false;
+        }
+
+        $.ajax({
+            url:'__ROOT__/admin/order/editMemo',
+            type:'POST',
+            data: {
+                expressNumber : express_number,
+                orderSn : orderSn
+            },
+            success: function(result) {
+                if(result.error == 0) {
+                    $('#addSort').modal('hide');
+                    location.reload();
+                } else {
+                    swal(msg, "", "warning");
+                }
+            }
+        });
+    };
+    
+    $('.action-button').on('click', function () {
+        var orderSn = $(this).attr('data-id');
+        var status = $(this).attr('data-status');
+        var that = $(this);
+        swal({
+                title: "确认要执行该操作吗",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确认",
+                cancelButtonText: "取消"
+            },
+            function () {
+                $.post('__ROOT__/admin/order/ajaxDealOrderStatus', {orderSn:orderSn,status:status}, function (result) {
+                    if(result.error == 0) {
+                        swal('操作成功');
+                        location.reload();
+                    }
+                });
+            });
+    });
+</script>

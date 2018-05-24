@@ -1,0 +1,204 @@
+.box{
+    margin: 0.3rem 0.31rem 0 0.29rem;
+    padding-bottom: 0.8rem;
+    /*position: relative;*/
+}
+h1{
+    width: 6.9rem;
+    font-size: 0.3rem;
+    color: #333333;
+}
+.name{
+    font-size: 0.28rem;
+    color: #111;
+    margin: 0.2rem 0 0.16rem 0;
+}
+.time{
+    font-size: 0.24rem;
+    color: #666666;
+    margin-bottom: 0.6rem;
+}
+.action{
+    font-size: 0.28rem;
+    color: #111;
+    width: 6.9rem;
+    line-height: 0.36rem;
+}
+img{
+    width: 6.9rem;
+    height: 4.30rem;
+    margin: 0.29rem auto;
+}
+.status{
+    
+    height: 0.5rem;
+    background: #f28c1e;
+    padding-left: 0.19rem;
+    padding-right: 0.19rem;
+    line-height: 0.5rem;
+    text-align: center;
+    border-radius: 0.1rem;
+    position: fixed;
+    top:1.4rem;
+    right: 0.3rem;
+    font-size: 0.24rem;
+    color: #fff;
+}
+.last{
+    width:100%;
+    height: 1.62rem;
+    box-shadow: 0px 0px 2px 0px 
+        rgba(6, 21, 38, 0.2);
+        justify-content:space-around;
+        align-items: center;
+
+    background: 
+}
+.ok,.no{
+    width: 2rem;
+    height: 0.58rem;
+    background-color: #ec9f4c;
+    border-radius: 4px;
+    text-align: center;
+    color: #fff;
+    line-height: 0.58rem;
+    font-size: 0.28rem;
+}
+.model{
+    position: absolute;
+    width:6rem;
+    height:7.5rem;
+    background: #000;
+    opacity: 0.7;
+    z-index: 1000; 
+    top:20%;
+
+
+    left:10%;
+    border-radius: 0.1rem;
+    display: none;
+}
+.fail{
+    position: absolute;
+    width:5.4rem;
+    height:3.79rem;
+    /*background: #fff;*/
+    z-index: 2000; 
+    /* top:5.34rem;
+    left:0.3rem; */
+    top: 20%;
+    left: 4%;
+    padding-top: 0.76rem;
+    font-size: 0.3rem;
+    display: none;
+}
+.failTitle{
+    position: absolute;
+    width:5.4rem;
+    height:1.02rem;
+    line-height: 1.02rem;
+    /*background: #fff;*/
+    z-index: 2000; 
+    color: #fff;
+    font-size: 0.3rem;
+    top:0rem;
+    left:0.75rem;
+    text-align: center;
+
+}
+.reason{
+    position: absolute;
+    width:5rem;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    height:3.79rem;
+    line-height: 0.5rem;
+
+
+    font-size: 0.3rem;
+    background: #fff;
+    z-index: 2000; 
+    /* top:1.02rem;
+    left:0.75rem; */
+    top: 30%;
+    left: 14%;
+    border:none;
+    border-radius: 0.1rem;
+    outline: none;
+}
+.edit{
+    position: relative;
+    width: 90%;
+    height: 0.65rem;
+    line-height: 0.65rem;
+    background: #f28c1e;
+    color: #fff;
+    z-index: 2000;
+    top: 148%;
+    left: 15%;
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 4px;
+}
+.text,.test,.more{
+    position: absolute;
+    width:4.2rem;
+    height:1.44rem;
+    background: #fff;
+    z-index: 2000; 
+    top:6.4rem;
+    left: 1.65rem;
+    padding-top: 0.76rem;
+    display: none;
+}
+.wrap{
+    position: absolute;
+    width:100%;
+    min-height:150vh;
+    background: #000;
+    opacity: 0.5;
+    z-index: 1000; 
+    display: none;
+}
+.close,.test_x{
+    width:0.4rem;
+    height: 0.4rem;
+    background: #fff;
+    position: absolute;
+    z-index: 200;
+    right: 0.1rem;
+    top:0.1rem;
+    border:1px solid #333;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 0.35rem;
+    font-size: 0.4rem;
+}
+.titleText,.test_tit{
+    width:2.5rem;
+    margin: 0 auto;
+    font-size: 0.3rem;
+    color: #333;
+    text-align: center;
+}
+iframe{
+    width:6.9rem;
+    height: 3rem;
+}
+.success{
+    width:100%;
+    height: 0.8rem;
+    background:#f28c1e;
+    text-align: center;
+    line-height: 0.8rem;
+    color: #fff;
+    display: none;
+}
+.cover{
+    width: 100%;
+    height: 4.3rem;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px dotted #eee;
+}
+
+/*<iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=j0643w7b7ho&tiny=0&auto=0" allowfullscreen></iframe>*/

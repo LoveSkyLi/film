@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>会议详情</title>
+    <link rel="stylesheet" href="../../css/meeting_dynamic.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+
+    <div id="box">
+        <!-- <button class="btn">立即报名</button> -->
+    </div>
+
+</body>
+<script type="text/javascript">
+    $(function() {
+
+        var id = getUrlVar('id');
+        id = decodeURI(id);
+
+        $.ajax({
+            url: url + 'meeting/getOrderInfo',
+            type: 'POST',
+            data: {
+                id: id,
+                userSession: getCookie('usersession')
+            },
+            success: function(res) {
+                if (res.code == 0) {
+                    // var info_set = (res.data.info_set)
+                    // console.log(info_set)
+                    list = `
+                    <div class="list">
+                        <img src="${res.data.m_cover}" alt="">
+                        <div class="list_list">
+                            <img src="../../images/dynamic_one.png" alt="">
+                            <span>${res.data.m_title}</span>
+                        </div>
+                        <div class="list_list">
+                            <img src="../../images/dynamic_two.png" alt="">
+                            <span>${res.data.m_address}</span>
+                        </div>
+                        <div class="list_list">
+                            <img src="../../images/dynamic_there.png" alt="">
+                            <span>${res.data.time}</span>
+                        </div>
+                    </div>
+                    
+                    `
+                    $('#box').append(list);
+                    // console.log(typeof info_set)
+                    // $('.btn').click(function(){
+                    //      var url = 'signUp.html'
+                    //     window.location.href = encodeURI(url + "?info_set=" + info_set + "&id="+ id)
+
+                    // })
+                }
+                if (res.code == 2) {
+                    window.location.href = '../index/login.html'
+                }
+            }
+        })
+
+    })
+</script>
+
+</html>

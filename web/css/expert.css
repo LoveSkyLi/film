@@ -1,0 +1,69 @@
+body{
+    /* background: red; */
+}
+.top{
+    display: flex;
+}
+.bottom{
+    display: flex;
+}
+.color{
+    background-color: #f09a3e;
+}
+.bgcolor{
+    background-color: #ffffff;
+    padding: 0.1px;
+}
+.li{
+    display: flex;
+    width: 2.8rem;
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    border-right: 1px solid #333;
+     border-left: 1px solid #333;
+    border-bottom: 1px solid #999;
+}
+.top1{
+    width: 1.37rem;
+	height: 0.80rem;
+}
+.top2{
+    width: 3.06rem;
+	height: 0.80rem;
+	font-size: 0.30rem;
+    color: #ffffff;
+    text-align: center;
+    line-height: 0.8rem;
+}
+.week{
+    width: 1.37rem;
+    height: 2.10rem;
+    text-align: center;
+    
+}
+.week span{
+    display: inline-block;
+    font-size: 0.24rem;
+	color: #ffffff;
+}
+.week span:nth-of-type(1){
+    margin: 0.8rem 0 0.1rem 0;
+}
+.company{
+    width: 3.06rem;
+    height: 0.9rem;
+    text-align: center;
+}
+.company span{
+    font-size: 0.30rem;
+    color: #333333;
+    display: block;
+    margin-top: 0.22rem; 
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+}
+.ul{
+    width:3.05rem;
+}

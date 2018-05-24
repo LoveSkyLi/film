@@ -1,0 +1,138 @@
+<div id="header">
+    <div class="color-line">
+    </div>
+    <div id="logo" class="light-version" style="border-right: 1px solid #e4e5e7; width:181px">
+        <span>
+            影视管理后台
+        </span>
+    </div>
+    <nav role="navigation">
+        <div class="small-logo">
+            <span class="text-primary">影视管理后台</span>
+        </div>
+        <div class="navbar-right">
+            <ul class="nav navbar-nav no-borders">
+                <li>
+                    <a href="__ROOT__/admin/logout">
+                        <i class="pe-7s-upload pe-rotate-90"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<aside id="menu">
+    <div id="navigation">
+        <div class="profile-picture">
+            <a href="__ROOT__/admin/course">
+                {if condition="$userInfo.avatar"}
+                    <img src="{$userInfo.avatar}" class="img-circle m-b" style="width:76px;">
+                {else /}
+                    <img src="__ROOT__/public/images/profile.jpg" class="img-circle m-b" style="width:76px;">
+                {/if}
+            </a>
+            <div class="stats-label text-color" style="margin-top:10px">
+                <span class="font-extra-bold font-uppercase">{$userInfo.username}</span>
+            </div>
+            <div>
+                <small class="text-muted">{$userInfo.role}</small>
+            </div>
+        </div>
+
+        <ul class="nav" id="side-menu">
+            <li class="{$Request.controller == 'Setting' ? 'active' : ''}">
+                <a href="__ROOT__/admin/setting?type=company"> <span class="nav-label">公司信息</span></a>
+            </li>
+            <li class="{$Request.controller == 'AdminUser' ? 'active' : ''}">
+                <a href="__ROOT__/admin/admin_user/index"> <span class="nav-label">管理员管理</span></a>
+            </li>
+            <li class="{$Request.controller == 'User' ? 'active' : ''}">
+                <a href="__ROOT__/admin/user/index"> <span class="nav-label">用户管理</span></a>
+            </li>
+            <li class="{$Request.controller == 'Question' ? 'active' : ''}">
+                <a href="__ROOT__/admin/question"> <span class="nav-label">问卷管理</span></a>
+            </li>
+            <li class="{$Request.controller == 'Meeting' ? 'active' : ''}">
+                <a href="__ROOT__/admin/meeting"> <span class="nav-label">会议管理</span></a>
+            </li>
+            
+            <!-- <li class="{$Request.controller == 'Meeting' || $Request.controller == 'MeetingOrder' ? 'active' : ''}">
+                    <a href="#"> <span class="nav-label">会议管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="__ROOT__/admin/meeting/index"> <span class="nav-label">会议管理</span></a></li>
+                        <li><a href="__ROOT__/admin/meeting_order/index"> <span class="nav-label">会议订单</span></a></li>
+                    </ul>
+                </li> -->
+            <li class="{$Request.controller == 'Experts' || $Request.controller == 'Reserve' ? 'active' : ''}">
+                <a href="#"> <span class="nav-label">预约管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="__ROOT__/admin/experts/index">专家管理</a></li>
+                    <li><a href="__ROOT__/admin/reserve/index"> 预约管理</a></li>
+                    <li><a href="__ROOT__/admin/reserve/lists"> 已预约列表</a></li>
+                </ul>
+            </li>
+
+            <li class="{$Request.controller == 'Company' ? 'active' : ''}">
+                <a href="#"> <span class="nav-label">成员管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="__ROOT__/admin/company/apply">申请书模板</a></li>
+                    <li> <a href="__ROOT__/admin/company/index"> 成员管理</a></li>
+                </ul>
+            </li> 
+
+            <li class="{$Request.controller == 'News' ? 'active' : ''}">
+                <a href="#"> <span class="nav-label">资讯管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="__ROOT__/admin/News/index">官方资讯管理</a></li>
+                    <li> <a href="__ROOT__/admin/News/lists"> 成员资讯管理</a></li>
+                </ul>
+            </li>  
+
+            <!-- <li class="{$Request.controller == 'Company' ? 'active' : ''}">
+                <a href="__ROOT__/admin/company/index"> <span class="nav-label">成员管理</span></a>
+            </li> -->
+            <!-- <li class="{$Request.controller == 'Setting' ? 'active' : ''}">
+                <a href="__ROOT__/admin/setting"> <span class="nav-label">基本设置</span></a>
+            </li>
+            <li class="{$Request.controller == 'Sort' || $Request.controller == 'Attribute' || $Request.controller == 'Marker' || $Request.controller == 'Rent' ||  $Request.controller == 'Tag' ? 'active' : ''}">
+                <a href="#"> <span class="nav-label">属性管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="__ROOT__/admin/sort/index">品牌管理</a></li>
+                    <li><a href="__ROOT__/admin/attribute/index">类别管理</a></li>
+                    <li><a href="__ROOT__/admin/marker/index">型号管理</a></li>
+                    <li><a href="__ROOT__/admin/rent/index"> 租金管理</a></li>
+                    <li><a href="__ROOT__/admin/tag/index"> 标签管理</a></li>
+                </ul>
+            </li>
+            
+            <li class="{$Request.controller == 'Goods' ? 'active' : ''}">
+                    <a href="__ROOT__/admin/goods/index"> <span class="nav-label">商品管理</span></a>
+                </li>
+            <li class="{$Request.controller == 'Order' ? 'active' : ''}">
+                <a href="__ROOT__/admin/order/index"> <span class="nav-label">订单管理</span></a>
+            </li>
+            <li class="{$Request.controller == 'Coupon' ? 'active' : ''}">
+                <a href="__ROOT__/admin/Coupon/index"> <span class="nav-label">优惠券管理</span></a>
+            </li>
+            <li class="{$Request.controller == 'PaymentConfig' ? 'active' : ''}">
+                <a href="__ROOT__/admin/payment_config/edit"> <span class="nav-label">支付配置</span></a>
+            </li> 
+          
+            <li class="{$Request.controller == 'Company' ? 'active' : ''}">
+                <a href="__ROOT__/admin/company/index"> <span class="nav-label">自提门店管理</span></a>
+            </li>
+            <li class="{$Request.controller == 'Withdraw' ? 'active' : ''}">
+                <a href="__ROOT__/admin/Withdraw/index"> <span class="nav-label">提现管理</span></a>
+            </li> -->
+            <!-- <li class="{$Request.controller == 'Group' ? 'active' : ''}">
+                <a href="#"><span class="nav-label">营销管理</span><span class="fa arrow"></span> </a>
+                <ul class="nav nav-second-level">
+                    <li><a href="__ROOT__/admin/group/index">拼团</a></li>
+                </ul>
+            </li> -->
+            <!-- <li class="{$Request.controller == 'User' && $Request.action == 'bind' ? 'active' : ''}">
+                <a href="__ROOT__/admin/user/bind"> <span class="nav-label">通知提醒</span></a>
+            </li> -->
+        </ul>
+    </div>
+</aside>

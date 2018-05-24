@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>专家预约详情</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/expert.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+</head>
+
+<body>
+    <div class="top">
+        <div class="top1 color"></div>
+        <div class="top2 color">上午</div>
+        <div class="top2 color">下午</div>
+    </div>
+    <div class="bottom">
+        <ul class="lis"></ul>
+        <ul class="ul"></ul>
+        <ul class="uls"></ul>
+    </div>
+</body>
+<script>
+    $(function() {
+
+        var id = getUrlVar('id');
+        id = decodeURI(id);
+        var list = '';
+        var list2 = ''
+        var list3 = ''
+        var ht = ''
+        $.ajax({
+            url: url + 'experts/getExpertsInfo',
+            type: 'POST',
+            data: {
+                id: id,
+                userSession: getCookie('usersession')
+            },
+            success: function(res) {
+                console.log(res)
+                if (res.code == 0) {
+                    for (var i = 0; i < res.data.list.length; i++) {
+                        list += `
+                            <li class="color week">
+                                <span>${res.data.list[i]['week']}</span>
+                                <span>${res.data.list[i]['day']}</span>
+                            </li>
+                        `
+                    }
+                    $('.lis').append(list)
+
+                    for (var w = 0; w < res.data.list.length; w++) {
+                        // console.log(res.data.list[w]['am'])
+                        (function(nums) {
+
+                            for (var s = 0; s < res.data.list[nums]['am'].length; s++) {
+                                // $('.week')[nums].height(1rem)
+                                if (res.data.list[nums]['am'].length == 0) {
+                                    ht = 2.1
+                                } else {
+                                    ht = 0.9 * res.data.list[nums]['am'].length
+                                }
+
+                                $($('.week')[nums]).height(ht + 'rem')
+                                console.log(res.data.list[nums]['am'].length)
+                                    // console.log(res.data.list[index]['am'][s]['cname'])
+                                list3 += `
+                                    <li class="li">
+                                       <div class="company bgcolor">
+                                            <span>${res.data.list[nums]['am'][s]['cname']}</span>
+                                        </div>
+                                    </li>
+
+                                `
+                            }
+                            $($('.ul')[nums]).append(list3)
+                        })(w)
+
+                    }
+
+                    for (var j = 0; j < res.data.list.length; j++) {
+
+                        (function(num) {
+                            var height = 0.9 * res.data.list[num]['am'].length
+                            if (res.data.list[num]['pm'].length == 0) {
+                                height = 0.9
+                            }
+                            if (ht > height) {
+                                height = ht
+                            }
+                            $($('.week')[num]).height(height + 'rem')
+                            for (var k = 0; k < res.data.list[num]['pm'].length; k++) {
+                                console.log(res.data.list[num]['pm'][k]['cname'])
+                                list2 += `
+                                    <li class="li">
+                                       <div class="company bgcolor">
+                                            <span>${res.data.list[num]['pm'][k]['cname']}</span>
+                                        </div>
+                                    </li>
+                                `
+                            }
+                            $($('.uls')[num]).append(list2)
+                        })(j)
+
+                    }
+                }
+                if (res.code == 2) {
+                   window.location.href = '../index/login.html'
+                }
+
+            }
+        })
+    })
+</script>
+
+</html>

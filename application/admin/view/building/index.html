@@ -1,0 +1,323 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+    <div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="#">管理后台</a></li>
+                        <li>基本信息</li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    编辑房产基本信息
+                </h2>
+                <small>管理小程序里面的商家信息</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+            <div class="col-lg-12" style="">
+                <div class="hpanel">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">基础信息</a></li>
+                        <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">位置和周边</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane active">
+                            <div class="panel-body">
+                                <form method="post" action="__ROOT__/admin/building/update/id/{$model.id}" enctype="multipart/form-data" class="form-horizontal">
+                                    <div class="form-group"><label class="col-sm-2 control-label">楼盘头图</label>
+                                        <div class="col-sm-4">
+                                            <div style="width: 200px;height: 120px;float:left;margin-right:10px;">
+                                                <input name="cover" id="cover" type="hidden" value="{$model.cover}">
+                                                <input type="file"
+                                                       id="ppic1"
+                                                       class="dropify"
+                                                       data-height="120"
+                                                       data-allowed-file-extensions="jpg jpeg png gif"
+                                                       data-default-file="{$model.cover}"/>
+                                            </div>
+                                            <div style="clear:both;padding-top:10px;"><span class="help-block m-b-none">图片建议尺寸700x474，支持 jpg jpeg png gif文件</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">楼盘名称</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$model.name}" name="name" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">楼盘标签</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$model.tag}" name="tag" class="form-control">
+                                            <div style="clear:both;padding-top:10px;"><span class="help-block m-b-none">多个标签请用空格隔开</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">销售电话</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$model.tel}" name="tel" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">楼盘价格</label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="price" value="{$model.price}">
+                                                <span class="input-group-addon">元/平米</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">主力户型</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$model.housetype}" name="housetype" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">开盘时间</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$model.starttime}" name="starttime" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">物业类型</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$model.property}" name="property" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">开发商</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$model.develop}" name="develop" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">物业公司</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$model.company}" name="company" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">项目地址</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$model.address}" name="address" id="address" class="form-control">
+                                            <input type="hidden" name="latitude" id="latitude" value="{$model.latitude}" class="form-control">
+                                            <input type="hidden"  name="longitude" id="longitude" value="{$model.longitude}" class="form-control">
+                                            <br><br>
+                                            <p>注：如果定位不够准确，用鼠标点选下方地图正确位置即可调整</p>
+                                            <div id="container" style="width: 600px;height: 400px;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group"><label class="col-sm-2 control-label">首屏广告图</label>
+                                        <div class="col-sm-4">
+                                            <div style="width: 200px;height: 120px;float:left;margin-right:10px;">
+                                                <input name="ad" id="ad" type="hidden" value="{$model.ad}">
+                                                <input type="file"
+                                                       id="ppic2"
+                                                       class="dropify"
+                                                       data-height="120"
+                                                       data-allowed-file-extensions="jpg jpeg png gif"
+                                                       data-default-file="{$model.ad}"/>
+                                            </div>
+                                            <div style="clear:both;padding-top:10px;"><span class="help-block m-b-none">图片建议尺寸700x474，支持 jpg jpeg png gif文件</span></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <div class="col-sm-8 col-sm-offset-2">
+                                            <button class="btn btn-primary" type="submit">确定</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tab-pane">
+                            <div class="panel-body">
+                                <form method="post" action="__ROOT__/admin/building/otherUpdate/id/{$model.id}" enctype="multipart/form-data" class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">交通信息</label>
+                                        <div class="col-sm-6">
+                                            <textarea rows="5" class="form-control" name="traffic">{$model.traffic}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">教育信息</label>
+                                        <div class="col-sm-6">
+                                            <textarea rows="5" class="form-control" name="education">{$model.education}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">生活信息</label>
+                                        <div class="col-sm-6">
+                                            <textarea rows="5" class="form-control" name="life">{$model.life}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <div class="col-sm-8 col-sm-offset-2">
+                                            <button class="btn btn-primary" type="submit">确定</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp"></script>
+<script type="text/javascript">
+    var map,markersArray = [];
+    var latitude = "{$model.latitude}";
+    var longitude = "{$model.longitude}";
+    window.onload = function(){
+        //初始化地图函数  自定义函数名init
+        function init() {
+            //定义map变量 调用 qq.maps.Map() 构造函数   获取地图显示容器
+            if(latitude) {
+                var center = new qq.maps.LatLng(latitude,longitude);
+            } else {
+                var center = new qq.maps.LatLng(39.916527,116.397128);
+            }
+            map = new qq.maps.Map(document.getElementById("container"), {
+                center: center,      // 地图的中心地理坐标。
+                zoom:12              // 地图的中心地理坐标。
+            });
+
+            if(latitude) {
+                var location = new qq.maps.LatLng(latitude,longitude);
+                addMarker(location);
+            }
+
+            //调用地址解析类
+            geocoder = new qq.maps.Geocoder({
+                complete : function(result){
+                    map.setCenter(result.detail.location);
+                    console.log(result.detail);
+                    clearOverlays();
+                    addMarker(result.detail.location);
+                    $('#latitude').val(result.detail.location.lat);
+                    $('#longitude').val(result.detail.location.lng);
+                }
+            });
+            //添加监听事件
+            qq.maps.event.addListener(map, 'click', function(event) {
+                clearOverlays();
+                addMarker(event.latLng);
+                var coord=new qq.maps.LatLng(event.latLng.getLat(),event.latLng.getLng());
+                geocoder.getAddress(coord);
+            });
+        }
+
+        //添加标记
+        function addMarker(location) {
+            var marker = new qq.maps.Marker({
+                position: location,
+                map: map
+            });
+            markersArray.push(marker);
+        }
+
+        //清除覆盖层
+        function clearOverlays() {
+            if (markersArray) {
+                for (i in markersArray) {
+                    markersArray[i].setMap(null);
+                }
+            }
+        }
+
+        //调用初始化函数地图
+        init();
+    }
+
+    $('#address').on('blur', function () {
+        var address = $(this).val();
+        geocoder.getLocation(address);
+    });
+
+    UE.getEditor('editor', {
+        serverUrl: '__ROOT__/admin/file/upload'
+    });
+
+    $('.dropify').dropify({
+        messages: {
+            'default': '点击这里上传',
+            'replace': '点击这里替换',
+            'remove':  '删除',
+            'error':   '发生错误了'
+        },
+        error: {
+            'imageFormat': '仅支持以下 {{ value }} 格式的图片文件'
+        }
+    });
+
+    $("#ppic1").change(function() {
+        var picdata = new FormData();
+
+        $.each($("#ppic1")[0].files, function(i, file) {
+            picdata.append('fileInfo', file);
+        });
+
+        $.ajax({
+            url:'__ROOT__/admin/file/upload?action=uploadimage',
+            type:'POST',
+            data: picdata,
+            cache: false,
+            contentType: false,    //不可缺
+            processData: false,
+            success: function(result){
+                if(result.error == 0){
+                    $("#cover").val(result.url);
+                }
+            }
+        });
+    });
+
+    $("#ppic2").change(function() {
+        var picdata = new FormData();
+
+        $.each($("#ppic2")[0].files, function(i, file) {
+            picdata.append('fileInfo', file);
+        });
+
+        $.ajax({
+            url:'__ROOT__/admin/file/upload?action=uploadimage',
+            type:'POST',
+            data: picdata,
+            cache: false,
+            contentType: false,    //不可缺
+            processData: false,
+            success: function(result){
+                if(result.error == 0){
+                    $("#ad").val(result.url);
+                }
+            }
+        });
+    });
+
+</script>

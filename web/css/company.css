@@ -1,0 +1,32 @@
+body{
+	background: #fbfbfa;
+}
+.company{
+	background-color: #ffffff;
+	line-height: 0.8rem;
+	color: #333;
+	font-size: 0.3rem;
+	padding-left: 0.3rem;
+	padding-right: 0.3rem;
+}
+.companyContent{
+	margin-top: 0.01rem;
+	background-color: #ffffff;
+	/*text-align: center;*/
+	line-height: 0.45rem;
+	color: #333;
+	font-size: 0.3rem;
+	padding: 0.3rem;
+}
+.company-tell{
+	background-color: #ffffff;
+	line-height: 0.8rem;
+	color: #333;
+	font-size: 0.3rem;
+	padding-left: 0.3rem;
+	padding-right: 0.3rem;
+	margin-top: 0.01rem;
+}
+.top{
+	margin-top: 0.12rem;
+}

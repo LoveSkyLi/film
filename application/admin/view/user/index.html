@@ -1,0 +1,140 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+    <div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="#">管理后台</a></li>
+                        <li class="active">
+                            <span>会员管理</span>
+                        </li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    会员管理
+                </h2>
+                <small>管理小程序的会员</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="col-lg-12">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <form method="get" action="__ROOT__/admin/user">
+                                    <input type="text" name="keyword" value="{$keyword}" class="form-control" placeholder="请输入名称">
+                                    <button class="btn btn-default" type="submit">搜索</button>
+                                </form>
+                            </div>
+                            <div class="col-sm-6">
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example2" class="table table-striped table-bordered table-hover dataTable no-footer" role="grid">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>微信昵称</th>
+                                            <th>头像</th>
+                                            <!-- <th>手机号</th> -->
+                                            <th>性别</th>
+                                            <th>所在城市</th>
+                                            <th>所在省市</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {volist name='list' id='item'}
+                                        <tr role="row" class="odd">
+                                            <td>{$item.nickname}</td>
+                                            <td>
+                                                {if condition="$item.avatar"}
+                                                <img src="{$item.avatar}" style="width: 48px;height: 48px;">
+                                                {/if}
+                                            </td>
+                                            <!-- <td>{$item.phone}</td> -->
+                                            <td>{$item.gender}</td>
+                                            <td>{$item.city}</td>
+                                            <td>{$item.province}</td>
+                                            <td>
+                                                {if condition="$item.usergroup eq 1"}
+                                                    <a href="javascript:void(0);" class="btn btn-warning btn-xs action-sale" data-data='0'  data-id="{$item.uid}">撤销核销员</a>
+                                                {else}
+                                                    <a href="javascript:void(0);" class="btn btn-warning btn-xs action-sale" data-data='1'  data-id="{$item.uid}">设为核销员</a>
+                                                {/if}  
+
+                                                <select class="admingroup" name="admingroup" data-id="{$item.uid}">
+                                                        <option value="0" {if condition="$item.admingroup eq 0"} selected{/if}>无审核身份</option>
+                                                        <option value="1"  {if condition="$item.admingroup eq 1"} selected{/if}>一级审核</option>
+                                                        <option value="2"  {if condition="$item.admingroup eq 2"} selected{/if}>二级审核</option>
+                                                        <option value="3"  {if condition="$item.admingroup eq 3"} selected{/if}>三级审核</option>
+                                                        <option value="4"  {if condition="$item.admingroup eq 4"} selected{/if}>四级审核</option>
+                                                </select>
+                                                
+                                            </td>
+                                        </tr>
+                                    {/volist}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <!--<div class="dataTables_info">Showing 1 to 10 of 42 entries</div>-->
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="dataTables_paginate paging_simple_numbers">
+                                    {$page}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <i class="fa fa-user"> </i> 用户总数 {$list->total()} 个
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script>
+    $('.action-sale').on('click', function () {
+        var uid = $(this).attr('data-id');
+        var status  = $(this).attr('data-data')
+        layer.confirm('确定要执行此操作吗?', {icon: 3, title:'是否执行?'}, function(index){            
+            layer.close(index);
+            $.post('__ROOT__/admin/user/undoAdmin', {uid:uid,status:status}, function (result) {
+                    if(result.code == 0) {
+                        layer.msg('设置成功');
+                        window.location.reload();
+                    }
+                });
+            
+        });
+    });
+
+    $('.admingroup').change(function(){
+        var uid = $(this).attr('data-id');
+        var status = $(this).val();
+        layer.confirm('确定要执行此操作吗?', {icon: 3, title:'是否执行?'}, function(index){            
+            layer.close(index);
+            $.post('__ROOT__/admin/user/setAdmin', {uid:uid,status:status}, function (result) {
+                    if(result.code == 0) {
+                        layer.msg('设置成功');
+                        window.location.reload();
+                    }
+                });
+            
+        });
+    })
+</script>

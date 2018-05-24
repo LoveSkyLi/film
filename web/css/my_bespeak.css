@@ -1,0 +1,35 @@
+body{
+    background: #fbfbfa;
+}
+.div{
+    display: flex;
+    justify-content: space-between;
+    background: #fff;
+    margin-bottom: 0.22rem;
+}
+.img{
+    width: 0.8rem;
+    height: 0.8rem;
+    margin: 0.3rem 0 0 0.3rem;
+    border-radius: 50%;
+}
+.names{
+    display: flex;
+    justify-content: space-between;
+    margin: 0.4rem 0.3rem 0 0.2rem;
+    align-items: center;
+}
+.name_img{
+    width: 0.14rem;
+    height: 0.24rem;
+}
+.name{
+	font-size: 0.30rem;
+    color: #333333;
+}
+.comment{
+    width: 5.84rem;
+    color: #666666;
+    margin: 0.22rem 0.37rem 0.29rem 0.2rem;
+    font-size: 0.26rem;
+}

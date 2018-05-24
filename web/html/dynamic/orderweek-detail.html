@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+    <title>预约洽谈</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/orderweek-detail.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+</head>
+
+<body>
+    <div class="flex order-top">
+
+    </div>
+    <ul>
+
+    </ul>
+    <!-- <div class="order-button">预约成功</div> -->
+</body>
+<script type="text/javascript">
+    $(function() {
+
+
+        var id = getUrlVar('id'); //拆分url得到userName參數值  
+        id = decodeURI(id);
+        $.ajax({
+            url: url + 'experts/orderInfo',
+            type: 'POST',
+            data: {
+                id: id,
+                userSession: getCookie('usersession')
+            },
+            success: function(res) {
+                console.log(res)
+                if (res.code == 0) {
+                    var expert = `
+						<div class="order-myimg">
+							<img src="${res.data.experts.avatar}">
+						</div>
+						<div class="order-box">
+							<div class="order-name">${res.data.experts.name}</div>
+							<div class="order-detail">${res.data.experts.breif}</div>
+						</div>
+					`
+                    $('.order-top').append(expert)
+                    var list = `
+						<li class="flex" style="padding-top:0.24rem;position:relative">
+							<div class="order-time">
+								<img src="../../images/dynamic_there.png" class="my_there">
+							</div>
+							<div class="order-content">${res.data.week} <span>${res.data.day}</span> ${res.data.time} <span></span><span>${res.data.sTime}-${res.data.eTime}</span></div>
+				            <div class="order-btn">取消预约</div>
+							
+						</li>
+						<li class="flex">
+							<div class="order-time">
+								<img src="../../images/dynamic_two.png" class="my_two">
+							</div>
+							<div class="order-content">${res.data.reserve.address}</div>
+
+						</li>
+						<li class="flex">
+							<div class="order-time">
+								<img src="../../images/title.png" class="my_one">
+							</div>
+							<div class="order-content">${res.data.reserve.address}</div>
+						</li>
+						<li class="flex" style="padding-bottom:0.24rem;">
+							<div class="order-time">
+								<img  src="../../images/detail.png" class="my_one">
+							</div>
+							<div class="order-content">${res.data.reserve.intro}</div>
+						</li>
+					`
+                    $('ul').append(list)
+                    $(".order-btn").click(function() {
+                        console.log(2)
+                        $.ajax({
+                            url: url + 'experts/cancelOrder',
+                            type: 'POST',
+                            data: {
+                                id: id,
+                                userSession: getCookie('usersession')
+                            },
+                            success: function(res) {
+                                // var url ='weekOK.html'
+                                // window.location.href = encodeURI(url + "?id=" + expertId  )
+                                console.log(res)
+
+                            }
+                        })
+
+                    });
+                }
+                if (res.code == 2) {
+                   window.location.href = '../index/login.html'
+                }
+
+
+            }
+
+        })
+
+
+
+    })
+</script>
+
+</html>

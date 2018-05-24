@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>会议报名列表</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <link rel="stylesheet" href="../../css/meeting_list.css">
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+</head>
+
+<body>
+    <ul>
+        <div></div>
+        <!-- <video src="http://player.youku.com/player.php/sid/XMzM3NDI3MjcwNA==/v.swf"></video> -->
+
+    </ul>
+    <!-- <div class="box">
+        <div class="sao">
+            <img src="../../images/gg.png" alt="">
+        </div>
+        <span>核销会议报名</span>
+    </div> -->
+
+</body>
+<script type="text/javascript">
+    $(function() {
+        var uid = getUrlVar('uid'); //拆分url得到userName參數值  
+        console.log(decodeURI(uid));
+        uid = decodeURI(uid);
+
+        var mid = getUrlVar('mid'); //拆分url得到userName參數值  
+        console.log(decodeURI(uid));
+        mid = decodeURI(mid);
+
+        var flag = getUrlVar('flag'); //拆分url得到userName參數值  
+        console.log(decodeURI(uid));
+        flag = decodeURI(flag);
+
+        $.ajax({
+            url: url + 'meeting/getOrderList',
+            type: 'POST',
+            data: {
+                uid: uid,
+                flag: flag,
+                mid: mid,
+                userSession: getCookie('usersession')
+            },
+            success: function(res) {
+                if (res.code == 0) {
+                    console.log(res)
+                    console.log(res.data.list)
+                    var list = ''
+                    for (var i = 0; i < res.data.list.length; i++) {
+                        list += `
+                        <li class="li">
+                            <img src="${res.data.list[i].m_cover}" alt="" class="left">
+                            <div class="right">
+                                <p class="name">${res.data.list[i].m_title}</p>
+                                <div class="add">
+                                    <img src="../../images/dynamic_two.png" alt="" class="img">
+                                    <span class="compont">${res.data.list[i].m_address}</span>
+                                </div>
+                                <div class="timebox">
+                                    <img src="../../images/dynamic_there.png" alt="" class="img">
+                                    <span class="time">2月9日 14:00-15:30</span>
+                                </div>
+                            </div>
+                        </li>
+                    `
+                    }
+
+                    $('ul').append(list);
+                    for (var j = 0; j < $('li').length; j++) {
+                        (function(num) {
+                            $($('.li')[num]).click(function() {
+                                var id = res.data.list[num].id;
+                                var url = 'order.html'
+                                window.location.href = encodeURI(url + "?id=" + id)
+                            })
+                        })(j)
+                    }
+                }
+                if (res.code == 2) {
+                    window.location.href = '../index/login.html'
+                }
+            }
+        });
+
+
+    })
+</script>
+
+</html>

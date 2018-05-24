@@ -1,0 +1,130 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+	<div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="__ROOT__/admin/index">后台管理</a></li>
+                        <li class="active">
+                            <span>{$title}</span>
+                        </li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    {$title}
+                </h2>
+                <small>{$title}</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="hpanel">
+            <div class="panel-body">
+                    <form id="myform" method="post" action="__ROOT__/admin/experts/update/id/{$info.id}" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group">
+                                <label class="col-sm-2 control-label">名称 <span style="color: red">*</span></label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="name" id="name" value="{$info.name}" class="form-control">
+                                </div>
+                            </div>
+        
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group"><label class="col-sm-2 control-label">封面图片 <span style="color: red">*</span></label>
+                                <div class="col-sm-4">
+                                    <div style="width: 180px;height: 153px;float:left;margin-right:10px;">
+                                        <input name="avatar" id="p_pic" type="hidden" value="{$info.avatar}">
+                                        <input type="file"
+                                            id="pic"
+                                            class="dropify"
+                                            data-height="143"
+                                            data-allowed-file-extensions="jpg jpeg png gif"
+                                            data-default-file="{$info.avatar}"
+                                            name="pic" onclick="uploadPic('pic')"/>
+                                    </div>
+                                    <div style="clear:both;padding-top:15px;"><span class="help-block m-b-none">建议尺寸80*80，支持 jpg jpeg png 文件，图片小于2M。</span></div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">简介 <span style="color: red">*</span></label>
+                                <div class="col-sm-4">
+                                    <textarea name="breif" id='breif' class="form-control" rows="4">{$info.breif}</textarea>
+                                </div>
+                            </div>
+        
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <button class="ladda-button btn btn-primary" data-style="zoom-in" type="submit">确定</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {include file="common/footer" /}
+<script type="text/javascript">
+var drEvent = $('.dropify').dropify({
+        messages: {
+            'default': '点击这里上传',
+            'replace': '点击这里替换',
+            'remove':  '删除',
+            'error':   '发生错误了'
+        },
+        error: {
+            'imageFormat': '仅支持以下 {{ value }} 格式的图片文件'
+        }
+    }).on('dropify.afterClear',
+        function(event, element) {
+            console.log(element.input[0].id)
+            var id = element.input[0].id;
+            $("#p_"+id).val('')
+    });
+
+    function uploadPic(id) {
+        $("#"+id).change(function() {
+            var picdata = new FormData();
+            $.each($("#"+id)[0].files, function(i, file) {
+                picdata.append('fileInfo', file);
+            });
+
+            var l = $('.ladda-button').ladda();
+            l.ladda('start');
+            $.ajax({
+                url:'__ROOT__/admin/file/upload?action=uploadimage',
+                type:'POST',
+                data: picdata,
+                cache: false,
+                contentType: false,    //不可缺
+                processData: false,
+                success: function(result){
+                    l.ladda('stop');
+                    if(result.error == 0) {
+                        $("#p_pic").val(result.url);
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                }
+            });
+        });
+    }
+    $('#myform').on('submit', function () {
+        if ( !$('input[name="name"]').val() ) {
+            layer.msg('请填写名称');
+            return false;
+        }
+
+        if ( !$('#breif').val() ) {
+            layer.msg('请填写介绍');
+            return false;
+        }
+
+    });
+</script>
+        

@@ -1,0 +1,237 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+    <div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="#">管理后台</a></li>
+                        <li><a href="__ROOT__/admin/goods/userGoods/id/{$id}">商品列表</a></li>
+                        <li>商品详情</li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                        商品详情
+                </h2>
+                <small>商品详情</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+            <div class="col-lg-12" style="">
+                <div class="hpanel">
+                    <div class="panel-heading">
+
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <label class="col-sm-2 control-label">品牌</label>
+                            <div class="col-sm-4">
+                                {$model.sort.name}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 control-label">类别</label>
+                            <div class="col-sm-4">
+                                {$model.attr.attr_name}
+                            </div>
+                        </div>
+                        <div class="row">
+                                <label class="col-sm-2 control-label">型号</label>
+                                <div class="col-sm-4">
+                                    {$model.marker.marker_name}
+                                </div>
+                            </div>
+                            <div class="row">
+                                    <label class="col-sm-2 control-label">配件信息</label>
+                                    <div class="col-sm-4">
+                                        {$model.parts}
+                                    </div>
+                                </div>
+                            <div class="row">
+                                    <label class="col-sm-2 control-label">商品状态</label>
+                                    <div class="col-sm-4">
+                                        {$status}
+                                    </div>
+                                </div>
+                        <div class="row">
+                                <label class="col-sm-2 control-label">商品图片</label>
+                                
+                                <div class="col-sm-10">
+                                    <ul id="picsList" style="list-style-type: none; margin:0px; padding:0px;">
+                                        {volist name="$model.pics" id="item" key="k"}
+                                        <li style="margin-right:10px;margin-bottom:15px;position: relative;"  data-itemid="">
+                                            
+                                            <div><img src="{$item}" style="max-height: 300px;"></div>
+                                           
+                                        </li>
+                                        {/volist}
+                                    </ul>
+                                </div>
+                            </div>
+                        
+                        <div class="row">
+                                <label class="col-sm-2 control-label">商品详情图片</label>
+                                
+                                <div class="col-sm-10">
+                                    <ul id="picsList" style="list-style-type: none; margin:0px; padding:0px;">
+                                        {volist name="$model.detail" id="item" key="k"}
+                                        <li style="margin-right:10px;margin-bottom:15px;position: relative;"  data-itemid="">
+                                            {if condition="$item.type eq 'txt'"}
+                                            <div>{$item.content}</div>
+                                            {else/}
+                                            <div><img src="{$item.content}" style="max-height: 300px;"></div>
+                                            {/if}
+                                        </li>
+                                        {/volist}
+                                    </ul>
+                                </div>
+                            </div>
+                        
+                    </div>
+                    <div class="panel-heading">
+
+                    </div>
+
+                    <div class="panel-heading">
+                        操作商品状态
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                    <!-- 1 => '审核中',
+                                    2 => '代租中',
+                                    3 => '租赁中',
+                                    4 => '审核未通过',
+                                    5 => '已下架', -->
+
+                                <a href="javascript:void(0);" class="btn btn-info action-button"  data-status="4" data-id="{$model.id}">待审核</a>
+
+                                <a href="javascript:void(0);" class="btn btn-info action-button"   data-status="1" data-id="{$model.id}">审核中</a>
+
+                                <a href="javascript:void(0);" class="btn btn-info action-button" data-status="2" data-id="{$model.id}">代租中</a>
+
+                                <a href="javascript:void(0);" class="btn btn-info action-button"  data-status="3" data-id="{$model.id}">租赁中</a>
+
+                                <a href="javascript:void(0);" class="btn btn-info action-button"  data-status="5" data-id="{$model.id}">已下架</a> 
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="addSort" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- <div class="modal-dialog">
+        <div class="hpanel">
+            <div class="color-line" style="background: #3498db;"></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">请填写快递单号</div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="row">
+                    <div class="col-sm-12"><textarea name="express_number" id="express_number" rows="5" placeholder="请填写/修改快递单号" class="form-control"></textarea></div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-12" style="text-align:right;">
+                            <input type="hidden" id="orderSn" value="">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right:10px;">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="addPost()">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+<div class="modal fade in" id="look" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- <div class="modal-dialog">
+        <div class="hpanel">
+            <div class="color-line" style="background: #3498db;"></div>
+            <div class="panel-body">
+                <div class="row">
+                    <label class="col-sm-3 control-label">租金退款单号</label>
+                    <div class="col-sm-4">
+                       
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                
+                <div class="form-horizontal">
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-12" style="text-align:right;">
+                            <input type="hidden" id="orderSn" value=""> -->
+                            <!-- <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right:10px;">关闭</button> -->
+                            <!-- <button type="button" class="btn btn-primary" onclick="addPost()">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+{include file="common/footer" /}
+<script type="text/javascript">
+    function addPost() {
+        var express_number = $("#express_number").val();
+        var orderSn = $("#orderSn").val();
+        if (!express_number) {
+            layer.msg('请填写快递单号');
+            return false;
+        }
+
+        $.ajax({
+            url:'__ROOT__/admin/order/editMemo',
+            type:'POST',
+            data: {
+                expressNumber : express_number,
+                orderSn : orderSn
+            },
+            success: function(result) {
+                if(result.error == 0) {
+                    $('#addSort').modal('hide');
+                    location.reload();
+                } else {
+                    swal(msg, "", "warning");
+                }
+            }
+        });
+    };
+    
+    $('.action-button').on('click', function () {
+        var id = $(this).attr('data-id');
+        var status = $(this).attr('data-status');
+        var that = $(this);
+        swal({
+                title: "确认要执行该操作吗",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确认",
+                cancelButtonText: "取消"
+            },
+            function () {
+                $.post('__ROOT__/admin/goods/ajaxDealGoodsStatus', {id:id,status:status}, function (result) {
+                    if(result.error == 0) {
+                        swal('操作成功');
+                        location.reload();
+                    }
+                });
+            });
+    });
+</script>

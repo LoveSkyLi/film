@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>Document</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+</head>
+<body>
+    <script>
+    $.ajax({
+        url : url + 'user/getAuthorizeUrl',
+        type:'POST',
+        data:{},
+        success:function(res){
+            console.log(res)
+           window.location.href = decodeURIComponent(res)
+        }
+    })
+    
+    </script>
+</body>

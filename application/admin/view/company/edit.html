@@ -1,0 +1,193 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+    <div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="#">管理后台</a></li>
+                        <li>{$title}</li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                        {$title}
+                </h2>
+                <small>{$title}</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="hpanel">
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane active">
+                            <div class="panel-body">
+                                <form id="myform" method="post" action="__ROOT__/admin/company/update/id/{$info.id}" enctype="multipart/form-data" class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">联系人<span style="color: red">*</span></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$info.username}" name="username" class="form-control">
+                                        </div>
+                                    </div>
+                                
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">联系人电话<span style="color: red">*</span></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$info.phone}" name="phone" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">联系人邮箱<span style="color: red">*</span></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$info.email}" name="email" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">公司名称<span style="color: red">*</span></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$info.cname_cn}" name="cname_cn" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">英文名称<span style="color: red">*</span></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$info.cname_en}" name="cname_en" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">网站<span style="color: red">*</span></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" value="{$info.website}" name="website" class="form-control">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group"><label class="col-sm-2 control-label">许可证 <span style="color: red">*</span></label>
+                                        <div class="col-sm-10">
+                                            <div id="pics">
+                                                <div style="width: 180px;height: 153px;float:left;margin:10px;">
+                                                    <input name="license" type="hidden" value="{$info.license}">
+                                                    <input type="file"
+                                                       id="license"
+                                                       class="dropify"
+                                                       data-height="143"
+                                                       data-allowed-file-extensions="jpg jpeg png gif"
+                                                       data-default-file="{$info.license}"
+                                                       onclick="uploadPic('license')"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group"><label class="col-sm-2 control-label">申请书 <span style="color: red">*</span></label>
+                                        <div class="col-sm-10">
+                                            <div id="pics">
+                                                <div style="width: 180px;height: 153px;float:left;margin:10px;">
+                                                    <input name="application" type="hidden" value="{$info.license}">
+                                                    <input type="file"
+                                                       id="application"
+                                                       class="dropify"
+                                                       data-height="143"
+                                                       data-allowed-file-extensions="jpg jpeg png gif"
+                                                       data-default-file="{$info.application}"
+                                                       onclick="uploadPic('application')"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <div class="col-sm-8 col-sm-offset-2">
+                                            <button class="btn btn-primary ladda-button" type="submit">确定</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript">
+    
+    function uploadPic(id) {
+        $("#"+id).change(function() {
+            var picdata = new FormData();
+            $.each($("#"+id)[0].files, function(i, file) {
+                picdata.append('fileInfo', file);
+            });
+
+            var l = $('.ladda-button').ladda();
+            l.ladda('start');
+            $.ajax({
+                url:'__ROOT__/admin/file/upload?action=uploadimage',
+                type:'POST',
+                data: picdata,
+                cache: false,
+                contentType: false,    //不可缺
+                processData: false,
+                success: function(result){
+                    l.ladda('stop');
+                    if(result.error == 0) {
+                        $('input[name="'+ id +'"]').val(result.url);
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                }
+            });
+        });
+    }
+
+    var drEvent = $('.dropify').dropify({
+        messages: {
+            'default': '点击这里上传',
+            'replace': '点击这里替换',
+            'remove':  '删除',
+            'error':   '发生错误了'
+        },
+        error: {
+            'imageFormat': '仅支持以下 {{ value }} 格式的图片文件'
+        }
+    }).on('dropify.afterClear',
+        function(event, element) {
+            var id = element.input[0].id;
+            $('input[name="'+ id +'"]').val('')
+        });
+    $('#myform').on('submit', function () {
+        
+        // if (!$('input[name="name"]').val()) {
+        //     layer.msg('名称不能为空');
+        //     return false;
+        // }
+        // if (!$('input[name="phone"]').val()) {
+        //     layer.msg('电话不能为空');
+        //     return false;
+        // }
+        // if (!$('input[name="address"]').val()) {
+        //     layer.msg('地址不能为空');
+        //     return false;
+        // }
+        // if (!$('input[name="lnglat"]').val()) {
+        //     layer.msg('经纬度不能为空');
+        //     return false;
+        // }
+    });
+</script>

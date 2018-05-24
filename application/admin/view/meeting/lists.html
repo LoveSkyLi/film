@@ -1,0 +1,120 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+	<div class="normalheader small-header">
+		<div class="hpanel">
+			<div class="panel-body">
+				<div id="hbreadcrumb" class="pull-right">
+					<ol class="hbreadcrumb breadcrumb">
+						<li><a href="#">管理后台</a></li>
+                        <li><a href="__ROOT__/admin/meeting/index">会议管理</a></li>
+						
+						<li class="active">
+							<span>{$title}</span>
+						</li>
+					</ol>
+				</div>
+				<h2 class="font-light m-b-xs">
+					{$title}
+				</h2>
+				<small>{$title}</small>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="hpanel">
+					<div class="panel-body">
+						<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+							<div class="row">
+								<div class="col-sm-6">
+									<form method="get" action="__ROOT__/admin/meeting/lists/id/{$id}">
+										<select class="form-control" name="status">
+												<option value="-1">核销状态</option>
+												{foreach name="statusList" item="item" key="key" /}
+												<option value="{$key}" {if condition="$key eq $status"}selected{/if}>{$item}</option>
+												{/foreach}
+											</select>
+										<button class="btn btn-default" type="submit">搜索</button>
+									</form>
+								</div>
+								<div class="col-sm-6" style="text-align: right;margin:0px 0px 10px">
+									<!-- <a href="__ROOT__/admin/meeting/create" class="btn w-xs btn-info" style="float:right;">添加会议</a> -->
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="table-responsive">
+										<table id="example2" class="table" role="grid" cellpadding="1" cellspacing="1">
+											<thead>
+											<tr role="row">
+												<th style="width: 10%; text-align: center;">联系人</th>
+												<th style="width: 10%;text-align: center;">联系人电话</th>
+												<th style="width: 20%;text-align: center;">公司名称</th>
+												<th style="width: 20%;text-align: center;">会议名称</th>
+												<th style="width: 10%;text-align: center;">开始时间</th>
+												<th style="width: 10%;text-align: center;">结束时间</th>
+												<th style="width: 10%;text-align: center;">核销状态</th>
+												<th style="text-align: center;">操作</th>
+											</tr>
+											</thead>
+											<tbody>
+											{foreach name="list" item="item" /}
+											<tr role="row" class="odd" id="m_{$item.id}">
+												
+												<td style="vertical-align:middle;text-align: center;">{$item.contact}</td>
+												<td style="vertical-align:middle;text-align: center;">{$item.phone}</td>
+												<td style="vertical-align:middle;text-align: center;">{$item.cname}</td>
+												<td style="vertical-align: middle;text-align: center">{$item.m_title}</td>
+												<td style="vertical-align: middle;text-align: center">{$item.m_sTime}</td>
+												<td style="vertical-align: middle;text-align: center">{$item.m_eTime}</td>
+												<td style="vertical-align: middle;text-align: center">{$item.status_text}</td>
+
+												<td style="vertical-align:middle;text-align: center;">
+													<a href="__ROOT__/admin/meeting/read?id={$item.id}" class="btn btn-info btn-xs">查看</a>
+												</td>
+											</tr>
+											{/foreach}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-5">
+									<div class="dataTables_info">总数 {$list->total()} 个</div>
+								</div>
+								<div class="col-sm-7">
+									<div class="dataTables_paginate paging_simple_numbers">
+										<ul class="pagination">
+											{$list->render()}
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{include file="common/footer" /}
+
+<script type="text/javascript">
+	function del(id) {
+		layer.confirm('确定要删除吗?', {icon: 3, title:'是否删除?'}, function(index){            
+            layer.close(index);
+            $.post('__ROOT__/admin/meeting/delete', {id:id}, function(result){
+                layer.msg(result.msg);
+                if (result.code == 0) {
+                    $('#m_' + id).remove();
+                }
+            })
+            
+        });
+	}
+</script>

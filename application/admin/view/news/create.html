@@ -1,0 +1,341 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+	<div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="__ROOT__/admin">后台管理</a></li>
+                        <li class="active">
+                            <span>{$title}</span>
+                        </li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    {$title}
+                </h2>
+                <small>{$title}</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="hpanel">
+            <div class="panel-body">
+                <form id="myform" method="post" action="__ROOT__/admin/news/save" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">标题 <span style="color: red">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="title" id="title" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group"><label class="col-sm-2 control-label">封面图片 <span style="color: red">*</span></label>
+                        <div class="col-sm-4">
+                            <div style="width: 180px;height: 153px;float:left;margin-right:10px;">
+                                <input name="cover" id="p_pic" type="hidden" value="">
+                                <input type="file"
+                                       id="pic"
+                                       class="dropify"
+                                       data-height="143"
+                                       data-allowed-file-extensions="jpg jpeg png gif"
+                                       data-default-file=""
+                                       name="pic" onclick="uploadPic('pic')"/>
+                            </div>
+                            <div style="clear:both;padding-top:15px;"><span class="help-block m-b-none">建议尺寸750*430，支持 jpg jpeg png 文件，图片小于2M。</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="hr-line-dashed"></div>
+                    
+                   
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">作者 <span style="color: red">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="author" id="author" class="form-control">
+                        </div>
+                    </div>
+
+                    
+                    <!-- words 文字 / pic 图片/ video 本地视频/ urlVideo 外部视频 -->
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">内容 </label>
+                        <div class="col-sm-6" id="info_list">
+                            <!-- <div id="i_0" class="col-sm-12" style="margin-bottom: 10px;">
+                                <div class="col-sm-10">
+                                    <input type="hidden" name="content[0][type]" value="words" class="form-control row ">
+                                    <textarea class="form-control row" rows="5" id="" name="content[0][content]"></textarea>
+                                </div>
+                                <label class="control-label "><a href="javascript:void(0);" class="btn btn-danger btn-xs " onclick="del(0)">删除</a></label>
+                            </div> -->
+                        </div>
+                        
+                    </div>
+                    <div class="form-group">
+                            <label class="control-label col-sm-2">内容类型</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" id="type">
+                                        <option value="-1">请选择</option>
+                                        <option value="pic">图片</option>
+                                        <option value="words">文字</option>
+                                        <option value="urlVideo">外部视频</option>
+                                        <option value="video">本地视频</option>
+                                    </select>
+                                </div>
+                                <a href="javascript:void(0);" class="btn btn-success" id="addBtn">添加内容</a>
+                        </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <button class="ladda-button btn btn-primary" data-style="zoom-in" type="submit">确定</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="common/footer" /}
+<script type="text/javascript">
+
+    $('#addBtn').on('click', function () {
+        var length = $('#info_list').children().length;
+        var type = $('#type').val();
+        if (type == -1) {
+            layer.msg('请选择内容类型');
+            return false;
+        }
+        var index  = length ;
+        if (type == 'words') {
+            var html = '<div id="i_'+ index +'" class="col-sm-12" style="margin-bottom: 10px;">';
+                html += '<div class="col-sm-10">';
+                html += '<input type="hidden" name="content['+ index +'][type]" value="words" class="form-control row ">';
+                html += '<textarea class="form-control row" rows="5" id="" name="content['+ index +'][content]"></textarea>';
+                html += '</div>';
+                html += '<label class="control-label "><a href="javascript:void(0);" class="btn btn-danger btn-xs " onclick="del('+ index +')">删除</a></label></div>';
+
+        } else if (type == 'pic') {
+
+            var html = '<div id="i_'+ index +'" class="col-sm-12" style="margin-bottom: 10px;">';
+                html += '<div class="col-sm-4">'
+                        +'   <div style="width: 180px;height: 153px;float:left;margin-right:10px;">'
+                        +'        <input name="content['+ index +'][content]" id="p_'+ index +'" type="hidden" value="">'
+                        +'        <input name="content['+ index +'][type]" type="hidden" value="pic">'
+                        +'        <input type="file" id="'+ index +'" class="dropify" data-height="143" data-allowed-file-extensions="jpg jpeg png gif" data-default-file="" onclick="uploadPic('+ index +')"/>'
+                        +'    </div><label class="control-label "><a href="javascript:void(0);" class="btn btn-danger btn-xs " onclick="del('+ index +')">删除</a></label></div>'
+                        +'    <div style="clear:both;padding-top:15px;"><span class="help-block m-b-none">建议尺寸690*430，支持 jpg jpeg png 文件，图片小于2M。</span></div></div>';
+
+        } else if (type == 'urlVideo') {
+
+            var html = '<div id="i_'+ index +'" class="col-sm-12" style="margin-bottom: 10px;">';
+                html += '<div class="col-sm-10">';
+                html += '<input type="hidden" name="content['+ index +'][type]" value="urlVideo" class="form-control row ">';
+                html += '<input class="form-control row" id="" name="content['+ index +'][content]">';
+                html += '</div>';
+                html += '<label class="control-label "><a href="javascript:void(0);" class="btn btn-danger btn-xs " onclick="del('+ index +')">删除</a></label></div>';
+        } else if (type == 'video') {
+
+            var html = '<div id="i_'+ index +'" class="col-sm-12" style="margin-bottom: 10px;">'
+                       +'<div class="col-sm-12">'
+                       +'<input type="hidden" name="content['+ index +'][type]" value="video">'
+                       +'        <video style="display:none;" controls="controls" id="v_'+ index +'" oncanplaythrough="myFunction(this, '+ index +')"></video>'  
+                       +'        <input name="content['+ index +'][content]" id="vi_'+ index +'" type="hidden" value="">'
+                       +'        <button class="btn btn-success fileinput-button" type="button">上传</button><input type="file" id="video_'+ index +'" onchange="changeFile(this, '+ index +')" style="position:absolute;top:0;left:0;font-size:34px; opacity:0"/><span id="f_'+ index +'" style="vertical-align: middle">未上传文件</span><label class="control-label"><a href="javascript:void(0);" class="btn btn-danger btn-xs col-sm-offset-2" onclick="del('+ index +')">删除</a></label></div>'
+                       +'    <div style="clear:both;padding-top:15px;"><span class="help-block m-b-none">只支持mp4格式文件，视频长度小于60秒。</span></div></div>';
+        }
+       
+        
+        $('#info_list').append(html);
+        var drEvent = $('.dropify').dropify({
+                messages: {
+                    'default': '点击这里上传',
+                    'replace': '点击这里替换',
+                    'remove':  '删除',
+                    'error':   '发生错误了'
+                },
+                error: {
+                    'imageFormat': '仅支持以下 {{ value }} 格式的图片文件'
+                }
+            }).on('dropify.afterClear',
+                function(event, element) {
+                    console.log(element.input[0].id)
+                    var id = element.input[0].id;
+                    $("#p_"+id).val('')
+            });
+
+    })
+
+    function del(id) {
+        $('#i_' + id).remove();
+    }
+
+    UE.getEditor('editor', {
+        serverUrl: '__ROOT__/admin/file/upload?action=uploadimage'
+    });
+
+   var drEvent = $('.dropify').dropify({
+        messages: {
+            'default': '点击这里上传',
+            'replace': '点击这里替换',
+            'remove':  '删除',
+            'error':   '发生错误了'
+        },
+        error: {
+            'imageFormat': '仅支持以下 {{ value }} 格式的图片文件'
+        }
+    }).on('dropify.afterClear',
+        function(event, element) {
+            console.log(element.input[0].id)
+            var id = element.input[0].id;
+            $("#p_"+id).val('')
+    });
+
+    function uploadPic(id) {
+        $("#"+id).change(function() {
+            var picdata = new FormData();
+            $.each($("#"+id)[0].files, function(i, file) {
+                picdata.append('fileInfo', file);
+            });
+
+            var l = $('.ladda-button').ladda();
+            l.ladda('start');
+            $.ajax({
+                url:'__ROOT__/admin/file/upload?action=uploadimage',
+                type:'POST',
+                data: picdata,
+                cache: false,
+                contentType: false,    //不可缺
+                processData: false,
+                success: function(result){
+                    l.ladda('stop');
+                    if(result.error == 0) {
+                        $("#p_"+id).val(result.url);
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                }
+            });
+        });
+    }
+
+
+
+    function myFunction(ele, id) {  
+        var t = Math.floor(ele.duration); 
+
+        if (t > 60) {
+            layer.msg('视频长度超过60秒');
+            return false;
+        }
+
+        var vdata = new FormData();
+        var video = $("#video_" + id)[0].files;
+        $.each(video, function(i, file) {
+            vdata.append('fileInfo', file);
+        });
+        $("#f_"+ id).html(video[0].name);
+        var l = $('.ladda-button').ladda();
+        l.ladda('start');
+        $.ajax({
+            url:'__ROOT__/admin/file/upload?action=uploadimage',
+            type:'POST',
+            data: vdata,
+            cache: false,
+            contentType: false,    //不可缺
+            processData: false,
+            success: function(result){
+                l.ladda('stop');
+                console.log(result)
+                if(result.error == 0) {
+                    $("#vi_"+id).val(result.url);
+                }else{
+                    layer.msg(result.msg);
+                }
+            }
+        });
+
+    }  
+      
+    function changeFile(ele, id){  
+        var video = ele.files[0];  
+        var url = URL.createObjectURL(video);  
+        document.getElementById("v_"+id).src = url;
+    }
+      
+    
+        
+    // $('#mDate').datetimepicker({
+    //     language: 'zh-CN',
+    //     format: 'yyyy-mm-dd',
+    //     minView: "month",
+    //     autoclose: true,
+    //     todayHighlight: true,
+    //     pickerPosition: 'bottom-right',
+    //     forceParse: true,
+    //     startDate: new Date(),
+    //});
+    
+    $('#pubdate').datetimepicker({
+        language: 'zh-CN',
+        format: 'yyyy-mm-dd hh:ii',
+        // minView: "month",
+        autoclose: true,
+        todayHighlight: true,
+        pickerPosition: 'bottom-right',
+        forceParse: true,
+    })
+
+    $('#eTime').datetimepicker({
+        language: 'zh-CN',
+        format: 'yyyy-mm-dd hh:ii',
+        // minView: "month",
+        autoclose: true,
+        todayHighlight: true,
+        pickerPosition: 'bottom-right',
+        forceParse: true,
+        startDate: new Date(),
+        minuteStep:15
+    })
+
+
+    $('#myform').on('submit', function () {
+        if ( !$('input[name="title"]').val() ) {
+            layer.msg('请填写标题');
+            return false;
+        }
+
+        if ( !$('input[name="cover"]').val() ) {
+            layer.msg('请上传封面图');
+            return false;
+        }
+
+        if ( !$('input[name="author"]').val() ) {
+            layer.msg('请填写作者');
+            return false;
+        }
+
+        // if ( !$('input[name="pubdate"]').val() ) {
+        //     layer.msg('请选择发布日期');
+        //     return false;
+        // }
+        
+    });
+    function checkEndTime(){  
+        var sTime = $('input[name="sTime"]').val();  
+        var start = new Date(sTime.replace("-", "/").replace("-", "/"));  
+        var eTime = $('input[name="eTime"]').val();  
+        var end = new Date(eTime.replace("-", "/").replace("-", "/"));  
+        var t = new Date(); 
+        if(end < start || end < t){  
+            return false;  
+        }    
+        return true;  
+    }
+    
+</script>

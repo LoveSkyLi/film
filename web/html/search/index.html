@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>Document</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+</head>
+<body>
+    <div class="search flex">
+        <img src="../../images/index_sousuo.png" alt="">
+        <input style="padding-left: 0.9rem" type="text" placeholder="搜索" value="" >
+        <div class="clear">取消</div>
+    </div>
+ 
+    <ul class="list">
+       <!--  <li>
+            <img src="http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg" alt="">
+            <p>黄金新作首发，5个超高颜值售楼空间设计【环球设计8797期】</p>
+            <span>2018-03-23</span>
+        </li> 
+        <li>
+            <img src="http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg" alt="">
+            <p>黄金新作首发，5个超高颜值售楼空间设计【环球设计8797期】</p>
+            <span>2018-03-23</span>
+        </li>
+        <li>
+            <img src="http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg" alt="">
+            <p>黄金新作首发，5个超高颜值售楼空间设计【环球设计8797期】</p>
+            <span>2018-03-23</span>
+        </li> -->
+    </ul>
+    <div class="null">暂时没有数据</div>
+    
+    <div class="feiyan">飞燕平台feeyan.com提供技术支持</div>
+    
+</body>
+<script type="text/javascript">
+    // $('#input').on
+    function myFunction() {
+        var val = $('#input').val()
+        console.log(val)
+        $.ajax({
+            url: url + 'news/getNewsLists',
+            type: 'POST',
+            data:{
+                keyword: val
+            },
+            success:function(res){
+                console.log(res)
+                $.each(res.data.list,function(j,list){
+                    console.log(list)
+                    console.log(res.data.list[j])
+                    var list = ''
+                    list += `
+                        <li>
+                            <img src="${list.cover}" alt="">
+                            <p>${list.title}</p>
+                            <span>${list.pubdate}</span>
+                        </li>
+                    `
+                    $('.list').append(list)
+                })
+            }
+        })
+    }
+$(function(){
+    $('input').change(function(e){
+         $('input').val()
+         $('li').empty()
+         console.log($('input').val())
+         
+         $.ajax({
+            url:url + 'news/getNewsLists',
+            type:'POST',
+            data:{
+                keyword:$('input').val(),
+                 userSession:a1
+            },
+            success:function(res){
+                console.log(res)
+                if(res.code ==0){
+                    var list ='';
+                     $('.null').css('display','none')
+                    for (var i=0; i<res.data.list.length; i++){
+                    list += `
+                        <li>
+                            <img src="${res.data.list[i].cover}" alt="">
+                            <p>${res.data.list[i].title}</p>
+                            <span>${res.data.list[i].pubdate}</span>
+                        </li>
+                    `
+                    }
+                    $('.list').append(list)
+                    for(var j=0; j<$('.list li').length; j++){
+                        (function(num){
+                            $($('.list li')[num]).click(function(){
+                               id = res.data.list[num]['id']
+                               var url = '../index/index_Details.html'
+                               window.location.href = encodeURI(url + "?id=" + id)
+                            })
+                        })(j)
+                    }
+                }
+                if(res.code==1){
+                    console.log('暂时无数据')
+                    $('.null').css('display','block')
+                }
+                if(res.code==2){
+                    window.location.href = '../index/login.html'
+                }
+                
+            }
+         })
+    })
+    $('.investigation').click(function(){
+        window.location.href = 'investigation.html'
+    })
+
+    $('.index_top input').focus(function(){
+    	console.log('p')
+    	$('.index_top img').css('display','none')
+    })
+    $('.clear').click(function(){
+    	 window.location.href = '../index/index.html'
+    })
+
+    $('.list li').click(function(){
+    	 window.location.href = '../index/index_Details.html'
+    })
+})
+</script>
+</html>

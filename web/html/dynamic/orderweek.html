@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>专家预约详情</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/orderweek.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+</head>
+
+<body>
+    <div class="top">
+        <div class="top1 color"></div>
+        <div class="top2 color">上午</div>
+        <div class="top2 color">下午</div>
+    </div>
+    <div class="bottom">
+        <ul class="lis"></ul>
+        <ul class="ul"></ul>
+        <ul class="uls"></ul>
+    </div>
+</body>
+<script>
+    $(function() {
+
+        // var id = getUrlVar('id');
+        //  id = decodeURI(id);
+        var list = '';
+        var list2 = ''
+        var list3 = ''
+        var ht = ''
+        $.ajax({
+            url: url + 'experts/getReserveList',
+            type: 'POST',
+            data: {
+                // id:id,
+                userSession: getCookie('usersession')
+            },
+            success: function(res) {
+                console.log(res)
+                if (res.code == 0) {
+                    for (var i = 0; i < res.data.list.length; i++) {
+                        list += `
+                            <li class="color week">
+                                <span>${res.data.list[i]['week']}</span>
+                                <span>${res.data.list[i]['day']}</span>
+                            </li>
+                        `
+                    }
+                    $('.lis').append(list)
+
+                    for (var w = 0; w < res.data.list.length; w++) {
+                        // console.log(res.data.list[w]['am'])
+                        (function(nums) {
+                            if (res.data.list[nums]['am'].length == 0) {
+                                ht = 3.1
+                            } else {
+                                ht = 3.1 * res.data.list[nums]['am'].length
+                            }
+
+                            $($('.week')[nums]).height(ht + 'rem')
+                            for (var s = 0; s < res.data.list[nums]['am'].length; s++) {
+                                var eid = res.data.list[nums]['am'][s]['eid']
+                                var rData = res.data.list[nums]['rDate']
+                                list3 += "<li class='li'  onclick=abtn(" + eid + ",'" + rData + "')>" +
+                                    "<div class='company bgcolor'>" +
+                                    "<span>" + res.data.list[nums]['am'][s]['ename'] + "</span> " +
+                                    "<span>" + res.data.list[nums]['am'][s]['reserve']['title'] + "</span>" +
+                                    "<span>" + res.data.list[nums]['am'][s]['reserve']['address'] + "</span>"
+
+                                +
+                                '</div>' +
+                                '</li>'
+
+                            }
+                            $($('.ul')[nums]).append(list3)
+                        })(w)
+
+                    }
+
+                    for (var j = 0; j < res.data.list.length; j++) {
+
+                        (function(num) {
+                            var height = 0.9 * res.data.list[num]['am'].length
+                            if (res.data.list[num]['pm'].length == 0) {
+                                height = 0.9
+                            }
+                            if (ht > height) {
+                                height = ht
+                            }
+                            $($('.week')[num]).height(height + 'rem')
+                            for (var k = 0; k < res.data.list[num]['pm'].length; k++) {
+
+                                var eid = res.data.list[num]['pm'][k]['eid']
+                                var rData = res.data.list[num]['rDate']
+                                list2 += "<li class='li'  onclick=pbtn(" + eid + ",'" + rData + "')>" +
+                                    "<div class='company bgcolor'>" +
+                                    "<span>" + res.data.list[num]['pm'][k]['ename'] + "</span> " +
+                                    "<span>" + res.data.list[num]['pm'][k]['reserve']['title'] + "</span>" +
+                                    "<span>" + res.data.list[num]['pm'][k]['reserve']['address'] + "</span>"
+
+                                +
+                                '</div>' +
+                                '</li>'
+
+                            }
+
+                            $($('.uls')[num]).append(list2)
+                        })(j)
+
+                    }
+                }
+                if (res.code == 2) {
+                   window.location.href = '../index/login.html'
+                }
+
+
+            }
+        })
+    })
+
+    function abtn(eid, rDate) {
+        var url = 'orderweek-result.html';
+
+        window.location.href = 'orderweek-result.html?eid=' + eid + '&rDate=' + rDate + '&type=1'
+        window.location.href = encodeURI(url + "?eid=" + eid + "&rDate=" + rDate + "&type=1")
+    }
+
+    function pbtn(eid, rDate) {
+
+        var url = 'orderweek-result.html';
+        window.location.href = encodeURI(url + "?eid=" + eid + "&rDate=" + rDate + "&type=2")
+    }
+</script>
+
+</html>

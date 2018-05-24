@@ -1,0 +1,342 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+	<div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="__ROOT__/admin">后台管理</a></li>
+                        <li class="active">
+                            <span>{$title}</span>
+                        </li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    {$title}
+                </h2>
+                <small>{$title}</small>
+            </div>
+        </div>
+    </div>
+<script>
+     
+</script>
+    <div class="content">
+        <div class="hpanel">
+            <div class="panel-body">
+                <form id="myform" method="post" action="__ROOT__/admin/reserve/update/id/{$info.id}" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">选择专家</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="eid" id='eid'>
+                                <option value="0">请选择</option>
+                                {volist name="experts" id="item" key="key"}
+                                <option value="{$item.id}" {if condition="$info.eid eq $key"} selected {/if}>{$item.name}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">标题 <span style="color: red">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="title" id="title" value="{$info.title}" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">位置 <span style="color: red">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="address" id="address" value="{$info.address}" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group" style="margin-left: 10px">
+                        <div class="form-group" id="date_list">
+                                <?php $x=1;?>
+                            {volist name="dateList" id="i" key="key"}
+                            
+                            <div class="form-group row" id="list_d_{$x}">
+                            <input type="hidden" id="rid_{$x}" value="{$info.id}">
+                                
+                                <label class="col-sm-2 control-label">日期 <span style="color: red">*</span></label>
+                                <div class="col-sm-4">
+                                    <div class="input-group clockpicker" data-autoclose="true">
+                                        <input type="text" class="form-control xdate" name="rDate[]" value="{$i.rDate}" >
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-clock-o"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-offset-7" style="margin-bottom: 5px">
+                                    <input type="hidden" id="id_{$x}" value="{$i.rDate}">
+                                    <a href="javascript:void(0);" class="btn btn-danger" onclick="delDate({$x})">删除</a>
+                                </div>
+                                <label class="col-sm-2 control-label">时间 <span style="color: red">*</span></label>
+                                <div id="list_t_{$x}" class="col-sm-10">
+                                    {volist name="$i.times" id="t_item" key="t_key"}
+                                    
+                                    <div class="col-sm-8 row" id="item_t_{$x}_{$t_key}" style="margin-bottom: 5px">
+                                        
+                                        <div class="col-sm-5 row">
+                                            <div class="input-group clockpicker">
+                                                <input type="text" class="form-control xtimes"  name="times_{$x}[]" value="{$t_item.sTime}" >
+                                                <span class="input-group-addon">
+                                                    <span class="fa fa-clock-o"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <div class="input-group clockpicker" data-autoclose="true" data-time="{$t_item.eTime}">
+                                                <input type="text" class="form-control xtimes"  name="times_{$x}[]" value="{$t_item.eTime}">
+                                                <span class="input-group-addon">
+                                                    <span class="fa fa-clock-o"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="id_{$x}_{$t_key}" name="id_{$x}_{$t_key}" value="{$t_item.id}">
+                                        
+                                        <label class="control-label "><a href="javascript:void(0);" class="btn btn-danger btn-xs " onclick="delTimes({$x}, {$t_key})">删除</a></label>
+                                       
+                                    </div>
+                                    {/volist}
+                                    <label class="control-label"><a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="addTimes({$x})">添加时间</a></label>
+                                </div>
+                            </div>
+                            <?php $x++;?>
+                            {/volist}
+                        </div>
+                            
+                        <div class="col-sm-offset-8" style="margin-top: -15px">
+                            <a href="javascript:void(0);" class="btn btn-success" id="addDate">添加日期</a>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">简介<span style="color: red">*</span></label>
+                        <div class="col-sm-4">
+                            <textarea name="intro" id='intro' class="form-control" rows="4">{$info.intro}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <button class="ladda-button btn btn-primary" data-style="zoom-in" type="submit">确定</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="common/footer" /}
+<script type="text/javascript"> 
+
+    function delDate(i) {
+        var itemId = 'list_d_' + i;
+        var length = $('#date_list').children().length;
+        var rid = $('#rid_' + i).val();
+        if (length == 1) {
+            layer.msg('至少保留一个日期');
+            return false;
+        }
+
+        if (rid) {
+            var rDate = $('#id_'+i).val();
+            $.post('__ROOT__/admin/reserve/delDate', {rid:rid, rDate:rDate}, function(res){
+                if (res.code == 1) {
+                    layer.msg(res.msg);
+                    return false;
+                }
+                layer.msg(res.msg);
+            })
+        } 
+        $('#' + itemId).remove();
+    }
+
+    function delTimes(i, index) {
+        var itemId = 'item_t_' + i + '_' + index;
+        var listId = 'list_t_' + i;
+        var length = $("#" + listId).children().length;
+        var length = length - 1;
+        var rid = $('#rid_' + i).val();
+        var id = $('#id_'+ i + '_' + index).val();
+        if (length == 1) {
+            layer.msg('至少保留一个时间段');
+            return false;
+        }
+
+        if (rid && id) {
+            $.post('__ROOT__/admin/reserve/delTimes', {rid:rid, id:id}, function(res){
+                if (res.code == 1) {
+                    layer.msg(res.msg);
+                    return false;
+                }
+                layer.msg(res.msg);
+            })
+        } 
+        $("#" + itemId).remove();
+    }
+
+    $('.xdate').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            minView: "month",
+            autoclose: true,
+            todayHighlight: true,
+            pickerPosition: 'bottom-right',
+            forceParse: true,
+        }); 
+    
+  
+//   laydate.render({
+//             elem: '#date_list .xtimes'
+//             ,type: 'time',
+//             format:'HH:mm'
+//             });
+
+    
+        $('.xtimes').datetimepicker({
+            format: 'hh:ii',       // 设置时间时分的格式
+            language:"zh-CN",
+            showMeridian:true,
+            autoclose:1,
+            startView:1,
+            minView:0,
+            maxView:1,
+            forceParse:1,
+            minuteStep:15,
+        })
+   
+   
+    
+
+    $('#addDate').on('click', function(){
+        var dLen = $('#date_list').children().length;
+        var index = dLen + 1;
+
+        var html =  '<div class="form-group" id="list_d_' + index + '">' +
+                    '<label class="col-sm-2 control-label">日期 <span style="color: red">*</span></label>' +
+                    '<div class="col-sm-4">' +
+                    '    <div class="input-group">' +
+                    '        <input type="text" class="form-control xdate" name="rDate[]" id="rDate_' + index + '" value="" >' +
+                    '        <span class="input-group-addon">' +
+                    '            <span class="fa fa-clock-o"></span>' +
+                    '        </span>' +
+                    '    </div>' +
+                    '</div>' +
+                    '<div class="col-sm-offset-7" style="margin-bottom: 5px">' +
+                    '    <a href="javascript:void(0);" class="btn btn-danger" onclick="delDate(' + index + ')">删除</a>' +
+                    '</div>' +
+                    '<label class="col-sm-2 control-label">时间 <span style="color: red">*</span></label>' +
+                    '<div id="list_t_'+ index +'" class="col-sm-10">' +
+                    '    <div class="col-sm-8 row" id="item_t_' + index + '_1" style="margin-bottom: 5px">' +
+                    '        <div class="col-sm-4 row">' +
+                    '            <div class="input-group " data-autoclose="true">' +
+                    '                <input type="text" class="form-control xtimes" name="times_' + index + '[]" value="">' +
+                    '                <span class="input-group-addon">' +
+                    '                    <span class="fa fa-clock-o"></span>' +
+                    '                </span>' +
+                    '            </div>' +
+                    '        </div>' +
+                    '        <div class="col-sm-4">' +
+                    '            <div class="input-group clockpicker" data-autoclose="true">' +
+                    '                <input type="text" class="form-control xtimes"  name="times_' + index + '[]" value="">' +
+                    '                <span class="input-group-addon">' +
+                    '                    <span class="fa fa-clock-o"></span>' +
+                    '                </span>' +
+                    '            </div>' +
+                    '        </div>' +
+                    '        <label class="control-label"><a href="javascript:void(0);" class="btn btn-success btn-xs" onclick="addTimes(' + index + ')">添加时间</a></label>' +
+                    //'        <label class="control-label "><a href="javascript:void(0);" class="btn btn-danger btn-xs " onclick="delTimes(' + index + ', 1)">删除</a></label>' +
+                    '    </div>' +
+                    '</div>' +
+                    '</div>';
+
+        $('#date_list').append(html)
+        $('.xdate').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            minView: "month",
+            autoclose: true,
+            todayHighlight: true,
+            pickerPosition: 'bottom-right',
+            forceParse: true,
+        }); 
+
+        $('.xtimes').datetimepicker({
+            language:"zh-CN",
+            showMeridian:true,
+            autoclose:1,
+            startView:1,
+            minView:0,
+            maxView:1,
+            forceParse:0,
+            format:'hh:ii',
+            minuteStep:15,
+        })
+
+    })
+
+    function addTimes(id) {
+        var length = $('#list_t_'+ id).children().length;
+        var index  = length + 1;
+
+        var html = '<div class="col-sm-8 row" id="item_t_'+ id +'_'+ index +'" style="margin-bottom: 5px"><div class="col-sm-5 row">';
+            html += '<div class="input-group clockpicker" data-autoclose="true">';
+            html += '<input type="text" class="form-control xtimes" name="times_'+ id +'[]"  value="">';
+            html += '<span class="input-group-addon"><span class="fa fa-clock-o"></span></span></div></div>';
+            html += '<div class="col-sm-5"><div class="input-group clockpicker" data-autoclose="true">';
+            html += '<input type="text" class="form-control xtimes" name="times_'+ id +'[]"  value="">';
+            html += '<span class="input-group-addon"><span class="fa fa-clock-o"></span></span></div></div>';
+            html += '<label class="control-label "><a href="javascript:void(0);" class="btn btn-danger btn-xs " onclick="delTimes('+ id +','+ index +')">删除</a></label></div>';
+        
+        $('#list_t_'+ id).append(html);
+        
+        $('.xtimes').datetimepicker({
+            language:"zh-CN",
+            showMeridian:true,
+            autoclose:1,
+            startView:1,
+            minView:0,
+            maxView:1,
+            forceParse:0,
+            format:'hh:ii',
+            minuteStep:15,
+        })
+    };
+
+    $('#myform').on('submit', function () {
+        if ( !$('#eid').val() ) {
+            alert($('#eid').val());
+            layer.msg('请选择专家');
+            return false;
+        }
+
+        if ( !$('#title').val() ) {
+            layer.msg('请填写标题');
+            return false;
+        }
+
+        if(!$('input[name="address"]').val()) {
+            layer.msg('请填写位置');
+            return false;
+        }
+
+        if(!$('#intro').val()) {
+            layer.msg('请填写简介');
+            return false;
+        }
+
+    });
+    
+    
+</script>

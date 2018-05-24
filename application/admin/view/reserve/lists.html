@@ -1,0 +1,181 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+	<div class="normalheader small-header">
+		<div class="hpanel">
+			<div class="panel-body">
+				<div id="hbreadcrumb" class="pull-right">
+					<ol class="hbreadcrumb breadcrumb">
+						<li><a href="#">管理后台</a></li>
+						<li class="active">
+							<span>{$title}</span>
+						</li>
+					</ol>
+				</div>
+				<h2 class="font-light m-b-xs">
+					{$title}
+				</h2>
+				<small>{$title}</small>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="hpanel">
+					<div class="panel-body">
+						<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+							<div class="row">
+								<div class="col-sm-10">
+									<form id="myform" method="get" action="__ROOT__/admin/reserve/lists">
+										<div class="input-group"><input type="text" name="keyword" value="{$keyword}" class="form-control" placeholder="请输入专家名称"></div>
+										<div class="input-group clockpicker">
+											<input type="text" class="form-control xdate"  name="sDate" value="{$sDate}" placeholder="请选择开始日期">
+											<span class="input-group-addon">
+												<span class="fa fa-clock-o"></span>
+											</span>
+										</div>
+										<div class="input-group clockpicker">
+											<input type="text" class="form-control xdate"  name="eDate" value="{$eDate}" placeholder="请选择结束日期">
+											<span class="input-group-addon">
+												<span class="fa fa-clock-o"></span>
+											</span>
+										</div>
+										<button class="btn btn-default" type="submit">搜索</button>
+										
+										<button class="btn btn-info" type="button" id="export" style="margin-left: 9%">导出</button>
+										
+									</form>
+								</div>
+								<div class="col-sm-6" style="text-align: right;margin:0px 0px 10px">
+									<!-- <a href="__ROOT__/admin/reserve/create" class="btn w-xs btn-info" style="float:right;">添加预约</a> -->
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="table-responsive">
+										<table id="example2" class="table" role="grid" cellpadding="1" cellspacing="1">
+											<thead>
+											<tr role="row">
+												<th style="width: 15%; text-align: center;">标题</th>
+												<th style="width: 10%;text-align: center;">专家</th>
+												<th style="width: 10%;text-align:center;">日期</th>
+												<th style="width: 10%;text-align: center">时间</th>
+												<th style="width: 20%;text-align: center;">位置</th>
+												<th style="text-align: center;">操作</th>
+											</tr>
+											</thead>
+											<tbody>
+											{foreach name="list" item="item" /}
+											<tr role="row" class="odd" id="e_{$item.id}">
+												<td style="vertical-align: middle; text-align: center;">{$item.reserve.title}</td>
+												<td style="vertical-align: middle; text-align: center;">{$item.experts.name}</td>
+												<td style="vertical-align: middle; text-align: center;">{$item.rDate}</td>
+												<td style="vertical-align: middle; text-align: center;">{$item.sTime|strtotime|date='H:i',###}-{$item.eTime|strtotime|date='H:i',###}</td>
+												<td style="vertical-align: middle; text-align: center;">{$item.reserve.address}</td>
+												
+												<td style="vertical-align:middle;text-align: center;">
+													<!-- <a href="__ROOT__/admin/reserve/edit?id={$item.id}" class="btn btn-info btn-xs">编辑</a> -->
+													<a href="__ROOT__/admin/reserve/read?id={$item.id}" class="btn btn-success btn-xs">查看</a>
+                                                    <!-- <a href="javascript:void(0)" onclick="del({$item.id})" class="btn btn-danger btn-xs">删除</a> -->
+												</td>
+											</tr>
+											{/foreach}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-5">
+									<div class="dataTables_info">总数 {$list->total()} 个</div>
+								</div>
+								<div class="col-sm-7">
+									<div class="dataTables_paginate paging_simple_numbers">
+										<ul class="pagination">
+											{$list->render()}
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{include file="common/footer" /}
+
+<script type="text/javascript">
+$('.xdate').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            minView: "month",
+            autoclose: true,
+            todayHighlight: true,
+            pickerPosition: 'bottom-right',
+            forceParse: true,
+        }); 
+	function del(id) {
+		layer.confirm('确定要删除吗?', {icon: 3, title:'是否删除?'}, function(index){            
+            layer.close(index);
+            $.post('__ROOT__/admin/reserve/delete', {id:id}, function(result){
+                layer.msg(result.msg);
+                if (result.code == 0) {
+                    $('#e_' + id).remove();
+                }
+            })
+            
+        });
+	}
+
+	$("#myform").on('submit', function(){
+
+		var sDate = $('input[name="sDate"]').val();
+		var eDate = $('input[name="eDate"]').val();
+
+		if ((sDate && !eDate) || (!sDate && eDate)) {
+			layer.msg('请选择日期');
+			return false;
+		}
+
+		if (!checkEndTime(sDate, eDate)) {
+			layer.msg('结束日期不能早于开始日期');
+			return false;
+		}
+	})
+	
+	$('#export').on('click', function() {
+		var kw = $('input[name="keyword"]').val();
+		var sDate = $('input[name="sDate"]').val();
+		var eDate = $('input[name="eDate"]').val();
+
+		if ((sDate && !eDate) || (!sDate && eDate)) {
+			layer.msg('请选择日期');
+			return false;
+		}
+
+		if (!checkEndTime(sDate, eDate)) {
+			layer.msg('结束日期不能早于开始日期');
+			return false;
+		}
+
+		location.href="__ROOT__/admin/reserve/lists?keyword="+kw+"&sDate="+sDate+"&eDate="+eDate+"&export=1";
+		
+		
+	})
+
+	function checkEndTime(sDate, eDate){  
+		
+		var start = new Date(sDate.replace("-", "/").replace("-", "/"));  
+		var end = new Date(eDate.replace("-", "/").replace("-", "/"));  
+		var t = new Date(); 
+		if(end < start){  
+			return false;  
+		}    
+		return true;  
+	}
+</script>

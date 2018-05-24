@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>资讯上传</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+
+    <!-- <script src="../../js/imgUp.js"></script> -->
+    <link rel="stylesheet" href="../../css/index_vip.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+</head>
+
+<body>
+    <div class="body" style="padding-bottom: 1rem">
+        <div class="model"></div>
+        <div class="info">
+            <div class="close">×</div>
+            <div class="titleText">请完善您的信息</div>
+        </div>
+        <form action="">
+            <div class="author">
+                <p>作者</p>
+                <input type="text" placeholder="某某某公司" class="authors">
+            </div>
+            <div class="author">
+                <p>资讯标题</p>
+                <input type="text" placeholder="请输入标题（最多15个字）" class="title">
+            </div>
+            <div class="author">
+                <p>封面图</p>
+                <input type="file" name="file0" id="file0" accept="image/jpg,image/jpeg,image/png,image/bmp" />
+                <img src="../../images/getCookie('usersession')1.png" alt="" class="img cover">
+                <div class="del">删除</div>
+                <p>资讯正文</p>
+                <p style="font-size: 0.24rem">如需添加视频链接：</p>
+                <p style="font-size: 0.24rem"> 1、需为“腾讯视频”的链接<br></p>
+                <p style="font-size: 0.24rem">2、需为点击视频下方的分享，再点击“复制通用代码”得到的链接</p>
+                <div>
+                    <ul>
+
+                        <li style="position:relative">
+
+                            <img src="../../images/vip_03.png" alt="" class="vip">
+                            <span>图片</span>
+                            <input style="width:1.8rem;position: absolute;top:0;left:0;opacity: 0" type="file" name="file" id="file" class="file" value="" accept="image/jpg,image/jpeg,image/png,image/bmp" multiple />
+
+                        </li>
+                        <li class="text">
+                            <img src="../../images/vip_01.png" alt="" class="vip">
+                            <span>文字</span>
+                        </li>
+                        <li style="position:relative">
+                            <img src="../../images/vip_04.png" alt="" class="vip">
+                            <span>本地视频</span>
+                            <input style="width:1.8rem;position: absolute;top:0;right:0;opacity: 0" type="file" name="file" id="file2" value="" accept="video/*" />
+                        </li>
+                        <li class="video">
+                            <img src="../../images/vip_04.png" alt="" class="vip">
+                            <span>外部视频</span>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="box">
+                    <div class="imgbox"></div>
+                    <div class="inputwords"></div>
+                    <div class="inputvideo"></div>
+                    <div class="urlvideo"></div>
+                </div>
+                <aside class="mask works-mask">
+                    <div class="mask-content">
+                        <p class="del-p ">您确定要删除作品图片吗？</p>
+                        <p class="check-p"><span class="del-com wsdel-ok">确定</span><span class="wsdel-no">取消</span></p>
+                    </div>
+                </aside>
+
+
+            </div>
+
+    </div>
+    <div class="buttons">提交</div>
+    </form>
+
+
+    </div>
+</body>
+<script>
+    $(function() {
+        // 获取到咨询信息
+        var id = getUrlVar('id'); //拆分url得到userName參數值  
+        console.log(decodeURI(id));
+        id = decodeURI(id);
+        $.ajax({
+            url: url + 'member/getNewsInfo',
+            type: 'POST',
+            data: {
+                id: id,
+                userSession: getCookie('usersession')
+            },
+            success: function(res) {
+                console.log(res.data.content)
+                $.each(res.data.content, function(index, i) {
+                    console.log(i.type)
+                    if (i.type == 'pic') {
+                        // $('<div></div>')
+                        // $('<img>',{
+                        //     src:i.content,
+                        //     class: 'aaaa'
+                        // }).css ({
+                        //     width: '6.5rem',
+                        //     height: '2.8rem'
+                        // }).appendTo('.div2');
+
+                        // $('<span></span>', {
+                        //     html : '删除',
+                        //     click:function () {
+                        //         console.log(this)
+                        //         $(this).parent('div').remove()
+                        //     }
+                        // }).appendTo('.div2')
+
+                        var a = '<div><img style="width:6.5rem;height:2.8rem" src=' + i.content + '><span class="dela">' + '删除' + '</span></div>'
+                        $(a).appendTo($('.box'))
+
+                        $('.dela').click(function() {
+                            $(this).parent().remove()
+                        })
+
+                    } else if (i.type == 'words') {
+                        $('<input>', {
+                            type: 'text',
+                            val: i.content,
+                            class: 'aaaa'
+                        }).css({
+                            width: "6.3rem"
+                        }).appendTo('.inputwords');
+
+                        $('<span></span>', {
+                            html: '删除',
+                            click: function() {
+                                $(".inputwords").remove();
+                            }
+                        }).css({
+                            display: 'inline-block',
+                            marginLeft: '0.2rem',
+                            fontSize: '0.25rem'
+                        }).appendTo('.inputwords')
+                    } else if (i.type == 'urlVideo') {
+                        $('<input>', {
+                            type: 'text',
+                            val: i.content,
+                            class: 'aaaa'
+                        }).css({
+                            width: "6.3rem"
+                        }).appendTo('.inputvideo');
+
+                        $('<span></span>', {
+                            html: '删除',
+                            click: function() {
+                                $(".inputvideo").remove();
+                            }
+                        }).css({
+                            display: 'inline-block',
+                            marginLeft: '0.2rem',
+                            fontSize: '0.25rem'
+                        }).appendTo('.inputvideo')
+                    } else if (i.type == 'video') {
+                        $('<video src=' + i.content + ' controls="controls"></video>').appendTo('.urlvideo');
+
+                        $('<span></span>', {
+                            html: '删除',
+                            click: function() {
+                                $(".urlvideo").remove();
+                            }
+                        }).css({
+                            display: 'inline-block',
+                            marginLeft: '0.2rem',
+                            fontSize: '0.25rem'
+                        }).appendTo('.urlvideo')
+                    }
+                })
+                if (res.code == 0) {
+                    $('.authors').val(res.data.author)
+                    $('.title').val(res.data.title)
+                    $('.cover').attr('src', res.data.cover)
+                }
+                if (res.code == 2) {
+                    window.location.href = '../index/login.html'
+                }
+            }
+        })
+
+
+        $('.btn').click(function() {
+            window.location.href = '../vip/vip.html'
+        })
+        var arr = []
+        var text = ''
+        var video = ''
+        var delParent;
+        var defaults = {
+            fileType: ["jpg", "png", "bmp", "jpeg"], // 上传文件的类型
+            fileSize: 1024 * 1024 * 10 // 上传文件的大小 10M
+        };
+        // 点击获取封面图
+        $("#file0").change(function() {
+            var vdata = new FormData();
+
+            $.each($(this)[0].files, function(j, file) {
+                vdata.append('file', file);
+            })
+            console.log(vdata)
+            $.ajax({
+                url: url + 'file/upload',
+                type: 'POST',
+                data: vdata,
+                cache: false,
+                contentType: false, //不可缺
+                processData: false,
+                userSession: getCookie('usersession'),
+                success: function(result) {
+                    console.log(result)
+                    if (res.code == 0) {
+                        $('.cover').attr('src', result.data.url)
+                    }
+                    if (res.code == 2) {
+                        window.location.href = '../index/login.html'
+                    }
+
+
+                }
+
+            });
+
+
+        })
+        $('.del').click(function() {
+                $('.cover').attr('src', "../../images/getCookie('usersession')1.png")
+            })
+            /*点击图片的文本框*/
+        $(".file").change(function() {
+
+            var idFile = $(this).attr("id");
+            var file = document.getElementById(idFile);
+            var imgContainer = $(this).parents(".z_photo"); //存放图片的父亲元素
+            var fileList = file.files; //获取的图片文件
+            var input = $(this).parent(); //文本框的父亲元素
+            var imgArr = [];
+            //遍历得到的图片文件
+            var numUp = imgContainer.find(".up-section").length;
+            var totalNum = numUp + fileList.length; //总的数量
+            if (fileList.length > 5 || totalNum > 5) {
+                alert("上传图片数目不可以超过5个，请重新选择"); //一次选择上传超过5个 或者是已经上传和这次上传的到的总数也不可以超过5个
+            } else if (numUp < 5) {
+                // console.log(fileList)
+                fileList = validateUp(fileList);
+                for (var i = 0; i < fileList.length; i++) {
+                    var imgUrl = window.URL.createObjectURL(fileList[i]);
+                    imgArr.push(imgUrl);
+
+                }
+            }
+        });
+
+        $(".wsdel-ok").click(function() {
+            $(".works-mask").hide();
+            var numUp = delParent.siblings().length;
+            if (numUp < 6) {
+                delParent.parent().find(".z_file").show();
+            }
+            delParent.remove();
+        });
+
+        $(".wsdel-no").click(function() {
+            $(".works-mask").hide();
+        });
+
+        function validateUp(files) {
+            var arrFiles = []; //替换的文件数组
+
+            for (var i = 0, file; file = files[i]; i++) {
+                //获取文件上传的后缀名
+                var newStr = file.name.split("").reverse().join("");
+                // console.log(newStr)
+                if (newStr.split(".")[0] != null) {
+                    var type = newStr.split(".")[0].split("").reverse().join("");
+                    // console.log(type+"===type===");
+                    if (jQuery.inArray(type, defaults.fileType) > -1) {
+                        ajax(file)
+
+                        if (file.size >= defaults.fileSize) {
+                            alert(file.size);
+                            alert('您这个"' + file.name + '"文件大小过大');
+                        } else {
+                            // 在这里需要判断当前所有文件中
+
+                        }
+                    } else {
+                        alert('您这个"' + file.name + '"上传类型不符合');
+                    }
+                } else {
+                    alert('您这个"' + file.name + '"没有类型, 无法识别');
+                }
+            }
+            return arrFiles;
+        }
+        var img = ''
+            // var arrImg = []
+
+        function ajax(arrFiles) {
+            var fd = new FormData();
+            fd.append('file', arrFiles);
+            $.ajax({
+                url: url + 'file/upload',
+                type: 'POST',
+                cache: false,
+                contentType: false, //不可缺
+                processData: false,
+                data: fd,
+                success: function(res) {
+                    if (res.code == 0) {
+                        arr.push({
+                                'type': 'pic',
+                                'content': res.data.url
+                            })
+                            // console.log(arrimg)
+                        img = `
+                        <img src="${res.data.url}" class='imgs' alt="">
+                    `
+                            // console.log(img)
+                        $('.body').append(img)
+                        $('.imgs').click(function() {
+                            var height = $('body').height()
+                            $('mask').height(height)
+                            $(".works-mask").show();
+                            delParent = $(this)
+                        })
+                    }
+                    if (res.code == 2) {
+                        window.location.href = '../index/login.html'
+                    }
+
+
+                }
+            })
+        }
+
+
+
+        $('.text').click(function() {
+
+
+            text = `
+                <div class="newdiv"><input type="text" class="newinput" placeholder="请输入文字（最多1000个字）" /> <span class="newspan">删除</span></div>
+            `
+            $('.body').append(text)
+
+            $('.newspan').click(function() {
+                $(this).parent().remove()
+            })
+
+        })
+
+        $('.video').click(function() {
+
+
+            video = `
+                <div class="newdiv"><input type="text" class="videoinput" placeholder="请输入视频链接 " /> <span class="videospan">删除</span></div>
+            `
+            $('.body').append(video)
+
+            $('.videospan').click(function() {
+                $(this).parent().remove()
+            })
+
+        })
+
+        $('.buttons').click(function() {
+            // console.log(000)
+
+            var title = $('.title').val(),
+                author = $('.authors').val(),
+                src = $('.img').attr('src')
+            for (var k = 0; k < $('.newinput').length; k++) {
+                (function(num) {
+                    arr.push({
+                        'type': 'words',
+                        'content': $($('.newinput')[num]).val()
+                    })
+                })(k)
+            }
+            for (var m = 0; m < $('.videoinput').length; m++) {
+                (function(num) {
+                    arr.push({
+                        'type': 'video',
+                        'content': $($('.videoinput')[num]).val()
+                    })
+                })(m)
+            }
+            console.log(arr)
+                // console.log(arrimg)
+            for (var j = 0; j < $('input').length; j++) {
+                if ($($('input')[j]).val() == '') {
+                    // alert('');
+                    $('.model').css('display', 'block')
+                    $('.info').css('display', 'block')
+                    return false
+                }
+            }
+
+            $.ajax({
+                url: url + 'news/subNews',
+                type: 'POST',
+                data: {
+                    title: title,
+                    author: author,
+                    cover: src,
+                    content: JSON.stringify(arr),
+                    userSession: getCookie('usersession')
+                },
+                success: function(res) {
+                    if (res.code == 0) {
+                        window.location.href = 'index.html'
+                    }
+                    if (res.code == 2) {
+                        window.location.href = '../index/login.html'
+                    }
+
+                }
+            })
+
+        })
+        $('.close').click(function() {
+            $('.info').css('display', 'none')
+            $('.model').css('display', 'none')
+        })
+
+
+
+
+    })
+</script>
+
+</html>

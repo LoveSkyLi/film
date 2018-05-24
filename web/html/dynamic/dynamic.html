@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>近期动态</title>
+    <link rel="stylesheet" href="../../css/dynamic.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+    <script src="../../js/comment.js?11"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <div class="investigation">
+        <span>预约洽谈</span>
+    </div>
+
+
+    <div id="box">
+
+    </div>
+    <div class="feiyan">飞燕平台feeyan.com提供技术支持</div>
+    <ul id="footer">
+        <a href="../index/index.html">
+            <li id="index">
+                <img src="../../images/footer_one.png" alt="">
+                <span>首页</span>
+            </li>
+        </a>
+        <a href="../dynamic/dynamic.html">
+            <li id="dynamic">
+                <img src="../../images/footer_twos.png" alt="">
+                <span class="color">近期动态</span>
+            </li>
+        </a>
+        <a href="../vip/vip.html">
+            <li id="vip">
+                <img src="../../images/footer_there.png" alt="">
+                <span>成员中心</span>
+            </li>
+        </a>
+        <a href="../my/my.html">
+            <li id="my">
+                <img src="../../images/footer_join.png" alt="">
+                <span>加入我们</span>
+            </li>
+        </a>
+    </ul>
+</body>
+<script>
+    $(function() {
+
+        var page = 0;
+
+        function getList() {
+            page = page + 1
+            $.ajax({
+                url: url + 'meeting/getMeetingList',
+                type: 'POST',
+                data: {
+                    page: page,
+                    userSession: getCookie('usersession')
+                },
+                success: function(res) {
+                    if (res.code == 0) {
+                        var list = ''
+                        for (var i = 0; i < res.data.list.length; i++) {
+                            list += `
+                        <div class="list">
+                            <img src="${res.data.list[i].cover}" alt="">
+                            <div class="list_list">
+                                <img src="../../images/dynamic_one.png" alt="" style=" width: 0.3rem;height: 0.32rem;">
+                                <span>${res.data.list[i].title}</span>
+                            </div>
+                            <div class="list_list">
+                                <img src="../../images/dynamic_two.png" alt="" style=" width: 0.3rem;height: 0.34rem;">
+                                <span>${res.data.list[i].address}</span>
+                            </div>
+                            <div class="list_list">
+                                <img src="../../images/dynamic_there.png" alt="" style=" width: 0.3rem;height: 0.3rem;"/>
+                                <span>${res.data.list[i].time}</span>
+                            </div>
+                        </div>
+                        `
+                        };
+
+
+                        $('#box').append(list);
+                        for (var j = 0; j < $(".list").length; j++) {
+                            (function(num) {
+                                // console.log($($('.list')[num]))
+                                $($('.list')[num]).click(function() {
+                                    // console.log($list[num])
+                                    console.log(res.data.list[num].id)
+                                    var id = res.data.list[num].id
+                                    window.location.href = `meeting_dynamic.html?id=${id}`
+                                })
+                            })(j)
+                        }
+                    }
+                    if (res.code == 2) {
+                        window.location.href = '../index/login.html'
+                    }
+
+
+                }
+            })
+        }
+
+        getList()
+        $(window).scroll(function() {
+
+            var $maxHeight = $(document).height() - $(window).height();
+            var $height = $(document).scrollTop();
+            if ($height >= $maxHeight) {
+                getList()
+            }
+        })
+
+
+
+        $('.investigation').click(function() {
+            window.location.href = 'bespeak_week.html'
+        })
+    })
+</script>
+
+</html>

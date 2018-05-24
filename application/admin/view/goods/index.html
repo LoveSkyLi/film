@@ -1,0 +1,192 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+    <div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="#">管理后台</a></li>
+                        <li class="active">
+                            <span>商品管理</span>
+                        </li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    商品管理
+                </h2>
+                <small>管理小程序里面的商品</small>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="hpanel">
+                        <div class="panel-body">
+                            <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <form method="get" action="__ROOT__/admin/goods">
+                                            <select class="form-control" name="goodsSort">
+                                                <option value="0">商品品牌</option>
+                                                {foreach name="sortList" item="item" /}
+                                                <option value="{$item.id}" {if condition="$item.id eq $sortId"} selected {/if}>{$item.name}</option>
+                                                {/foreach}
+                                            </select>
+                                            
+        
+                                            <button class="btn btn-default" type="submit">搜索</button>
+                                        </form>
+                                    </div>
+                                    <div class="col-sm-6" style="text-align: right;margin:0px 0px 10px">
+                                       
+                                        <!-- <a href="__ROOT__/admin/goods/create" class="btn w-xs btn-info" style="float:right;">添加商品</a> -->
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="table-responsive">
+                                            <table id="example2" class="table" role="grid" cellpadding="1" cellspacing="1">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th style="width: 20%; text-align: center;">封面</th>
+                                                    <th style="width: 10%;text-align: center;">品牌</th>
+                                                    <th style="width: 10%;text-align: center;">类别</th>
+                                                    <th style="width: 10%;text-align: center;">型号</th>
+                                                    <th style="width: 10%;text-align: center;">库存</th>
+                                                    <th style="text-align: center;">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {foreach name="list" item="item" /}
+                                                    <tr role="row" class="odd" id="goods{$item.id}">
+                                                        <td>
+                                                            <div style="float:left;">
+                                                                <img src="{$item.cover}" style="width: 60px;height: 60px;margin:3px 15px;">
+                                                            </div>
+                                                        </td>
+                                                        <td style="vertical-align:middle;text-align: center;">{$item.sort.name}</td>
+                                                        <td style="vertical-align:middle;text-align: center;">{$item.attr.attr_name}</td>
+                                                        <td style="vertical-align:middle;text-align: center;">{$item.marker.marker_name}</td>
+                                                        <td style="vertical-align:middle;text-align: center;">{$item.inventory}</td>
+                                                        
+                                                        <td style="vertical-align:middle;text-align: center;">
+                                                            <a href="__ROOT__/admin/goods/edit?id={$item.id}" class="btn btn-info btn-xs">编辑</a>
+                                    
+                                                            {if condition="$item.status eq 1"}
+                                                            <a href="javascript:void(0);" class="btn btn-warning btn-xs action-sale" data-data='2'  data-id="{$item.id}">下架</a>
+                                                            {else/}
+                                                            <a href="javascript:void(0);" class="btn btn-warning btn-xs action-sale" data-data='1'  data-id="{$item.id}">上架</a>
+                                                            {/if}
+                                                            
+                                                            <a href="__ROOT__/admin/goods/userGoods?id={$item.id}" class="btn btn-info btn-xs" data-id="{$item.id}">查看托管列表</a>
+                                                            <button class="btn btn-danger btn-xs" onclick="delGoods({$item.id})">删除</button>
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                {/foreach}
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="dataTables_info">商品总数 {$total} 个</div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="dataTables_paginate paging_simple_numbers">
+                                            <ul class="pagination">
+                                                {$page}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+{include file="common/footer" /}
+
+<script type="text/javascript">
+    $('.action-recommend').on('click', function () {
+        var goodsId = $(this).attr('data-id');
+        var that = $(this);
+        swal({
+            title: "确认要执行该操作吗",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确认",
+            cancelButtonText: "取消"
+        },
+        function () {
+            $.post('__ROOT__/admin/goods/ajaxRecommendGoods', {goodsId:goodsId}, function (result) {
+                if(result.error == 0) {
+                    that.text(result.msg);
+                }
+            });
+        });
+    });
+
+    $('.action-sale').on('click', function () {
+        var goodsId = $(this).attr('data-id');
+        var status  = $(this).attr('data-data')
+        swal({
+                title: "确认要执行该操作吗",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm:true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确认",
+                cancelButtonText: "取消"
+            },
+            function () {
+                $.post('__ROOT__/admin/goods/ajaxChangeStatus', {goodsId:goodsId,status:status}, function (result) {
+                    if(result.error == 0) {
+                        // swal("操作成功", "", "success");
+                        layer.msg('操作成功');
+                        window.location.reload();
+                    } else {
+                        layer.msg('操作失败');
+                    }
+                });
+            });
+    });
+
+    function delGoods(id) {
+        swal({
+            title: "确认是否删除该商品",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确认",
+            cancelButtonText: "取消",
+            closeOnConfirm: false
+        },
+        function (isConfirm) {
+            if(isConfirm) {
+                swal("删除成功", "", "success");
+                $.ajax({
+                    type: 'POST',
+                    url: '__ROOT__/admin/goods/delete',
+                    data: {
+                        id: id
+                    },
+                    success: function(msg){
+                        $("#goods" + id).remove();
+                    }
+                });
+            }
+        });
+    }
+</script>

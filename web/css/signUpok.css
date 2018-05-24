@@ -1,0 +1,30 @@
+.success{
+	width:100%;
+	height:0.3rem;
+	text-align: center;
+	margin-top: 0.6rem;
+	font-size: 0.3rem;
+	color: #333;
+}
+.signimg{
+	width:5.75rem;
+	height: 5.03rem;
+	margin: 0 auto;
+	margin-top:0.79rem;
+}
+.signimg img{
+	width:100%;
+	height: 100%;
+}
+.button{
+	width: 6.9rem;
+	height:0.68rem;
+	background :#f28c1e;
+	border-radius: 4px;
+	margin: 0 auto;
+	text-align: center;
+	line-height: 0.68rem;
+	font-size: 0.28rem;
+	color: #fff;
+	margin-top:1.16rem;
+}

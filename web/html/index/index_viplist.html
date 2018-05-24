@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>会议报名列表</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/dynamic_Details.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+</head>
+
+<body>
+    <div class="box">
+
+        <ul class="ul">
+        </ul>
+    </div>
+</body>
+<script type="text/javascript">
+    $(function() {
+        $('li').click(function() {
+            window.location.href = 'index_Details.html'
+        })
+        $.ajax({
+            url: url + 'news/getNewsLists',
+            type: 'POST',
+            data: {
+                userSession: getCookie('usersession')
+            },
+            success: function(res) {
+                console.log(res)
+                if (res.code == 0) {
+                    var data = res.data.list
+                    $.each(data, function(index, ele) {
+                        console.log(index)
+                        console.log(ele)
+                        var list = ''
+                        list += `
+                            <li>
+                                <img src="${ele.cover}" alt="">
+                                <div>${ele.title}</div>
+                                <span>${ele.pubdate}</span>
+                                <img class="position" src="../../images/dynamic_Details.png" alt="">
+                            </li>
+                    `
+                        $('.ul').append(list)
+                    })
+                }
+                if (res.code == 2) {
+                    window.location.href = 'login.html'
+                }
+
+            }
+        })
+    })
+</script>
+
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>我的</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/my.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+
+</head>
+
+<body>
+    <div class="my">
+
+    </div>
+    <ul class="list">
+        <li class="meeting">
+            <img src="../../images/dynamic_one.png" alt="" class="my_one">
+            <span>我的会议</span>
+            <img src="../../images/shouye_07.png" class="next">
+        </li>
+        <li class="info">
+            <img src="../../images/dynamic_two.png" alt="" class="my_two">
+            <span>上传的资讯</span>
+            <img src="../../images/shouye_07.png" class="next">
+        </li>
+        <li id="my">
+            <img src="../../images/dynamic_there.png" alt="" class="my_there">
+            <span>我的预约</span>
+            <img src="../../images/shouye_07.png" class="next">
+        </li>
+        <li class="company">
+            <img src="../../images/dynamic_four.png" alt="" class="my_four">
+            <span>公司信息</span>
+            <img src="../../images/shouye_07.png" class="next">
+        </li>
+
+    </ul>
+    <div class="feiyan">飞燕平台feeyan.com提供技术支持</div>
+    <ul id="footer">
+        <a href="../index/index.html">
+            <li id="index">
+                <img src="../../images/footer_one.png" alt="">
+                <span>首页</span>
+            </li>
+        </a>
+        <a href="../dynamic/dynamic.html">
+            <li id="dynamic">
+                <img src="../../images/footer_two.png" alt="">
+                <span>近期动态</span>
+            </li>
+        </a>
+        <a href="../vip/vip.html">
+            <li id="vip">
+                <img src="../../images/footer_there.png" alt="">
+                <span>成员中心</span>
+            </li>
+        </a>
+        <a href="../my/my.html">
+            <li id="my">
+                <img src="../../images/footer_joins.png" alt="">
+                <span class="color">加入我们</span>
+            </li>
+        </a>
+    </ul>
+</body>
+<script type="text/javascript">
+    $(function() {
+
+        console.log(getCookie('usersession'))
+        var list = '';
+        $.ajax({
+            url: url + 'member/getUserInfo',
+            type: 'POST',
+            data: {
+                userSession: getCookie('usersession')
+            },
+            success: function(res) {
+                if (res.code == 0) {
+
+                    list = `
+                        
+                            <div class="my_img">
+                                <img src="${res.data.avatar}" alt="">
+                            </div>
+                            <p class="my_name">${res.data.username}</p>
+                            
+                        
+                    `
+                    $('.my').append(list)
+                    if (res.data.userType == 1) {
+                        $('.my').append('<div class="my_join">' +
+                            '<img src="../../images/my.png" alt="">' +
+                            '<span>申请入会</span>' +
+                            '</div>')
+
+                        $('.my_join').click(function() {
+                            console.log(777)
+                            window.location.href = '../vip/vip.html'
+                        })
+                    }
+                    if (res.data.userType == 2) {
+                        $('.my').append('<div class="my_join">' +
+                            '<img src="../../images/my.png" alt="">' +
+                            '<span>审核中</span>' +
+                            '</div>')
+
+                        $('.my_join').click(function() {
+                            console.log(777)
+                            window.location.href = '../vip/vip.html'
+                        })
+                    }
+                    if (res.data.userType == 3) {
+                        $('.my').append('<div class="my_join">' +
+                            '<img src="../../images/my.png" alt="">' +
+                            '<span>审核通过</span>' +
+                            '</div>')
+
+                        $('.my_join').click(function() {
+                            console.log(777)
+                            window.location.href = '../vip/vip.html'
+                        })
+                    }
+                    if (res.data.userType == 4) {
+                        $('.my').append('<div class="my_join">' +
+                            '<img src="../../images/my.png" alt="">' +
+                            '<span>审核未通过</span>' +
+                            '</div>')
+
+                        $('.my_join').click(function() {
+                            console.log(777)
+                            window.location.href = '../vip/vip.html'
+                        })
+                    }
+                }
+                if (res.code == 2) {
+                    window.location.href = '../index/login.html'
+                }
+            }
+        })
+        $('.company').click(function() {
+            window.location.href = 'company.html'
+        })
+        $('.meeting').click(function() {
+            window.location.href = 'myMeeting.html'
+        })
+        $('#my').click(function() {
+            window.location.href = 'my_bespeak.html'
+        })
+        $('.info').click(function() {
+            window.location.href = 'myInfo.html'
+        })
+
+    })
+</script>
+
+</html>

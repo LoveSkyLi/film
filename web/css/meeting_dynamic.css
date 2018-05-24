@@ -1,0 +1,78 @@
+body{
+    background: #fbfbfa;
+}
+.list{
+    width: 100%;
+	background-color: #ffffff;
+    box-shadow: 0px 0px 2px 0px #f2f0ef;
+    margin-bottom: 0.22rem;
+}
+.meent p{
+
+}
+.list>img{
+    width: 100%;
+    height: 3.9rem;
+}
+.list_list{
+    height: 0.7rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.meent p{
+    font-size: 0.30rem;
+	color: #333333;
+}
+.list_list img{
+    display: inline-block;
+    margin: 0rem 0.21rem 0 0.31rem;
+}
+.list_list span{
+    font-size: 0.30rem;
+	color: #333333;
+}
+
+.meet .action{
+    padding: 0 0.4rem 0.1rem 0.3rem;
+    font-size: 0.28rem;
+	color: #333333;
+}
+.name{
+    display: block;
+    text-align: right;
+    font-size: 0.24rem;
+    color: #333333;
+    padding: 0 0.3rem 0.3rem  0;
+}
+.img{
+    width: 100%;
+    text-align: center;
+    padding-bottom: 0.3rem;
+}
+.img img{
+    width: 6.9rem;
+    height: 3.90rem;
+}
+button{
+    width: 100%;
+    height: 0.8rem;
+    background: #f28c1e;
+    border: 1px solid #f28c1e;
+    font-size: 0.28rem;
+	color: #ffffff;
+    position: fixed;
+    bottom: 0;
+}
+.meet{
+    background: #fff;
+    padding: 0.3rem;
+}
+.meet p{
+    font-size: 0.28rem;
+    /*color:red;*/
+     margin-bottom: 0.22rem;
+    /*height: 0.4rem;*/
+    /*line-height: 0.4rem;*/
+    /*margin:0;*/
+}

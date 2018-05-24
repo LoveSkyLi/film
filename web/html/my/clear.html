@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>订单详情</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <!-- <link rel="stylesheet" href="../../css/vip.css"> -->
+    <link rel="stylesheet" href="../../css/reset.css">
+    <style type="text/css">
+        .box {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .model {
+            position: absolute;
+            width: 100%;
+            min-height: 100vh;
+            background: #000;
+            opacity: 0.5;
+            z-index: 1000;
+            /*display: none;*/
+        }
+        
+        .success,
+        .fail {
+            position: absolute;
+            width: 4.2rem;
+            height: 1.44rem;
+            background: #fff;
+            z-index: 2000;
+            top: 15%;
+            left: 1.65rem;
+            padding-top: 0.76rem;
+            text-align: center;
+            font-size: 0.3rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="model"></div>
+        <div class="success">
+            <!-- <div class="close">×</div> -->
+            <div class="titleText">核销成功</div>
+        </div>
+        <div class="fail">
+            <!-- <div class="close">×</div> -->
+            <div class="titleText">核销失败</div>
+        </div>
+
+
+    </div>
+</body>
+<script type="text/javascript">
+    $(function() {
+
+        // var id = getUrlVar('id');//拆分url得到userName參數值  
+        // console.log(decodeURI(id));
+        // id = decodeURI(id);
+        // alert(localStorage["orderSn"])
+        // var id = '2018050503590558816111559'
+
+
+        // $('.sure').click(function(){
+        $.ajax({
+                url: url + 'meeting/checkMeeting',
+                type: 'POST',
+                data: {
+                    userSession: getCookie('usersession'),
+                    orderSn: localStorage["orderSn"]
+                },
+                success: function(res) {
+                    console.log(res)
+                    if (res.code == 0) {
+                        $('.success').css('display', 'block')
+                    }
+                    if (res.code == 1) {
+                        $('.fail').css('display', 'block')
+                    }
+                    if (res.code == 2) {
+                        window.location.href = '../index/login.html'
+                    }
+                }
+            })
+            // })
+    })
+</script>
+
+</html>

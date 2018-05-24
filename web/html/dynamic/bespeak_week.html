@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>预约洽谈</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <link rel="stylesheet" href="../../css/bespeak_week.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/comment.js"></script>
+</head>
+
+<body>
+    <div class="investigation">
+        <span>本周可约</span>
+    </div>
+
+</body>
+<script>
+    $(function() {
+        var id = '';
+        var page = 0;
+
+        function getList() {
+            page = page + 1
+            $.ajax({
+                url: url + 'experts/getExpertsList',
+                type: 'POST',
+                data: {
+                    userSession: getCookie('usersession'),
+                    page: page
+                },
+                success: function(res) {
+                    if (res.code == 0) {
+                        for (var i = 0; i < res.data.list.length; i++) {
+                            (function(i) {
+                                var list = ''
+                                list += `
+
+                                    <div class="div">
+                                        <img class="img" src="${res.data.list[i].avatar}" alt="">
+                                        <div>
+                                            <div class="names">
+                                                <span class="name">${res.data.list[i].name}</span>
+                                                <img class="name_img" src="../../images/shouye_07.png" alt="">
+                                            </div>
+                                            <div class="comment">${res.data.list[i].breif}</div>
+                                        </div>
+                                    </div>
+                                `
+                                $('body').append(list)
+                            })(i);
+                        }
+
+                        for (var j = 0; j < $('.div').length; j++) {
+                            (function(num) {
+                                $($('.div')[num]).click(function() {
+
+                                    id = res.data.list[num]['id']
+                                    var url = 'expert.html'
+                                    window.location.href = encodeURI(url + "?id=" + id)
+                                })
+                            })(j)
+                        }
+                    }
+                    if (res.code == 2) {
+                        window.location.href = '../index/login.html'
+                    }
+
+                }
+            })
+        }
+        getList()
+        $(window).scroll(function() {
+
+            var $maxHeight = $(document).height() - $(window).height();
+            var $height = $(document).scrollTop();
+            if ($height >= $maxHeight) {
+                getList()
+            }
+        })
+
+
+        $('.investigation').click(function() {
+            window.location.href = 'orderweek.html'
+        })
+    })
+</script>
+
+</html>

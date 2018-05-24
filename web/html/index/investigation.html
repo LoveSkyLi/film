@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>影视公众号</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/investigation.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+</head>
+
+<body>
+    <div class="model"></div>
+    <div class="success">
+        <!-- <div class="close">×</div> -->
+        <div class="titleText">问卷提交成功</div>
+    </div>
+    <div class="box">
+        <div class="investigation">
+            <span>问卷调查</span>
+        </div>
+        <form action="">
+            <div class="one">
+
+            </div>
+            <!-- <div class="two">
+         
+      </div>
+      <div class="three">
+        
+      </div> -->
+        </form>
+        <div class="button">提交</div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(function() {
+        var list = ''
+        var $h3
+        var question = getUrlVar('question');
+        question = decodeURI(question);
+        $.ajax({
+            url: url + 'question/questionInfo',
+            type: 'POST',
+            data: {
+                id: question,
+                userSession: getCookie('usersession')
+            },
+            success: function(res) {
+                console.log(res)
+                if (res.code == 0) {
+                    for (var i = 0; i < res.data.question.length; i++) {
+
+                        (function(num) {
+                            // 复选框
+                            var id = num + 1;
+                            console.log(num)
+                            if (res.data.question[num].type == 2) {
+                                var list = ''
+
+                                list += '<div>' +
+                                    '<h3 id="q_' + id + '" data-type="2">' + res.data.question[num]['q'] + '</h3>' + '</div>';
+                                for (var j = 0; j < res.data.question[num]['a'].length; j++) {
+                                    list += `
+                        <div class="input flex">
+                          <label><input type="checkbox"  name="a_${id}" value='${res.data.question[num]['a'][j]}'><i>✓</i></label><br>  
+                            <div class="text">${res.data.question[num]['a'][j]}</div>
+                          </div>
+                          
+                       `
+                                }
+
+                                list += '</div>';
+
+                            } else if (res.data.question[num].type == 1) {
+                                var list = ''
+
+                                list += '<div>' +
+                                    '<h3 id="q_' + id + '" data-type="1">' + res.data.question[num]['q'] + '</h3>' + '</div>';
+                                for (var j = 0; j < res.data.question[num]['a'].length; j++) {
+                                    list += `
+                        <div class="input flex">
+                          <label><input type="radio"  name="a_${id}" value='${res.data.question[num]['a'][j]}'><i>✓</i></label><br>  
+                            <div class="text">${res.data.question[num]['a'][j]}</div>
+                          </div>
+                          
+                       `
+
+                                }
+
+                                list += '</div>';
+
+                            } else if (res.data.question[num].type == 3) {
+
+                                var list = ''
+
+                                list += '<div>' +
+                                    '<h3 id="q_' + id + '" data-type="3">' + res.data.question[num]['q'] + '</h3>' + '</div>';
+                                // for(var j=0 ; j<res.data.question[num].length; j++){
+                                list += `
+                        <div >
+                           <textarea type="text"  name="a_${id}" value='' />
+                           
+                          </div>
+                          
+                       `
+
+                                // }
+                                list += '</div>';
+
+                            }
+                            $('.one').append(list)
+
+                        })(i)
+                    };
+                }
+                if (res.code == 2) {
+                    window.location.href = 'login.html'
+                }
+
+            }
+
+
+        })
+
+        $(".button").click(function() {
+            var answer = {};
+            var json = {}
+            var length = $('.one').children().length;
+
+            for (let i = 1; i <= length; i++) {
+                var type = $('#q_' + i).data('type');
+
+                if (type == 2) {
+                    var arr = {};
+                    arr['q'] = $('#q_' + i).html();
+                    arr['type'] = type;
+                    var aLength = $('input[name="a_' + i + '"]:checked').length;
+                    if (aLength < 1) {
+                        alert('请选择答案');
+                        return false;
+                    }
+                    var a = []
+                    for (let j = 0; j < aLength; j++) {
+                        a[j] = $('input[name="a_' + i + '"]:checked').val();
+                    }
+                    arr['a'] = a;
+                    answer[i] = arr;
+
+                } else if (type == 1) {
+                    var arr = {};
+                    arr['q'] = $('#q_' + i).html();
+                    arr['type'] = type;
+                    var aLength = $('input[name="a_' + i + '"]:checked').length;
+                    if (aLength < 1) {
+                        alert('请选择答案');
+                        return false;
+                    }
+                    var a = []
+                    for (let j = 0; j < aLength; j++) {
+                        a[j] = $('input[name="a_' + i + '"]:checked').val();
+                    }
+                    arr['a'] = a;
+                    answer[i] = arr;
+
+                } else if (type == 3) {
+                    var arr = {};
+                    arr['q'] = $('#q_' + i).html();
+                    arr['type'] = type;
+                    var aLength = $('textarea[name="a_' + i + '"]').length;
+                    if (aLength < 1) {
+                        alert('请选择答案');
+                        return false;
+                    }
+                    var a = []
+                    for (let j = 0; j < aLength; j++) {
+                        a[j] = $('textarea[name="a_' + i + '"]').val();
+                    }
+                    arr['a'] = a;
+                    answer[i] = arr;
+
+                }
+
+
+            }
+            console.log(answer)
+
+
+            $.ajax({
+                url: url + 'question/subAnswer',
+                type: 'POST',
+                data: {
+                    id: question,
+                    answer: JSON.stringify(answer),
+                    userSession: getCookie('usersession')
+                },
+                success: function(res) {
+                    console.log(res)
+                    if (res.code == 0) {
+                        $('.model').css('display', 'block')
+                        $('.success').css('display', 'block')
+                        setTimeout(function() {
+                            window.location.href = 'index.html'
+                        }, 1000)
+
+                    }
+                    if (res.code == 2) {
+                        window.location.href = 'login.html'
+                    }
+
+                }
+            })
+        })
+
+        $(".sure").click(function() {
+
+        })
+
+    })
+</script>
+
+</html>

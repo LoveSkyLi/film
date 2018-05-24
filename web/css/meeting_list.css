@@ -1,0 +1,100 @@
+ul li{
+    padding: 0.3rem;
+    display: flex;
+    justify-content: flex-start;
+}
+.left{
+    width: 3.20rem;
+	height: 2rem;
+	border-radius: 2px;
+}
+.right{
+    margin-left: 0.3rem;
+}
+body{
+    background: #f6f8f8;
+}
+.li{
+    background: #fff;
+    box-shadow: 0px 0px 2px 0px 
+    rgba(6, 21, 38, 0.2);
+    margin-bottom: 0.2rem;
+    position: relative;
+}
+.top{
+    position: absolute;
+    top:0rem;
+    left: 0;
+    z-index:1000;
+    width:1.12rem;
+    height: 1.12rem;
+}
+.name{
+    font-size: 0.32rem;
+	color: #333333;
+}
+.img{
+    width: 0.3rem;
+    height: 0.3rem;
+    margin-right: 0.2rem;
+}
+.name{
+    font-size: 0.32rem;
+    color: #333333;
+    margin: 0.1rem 0 0.2rem 0;
+}
+.compont{
+    font-size: 0.30rem;
+	color: #333333;
+}
+.time{
+    font-size: 0.28rem;
+	color: #333333;
+}
+.add,.timebox{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 0.4rem;
+}
+.timebox{
+    margin-top: 0.37rem;
+}
+.bar{
+    position: absolute;
+    width: 1.1rem;
+    height: 1.1rem;
+    left: 0.3rem;
+    top: 0.3rem;
+}
+.sao{
+    width: 1.2rem;
+    height: 1.2rem;
+    background: #fff;
+    border-radius: 50%;
+    text-align: center;
+    background-color: #ffffff;
+	box-shadow: 0px 0px 30px 0px 
+        rgba(242, 140, 30, 0.2);
+    margin-left: 0.1rem;
+}
+.box span{
+    display: block;
+    font-size: 0.20rem;
+    color: #333333;
+    margin-top: 0.2rem;
+    background: #fff;
+}
+.sao img{
+    width: 0.50rem;
+    height: 0.5rem;
+    margin-top: 0.35rem;
+}
+.box{
+    width: 1.4rem;
+    text-align: center;
+    position: fixed;
+    bottom: 0.5rem;
+    right: 0.3rem;
+}
+

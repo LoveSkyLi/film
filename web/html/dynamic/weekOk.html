@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>会议报名</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/signUpok.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+</head>
+<body>
+<div class="box">
+    <div class='success'>恭喜您，预约成功</div>
+    <div class="signimg">
+        <img src="../../images/signup.png">
+    </div>
+    <div class="button">点击查看预约详情</div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function(){
+        var id = getUrlVar('id');//拆分url得到userName參數值  
+        console.log(decodeURI(id));
+        id = decodeURI(id);
+        
+        $('.button').click(function(){
+            var url = 'orderweek-detail.html'
+            window.location.href = encodeURI(url + "?id=" + id)
+        })
+    })
+</script>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>影视文化进出口企业协作体</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js?2345234523452"></script>
+    <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+</head>
+
+<body>
+    <div class="box">
+        <div class="model"></div>
+        <div class="waring">
+            <div>没有问卷调查</div>
+            <div class="sure">确定</div>
+        </div>
+        <div class="index_top">
+            <img src="../../images/index_sousuo.png" alt="">
+            <input type="text" placeholder="搜索">
+        </div>
+        <div class="investigation">
+            <span>问卷调查</span>
+        </div>
+        <ul class="list">
+        </ul>
+        <div class="upload">
+            <img src="../../images/shouye_03.png" alt="">
+            <span style="display:inline-block">上传资讯</span>
+        </div>
+        <div class="feiyan">飞燕平台feeyan.com提供技术支持</div>
+        <ul id="footer">
+            <a href="index.html">
+                <li id="index">
+                    <img src="../../images/footer_ones.png" alt="">
+                    <span class="color">首页</span>
+                </li>
+            </a>
+            <a href=" ../dynamic/dynamic.html">
+                <li id="dynamic">
+                    <img src="../../images/footer_two.png" alt="">
+                    <span>近期动态</span>
+                </li>
+            </a>
+            <a href="../vip/vip.html">
+                <li id="vip">
+                    <img src="../../images/footer_there.png" alt="">
+                    <span>成员中心</span>
+                </li>
+            </a>
+            <a href="../my/my.html">
+                <li id="my">
+                    <img src="../../images/footer_join.png" alt="">
+                    <span>加入我们</span>
+                </li>
+            </a>
+        </ul>
+    </div>
+</body>
+<script type="text/javascript">
+    $(function() {
+
+        a = getCookie('usersession');
+        localStorage["a"] = a
+        var a1 = a //localStorage["a"]
+            // alert(a1)
+            // alert('00')
+        function getCookie(name) {
+            var arr = document.cookie.replace(/\s/g, "").split(';');
+            for (var i = 0; i < arr.length; i++) {
+                var tempArr = arr[i].split('=');
+                if (tempArr[0] == name) {
+                    return decodeURIComponent(tempArr[1]);
+                }
+            }
+            return '';
+        }
+
+        var id = '';
+        var question = ''
+        var flag = true
+            // 获取用户信息
+        $.ajax({
+            url: url + 'member/getUserInfo',
+            type: 'POST',
+            data: {
+                userSession: a1
+            },
+            success: function(res) {
+                console.log(res)
+                if (res.data.userType == 3) {
+                    flag = true
+                } else {
+                    flag = false
+                }
+            }
+        })
+
+        var page = 0;
+
+        // 获取咨询信息
+        function getList() {
+            page = page + 1
+            var list = '';
+            $.ajax({
+                url: url + 'news/getNewsLists',
+                type: 'POST',
+                data: {
+                    page: page,
+                    userSession: a1
+                },
+                success: function(res) {
+                    if (res.code == 0) {
+                        for (var i = 0; i < res.data.list.length; i++) {
+                            list += `
+                        <li>
+                            <img src="${res.data.list[i].cover}" alt="">
+                            <p>${res.data.list[i].title}</p>
+                                <span>${res.data.list[i].pubdate}</span>
+                            </li>
+                        `
+                        }
+                        $('.list').append(list)
+                        for (var j = 0; j < $('.list li').length; j++) {
+                            (function(num) {
+                                $($('.list li')[num]).click(function() {
+                                    id = res.data.list[num]['id']
+                                    var url = 'index_Details.html'
+                                    window.location.href = encodeURI(url + "?id=" + id)
+                                })
+                            })(j)
+                        }
+                    }
+                    if (res.code == 2) {
+
+                        window.location.href = 'login.html'
+                    }
+                }
+            })
+        }
+        getList()
+        $(window).scroll(function() {
+
+            var $maxHeight = $(document).height() - $(window).height();
+            var $height = $(document).scrollTop();
+            if ($height >= $maxHeight) {
+                getList()
+            }
+        })
+
+        // 是否有问卷调查
+        $.ajax({
+            url: url + 'question/checkQuestion',
+            type: 'POST',
+            data: {
+                userSession: a1
+            },
+            success: function(res) {
+                console.log(res)
+                if (res.code == 1) {
+                    var height = $(".box").height()
+                        // $('.model').height(height)
+                    $('.model').css('display', 'none')
+                    $('.waring').css('display', 'none')
+
+                }
+                if (res.code == 0) {
+                    // $('.model').css('display','block')
+                    // $('.waring').css('display','block')
+                    question = res.data.id
+                    $('.investigation').css('display', 'block')
+
+                }
+                if (res.code == 2) {
+                       window.location.href = '../index/login.html'
+                }
+            }
+        })
+
+        // 跳转到问卷调查
+        $('.investigation').click(function() {
+
+            var url = 'investigation.html'
+            window.location.href = encodeURI(url + "?question=" + question)
+        })
+        $('.sure').click(function() {
+            $('.model').css('display', 'none')
+            $('.waring').css('display', 'none')
+        })
+
+        $('.index_top input').focus(function() {
+            window.location.href = '../search/index.html'
+        })
+        $('.list li').click(function() {
+            window.location.href = 'index_Details.html'
+        })
+        $('.upload').click(function() {
+            if (flag == true) {
+                window.location.href = 'index_vip.html'
+            } else {
+                window.location.href = 'kong.html'
+            }
+        })
+
+    })
+</script>
+
+</html>

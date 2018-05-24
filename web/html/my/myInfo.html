@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>Document</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+</head>
+
+<body>
+    <div class="box">
+        <ul class="list"></ul>
+    </div>
+</body>
+<script type="text/javascript">
+    $(function() {
+
+
+        var page = 0;
+
+        function getList() {
+            var list = '';
+            page = page + 1
+            $.ajax({
+                url: url + 'member/getNewsLists',
+                type: 'POST',
+                data: {
+                    userSession: getCookie('usersession'),
+                    page: page
+                },
+                success: function(res) {
+                    if (res.code == 0) {
+                        console.log(res)
+                        for (var i = 0; i < res.data.list.length; i++) {
+                            list += `
+                                <li>
+                                    <img src="${res.data.list[i].cover}" alt="">
+                                    <p>${res.data.list[i].title}</p>
+                                    <span>${res.data.list[i].create_time}</span>
+                                </li>
+                            `
+                        }
+                        $('.list').append(list)
+                        for (var j = 0; j < $('.list li').length; j++) {
+                            (function(num) {
+                                $($('.list li')[num]).click(function() {
+                                    id = res.data.list[num]['id']
+                                    var url = 'myInfodetail.html'
+                                    window.location.href = encodeURI(url + "?id=" + id)
+                                })
+                            })(j)
+                        }
+                    }
+                    if (res.code == 2) {
+                        window.location.href = '../index/login.html'
+                    }
+                }
+
+            })
+        }
+
+        getList()
+        $(window).scroll(function() {
+
+            var $maxHeight = $(document).height() - $(window).height();
+            var $height = $(document).scrollTop();
+            if ($height >= $maxHeight) {
+                getList()
+            }
+        })
+
+    })
+</script>
+
+</html>

@@ -1,0 +1,135 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+    <div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="#">管理后台</a></li>
+                        <li>{$title}</li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    {$title}
+                </h2>
+                <small>{$title}</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="hpanel">
+                    {include file="setting/menu" /}
+
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane active">
+                            <div class="panel-body">
+                                <form id="myform" method="post" action="" enctype="multipart/form-data" class="form-horizontal">
+
+                                    <div class="hr-line-dashed"></div>
+                                    <div id="slider-field">
+                                        <div class="form-group"><label class="col-sm-2 control-label">申请书 <span style="color: red">*</span></label>
+                                            <div class="col-sm-4">
+                                                <div style="width: 200px;height: 120px;float:left;margin-right:10px;">
+                                                    <input name="value" id="value" type="hidden" value="{$apply}">
+                                                    <input type="file"
+                                                           id="pic"
+                                                           class="dropify"
+                                                           data-height="120"
+                                                           data-allowed-file-extensions="jpg jpeg png gif"
+                                                           data-default-file="{$apply}"
+                                                           name="pic1" onclick="uploadPic('pic')"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <div class="col-sm-8 col-sm-offset-2">
+                                            <button class="ladda-button btn btn-primary" data-style="zoom-in" type="button" id="sub">确定</button>
+                                           
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common/footer" /}
+<script type="text/javascript">
+
+    var drEvent = $('.dropify').dropify({
+        messages: {
+            'default': '点击这里上传',
+            'replace': '点击这里替换',
+            'remove':  '删除',
+            'error':   '发生错误了'
+        },
+        error: {
+            'imageFormat': '仅支持以下 {{ value }} 格式的图片文件'
+        }
+    }).on('dropify.afterClear',
+        function(event, element) {
+            console.log(element.input[0].id)
+            var id = element.input[0].id;
+            $("#p_"+id).val('')
+        });
+
+    function uploadPic(id) {
+        $("#"+id).change(function() {
+            var picdata = new FormData();
+            $.each($("#"+id)[0].files, function(i, file) {
+                picdata.append('fileInfo', file);
+            });
+
+            var l = $('.ladda-button').ladda();
+            l.ladda('start');
+            $.ajax({
+                url:'__ROOT__/admin/file/upload?action=uploadimage',
+                type:'POST',
+                data: picdata,
+                cache: false,
+                contentType: false,    //不可缺
+                processData: false,
+                success: function(result){
+                    l.ladda('stop');
+                    if(result.error == 0) {
+                        $("#value").val(result.url);
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                }
+            });
+        });
+    }
+
+    $('#sub').on('click', function(){
+        var value = $('#value').val();
+        if (!value) {            
+            layer.msg('请上传图片');
+            return false;
+        }
+        $.post('__ROOT__/admin/company/subApply', {value:value}, function (res) {
+            if (res.code == 0) {
+                layer.msg('修改成功', { icon: 1}, function(){
+                                location.reload();
+
+                            });
+            } else {
+                layer.msg('修改失败', { icon: 2}, function(){
+                    location.reload();
+
+                });
+            }
+        })
+        
+    })
+</script>

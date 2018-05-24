@@ -1,0 +1,334 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+	<div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="__ROOT__/admin/index">后台管理</a></li>
+                        <li class="active">
+                            <span>{$title}</span>
+                        </li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    {$title}
+                </h2>
+                <small>{$title}</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="hpanel">
+            <div class="panel-body">
+                    <form id="myform" method="post" action="__ROOT__/admin/meeting/update/id/{$info.id}" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group">
+                                <label class="col-sm-2 control-label">会议名称 <span style="color: red">*</span></label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="title" value="{$info.title}" id="title" class="form-control">
+                                </div>
+                            </div>
+        
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group"><label class="col-sm-2 control-label">封面图片 <span style="color: red">*</span></label>
+                                <div class="col-sm-4">
+                                    <div style="width: 180px;height: 153px;float:left;margin-right:10px;">
+                                        <input name="cover" id="p_pic" type="hidden" value="{$info.cover}">
+                                        <input type="file"
+                                               id="pic"
+                                               class="dropify"
+                                               data-height="143"
+                                               data-allowed-file-extensions="jpg jpeg png gif"
+                                               data-default-file="{$info.cover}"
+                                               name="pic" onclick="uploadPic('pic')"/>
+                                    </div>
+                                    <div style="clear:both;padding-top:15px;"><span class="help-block m-b-none">建议尺寸690*390，支持 jpg jpeg png 文件，图片小于2M。</span></div>
+                                </div>
+                            </div>  
+                           
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">会议地址 <span style="color: red">*</span></label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="address" value="{$info.address}" id="address" class="form-control">
+                                </div>
+                            </div>
+        
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">开始时间 <span style="color: red">*</span></label>
+                                <div class="col-sm-4">
+                                    <div class="input-group clockpicker" data-autoclose="true">
+                                        <input type="text" class="form-control" name="sTime" id="sTime" value="{$info.sTime}">
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-clock-o"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">结束时间 <span style="color: red">*</span></label>
+                                <div class="col-sm-4">
+                                    <div class="input-group clockpicker" data-autoclose="true">
+                                        <input type="text" class="form-control" name="eTime" id="eTime" value="{$info.eTime}">
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-clock-o"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!-- <div class="form-group">
+                                <label class="col-sm-2 control-label">时间 <span style="color: red">*</span></label>
+                                <div class="col-sm-2">
+                                    <div class="input-group clockpicker" data-autoclose="true">
+                                        <input type="text" class="form-control" name="sTime" id="sTime" value="{$info.sTime}">
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-clock-o"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="input-group clockpicker" data-autoclose="true">
+                                        <input type="text" class="form-control" name="eTime" id="eTime" value="{$info.eTime}">
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-clock-o"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div> -->
+        
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户填写项 </label>
+                                <div class="col-sm-4" id="info_list">
+                                    {volist name="info_list" id="item" key="k"}
+                                    <div id="i_{$k}" style="margin-bottom: 10px;">
+                                        <div class="col-sm-10">
+                                            <input type="text" name="info_set[]" class="form-control row " value="{$item}">
+                                        </div>
+                                        <label class="control-label "><a href="javascript:void(0);" class="btn btn-danger btn-xs " onclick="del({$k})">删除</a></label>
+                                    </div>
+                                    {/volist}
+                                </div>
+                                
+                                <div class="col-sm-offset-7">
+                                    <a href="javascript:void(0);" class="btn btn-success" id="addBtn">添加</a>
+                                </div>
+                            </div>
+        
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">会议详情</label>
+                                <div class="col-sm-6">
+                                    <textarea name="intro" id="editor">{$info.intro}</textarea>
+                                </div>
+                            </div>
+        
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <button class="ladda-button btn btn-primary" data-style="zoom-in" type="submit">确定</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {include file="common/footer" /}
+        <script type="text/javascript">
+        
+            $('#addBtn').on('click', function () {
+                var length = $('#info_list').children().length;
+                var index  = length + 1;
+                var html  = '<div id="i_' + index + '" style="margin-bottom: 10px;"><div class="col-sm-10">';
+                    html += '<input type="text" name="info_set[]" class="form-control row"></div>';
+                    html += '<label class="control-label">';
+                    html += '<a href="javascript:void(0);" class="btn btn-danger btn-xs " onclick="del(' + index + ')">删除</a></label></div>';
+                
+                $('#info_list').append(html);
+        
+            })
+        
+            function del(id) {
+                $('#i_' + id).remove();
+            }
+        
+            UE.getEditor('editor', {
+                serverUrl: '__ROOT__/admin/file/upload?action=uploadimage'
+            });
+        
+           var drEvent = $('.dropify').dropify({
+                messages: {
+                    'default': '点击这里上传',
+                    'replace': '点击这里替换',
+                    'remove':  '删除',
+                    'error':   '发生错误了'
+                },
+                error: {
+                    'imageFormat': '仅支持以下 {{ value }} 格式的图片文件'
+                }
+            }).on('dropify.afterClear',
+                function(event, element) {
+                    console.log(element.input[0].id)
+                    var id = element.input[0].id;
+                    $("#p_"+id).val('')
+            });
+        
+            function uploadPic(id) {
+                $("#"+id).change(function() {
+                    var picdata = new FormData();
+                    $.each($("#"+id)[0].files, function(i, file) {
+                        picdata.append('fileInfo', file);
+                    });
+        
+                    var l = $('.ladda-button').ladda();
+                    l.ladda('start');
+                    $.ajax({
+                        url:'__ROOT__/admin/file/upload?action=uploadimage',
+                        type:'POST',
+                        data: picdata,
+                        cache: false,
+                        contentType: false,    //不可缺
+                        processData: false,
+                        success: function(result){
+                            l.ladda('stop');
+                            if(result.error == 0) {
+                                $("#p_pic").val(result.url);
+                            }else{
+                                layer.msg(result.msg);
+                            }
+                        }
+                    });
+                });
+            }
+        
+            // $('#mDate').datetimepicker({
+            //     language: 'zh-CN',
+            //     format: 'yyyy-mm-dd',
+            //     minView: "month",
+            //     autoclose: true,
+            //     todayHighlight: true,
+            //     pickerPosition: 'bottom-right',
+            //     forceParse: true,
+            //     startDate: new Date(),
+            // });
+
+            $('#sTime').datetimepicker({
+                language: 'zh-CN',
+                format: 'yyyy-mm-dd hh:ii',
+                // minView: "month",
+                autoclose: true,
+                todayHighlight: true,
+                pickerPosition: 'bottom-right',
+                forceParse: true,
+                startDate: new Date(),
+                minuteStep:15
+            })
+        
+            $('#eTime').datetimepicker({
+                language: 'zh-CN',
+                format: 'yyyy-mm-dd hh:ii',
+                // minView: "month",
+                autoclose: true,
+                todayHighlight: true,
+                pickerPosition: 'bottom-right',
+                forceParse: true,
+                startDate: new Date(),
+                minuteStep:15
+            })
+            
+            // $('#sTime').datetimepicker({
+            //     language:"zh-CN",
+            //     showMeridian:true,
+            //     autoclose:1,
+            //     startView:1,
+            //     minView:0,
+            //     maxView:1,
+            //     forceParse:0,
+            //     format:'hh:ii',
+            //     minuteStep:15,
+            //     startDate: new Date(),
+            // })
+        
+            // $('#eTime').datetimepicker({
+            //     language:"zh-CN",
+            //     showMeridian:true,
+            //     autoclose:1,
+            //     startView:1,
+            //     minView:0,
+            //     maxView:1,
+            //     forceParse:0,
+            //     format:'hh:ii',
+            //     minuteStep:15,
+            //     startDate: new Date(),
+            // })
+        
+        
+            $('#myform').on('submit', function () {
+                if ( !$('input[name="title"]').val() ) {
+                    layer.msg('请填写会议标题');
+                    return false;
+                }
+        
+                if ( !$('input[name="cover"]').val() ) {
+                    layer.msg('请上传封面图');
+                    return false;
+                }
+        
+                if ( !$('input[name="address"]').val() ) {
+                    layer.msg('请填写会议地址');
+                    return false;
+                }
+        
+                if (!$('input[name="sTime"]').val() || !$('input[name="eTime"]').val()) {
+                    layer.msg('请选择会议时间');
+                    return false;
+                }
+        
+                if (!checkEndTime()) {
+                    layer.msg('结束时间不能早于开始时间');
+                    return false;
+                }
+                // var flag = true;
+                
+                // $('input[name="info_set[]"]').each(function(){
+                //     if (!$(this).val()) {
+                //         layer.msg('人员信息项不能为空');
+                //         flag = false;
+                //     }
+                // })
+        
+                // if (!flag) {
+                //     return flag;
+                // }
+        
+                if (!UE.getEditor('editor').getContent()) {
+                    layer.msg('请填写会议详情');
+                    return false;
+                }
+                
+                
+            });
+            
+            function checkEndTime(){  
+                var sTime = $('input[name="sTime"]').val();  
+                var start = new Date(sTime.replace("-", "/").replace("-", "/"));  
+                var eTime = $('input[name="eTime"]').val();  
+                var end = new Date(eTime.replace("-", "/").replace("-", "/"));  
+                var t = new Date(); 
+                if(end < start || end < t){  
+                    return false;  
+                }    
+                return true;  
+            }
+        </script>
+        

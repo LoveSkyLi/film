@@ -1,0 +1,343 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+	<div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="__ROOT__/admin/index">后台管理</a></li>
+                        <li class="active">
+                            <span>{$title}</span>
+                        </li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    {$title}
+                </h2>
+                <small>{$title}</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="hpanel">
+            <div class="panel-body">
+                <form id="myform" method="post" action="__ROOT__/admin/question/update/id/{$info.id}" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="form-group-lg">
+                        <label class="control-label">编辑问题</label>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">开始时间 <span style="color: red">*</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group clockpicker" data-autoclose="true">
+                                <input type="text" class="form-control" name="start_time" id="start_time" value="{$info.start_time}">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">结束时间 <span style="color: red">*</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group clockpicker" data-autoclose="true">
+                                <input type="text" class="form-control" name="end_time" id="end_time" value="{$info.end_time}">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    
+                    <div id="list">
+                        {volist name="info.value" id="item" key="k"}
+
+                            {if condition="$item.type eq 3"}
+                                <div id="q_{$k}" data-id="{$k}">
+                                    <input type="hidden" name="q_{$k}[type]" value="{$item.type}">
+                                    <div class="form-group">
+                                            <label class="col-sm-2 control-label">填空题</label>
+                                            <label class="col-sm-7">
+                                                <a href="javascript:void(0);" style="float: right;" class="btn btn-danger btn-xs" onclick="delQ({$k})">删除</a>
+                                            </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">题目</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" name="q_{$k}[q]" class="form-control" value="{$item.q}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {elseif condition="$item.type eq 1"}
+
+                                <div id="q_{$k}" data-id="{$k}">
+                                    <input type="hidden" name="q_{$k}[type]" value="{$item.type}">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">单选题</label>
+                                        <label class="col-sm-7">
+                                            <a href="javascript:void(0);" style="float: right;" class="btn btn-danger btn-xs" onclick="delQ({$k})">删除</a>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">题目</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" name="q_{$k}[q]" class="form-control" value="{$item.q}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">选项</label>
+                                        <div class="col-sm-4">
+                                            <textarea name="q_{$k}[a]" class="form-control" rows="4">{$item.a}</textarea>
+                                        <div style="clear:both;"><span class="help-block m-b-none">选项之间用回车区分</span></div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {elseif  condition="$item.type eq 2"}
+
+                                <div id="q_{$k}" data-id="{$k}">
+                                    <input type="hidden" name="q_{$k}[type]" value="{$item.type}">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">多选题</label>
+                                        <label class="col-sm-7">
+                                            <a href="javascript:void(0);" style="float: right;" class="btn btn-danger btn-xs" onclick="delQ({$k})">删除</a>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">题目</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" name="q_{$k}[q]" class="form-control" value="{$item.q}">
+                                        </div>
+                                    </div>
+        
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">选项</label>
+                                        <div class="col-sm-4">
+                                            <textarea name="q_{$k}[a]" class="form-control" rows="4">{$item.a}</textarea>
+                                        <div style="clear:both;"><span class="help-block m-b-none">选项之间用回车区分</span></div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            {/if}
+                        
+                        {/volist}
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">题目类型</label>
+                            <div class="col-sm-4">
+                                <select class="form-control" id="type">
+                                    <option value="-1">请选择</option>
+                                    <option value="1">单选题</option>
+                                    <option value="2">多选题</option>
+                                    <option value="3">填空题</option>
+                                </select>
+                            </div>
+                            <a href="javascript:void(0);" class="btn btn-success" id="addBtn">添加题目</a>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <button id="sub" class="ladda-button btn btn-primary" data-style="zoom-in" type="submit">确定</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="common/footer" /}
+<script type="text/javascript">
+    $('#start_time').datetimepicker({
+        language: 'zh-CN',
+        format: 'yyyy-mm-dd',
+        minView: "month",
+        autoclose: true,
+        todayHighlight: true,
+        pickerPosition: 'bottom-right',
+        forceParse: true,
+        startDate: new Date(),
+    });
+    $('#end_time').datetimepicker({
+        format: 'yyyy-mm-dd',
+        minView: "month",
+        language: 'zh-CN',
+        autoclose: true,
+        todayHighlight: true,
+        pickerPosition: 'bottom-right',
+        forceParse: true,
+        startDate: new Date(),
+    }).on('changeDate', function(ev){
+        if (!checkEndTime()){
+            layer.msg('结束时间早于开始时间或当前时间');
+            $('#end_time').val('')
+        }
+    });
+
+    $('#addBtn').bind('click', function () {
+        var length = $('#list').children().length;
+        var index = length + 1;
+        var type = $('#type').val();
+        if (type == -1) {
+            layer.msg('请选择题目类型');
+            return false;
+        }
+        
+        if (type == 1) {
+            var t = '单选题';
+        } else if (type == 2) {
+            var t = '多选题';
+        } else if (type == 3) {
+            var t = '填空题';
+        }
+        var html = '<div id="q_'+ index +'" data-id="'+ index +'">';
+            html += '<div class="form-group"> <label class="col-sm-2 control-label">'+ t +'</label>';
+            html += '<label class="col-sm-7"> <a href="javascript:void(0);" style="float: right;" class="btn btn-danger btn-xs" onclick="delQ(' + index + ')">删除</a> </label></div>';
+            html += '<div class="form-group"> <label class="control-label col-sm-2">题目</label>';
+            html += '<div class="col-sm-7"><input type="text" name="q_'+ index +'[q]" class="form-control" ></div></div>';
+            html += '<div class="form-group"><label class="control-label col-sm-2">选项</label>';
+            html += '<div class="col-sm-4"><textarea name="q_'+ index +'[a]" class="form-control" rows="4"></textarea><div style="clear:both;"><span class="help-block m-b-none">选项之间用回车区分</span></div></div></div>';
+            html += '<input type="hidden" name="q_'+ index +'[type]" value="'+ type +'"></div>';
+        
+        var html1 = '<div id="q_'+ index +'" data-id="'+ index +'">';
+            html1 += '<div class="form-group"><label class="col-sm-2 control-label">'+ t +'</label>';
+            html1 += '<label class="col-sm-7"> <a href="javascript:void(0);" style="float: right;" class="btn btn-danger btn-xs" onclick="delQ(' + index + ')">删除</a> </label></div>';
+            html1 += '<div class="form-group"><label class="control-label col-sm-2">题目</label>';
+            html1 += '<div class="col-sm-7"><input type="text" name="q_'+ index +'[q]" class="form-control" ></div></div>';
+            html1 += '<input type="hidden" name="q_'+ index +'[type]" value="'+ type +'"></div>';
+        
+        if (type == 3) {
+            $("#list").append(html1);
+        } else {
+            $("#list").append(html);
+        }
+        
+        
+    }); 
+
+    function delQ(id) {
+        var q = 'q_' + id;
+        layer.confirm('确定要删除吗?', {icon: 3, title:'是否删除?'}, function(index){            
+            layer.close(index);
+            $('#' + q).remove();
+            layer.msg('删除成功');
+        });
+    }   
+
+    
+    function checkEndTime(){  
+        var sTime = $('input[name="start_time"]').val();  
+        var start = new Date(sTime.replace("-", "/").replace("-", "/"));  
+        var eTime = $('input[name="end_time"]').val();  
+        var end = new Date(eTime.replace("-", "/").replace("-", "/")); 
+        var t = new Date(); 
+        if(end < start || end < t){  
+            return false;  
+        }  
+        return true;  
+    }
+
+    $('#myform').on('submit', function () {
+        if (!$('input[name="start_time"]').val()) {
+            layer.msg('开始时间不能为空');
+            return false;
+        }
+        if (!$('input[name="end_time"]').val()) {
+            layer.msg('结束时间不能为空');
+            return false;
+        }        
+        if (!checkEndTime()) {
+            layer.msg('结束时间早于开始时间或当前时间');
+            return false;
+        }
+    });
+
+    UE.getEditor('editor', {
+        serverUrl: '__ROOT__/admin/file/upload?action=uploadimage'
+    });
+
+//    var drEvent = $('.dropify').dropify({
+//         messages: {
+//             'default': '点击这里上传',
+//             'replace': '点击这里替换',
+//             'remove':  '删除',
+//             'error':   '发生错误了'
+//         },
+//         error: {
+//             'imageFormat': '仅支持以下 {{ value }} 格式的图片文件'
+//         }
+//     }).on('dropify.afterClear',
+//         function(event, element) {
+//             console.log(element.input[0].id)
+//             var id = element.input[0].id;
+//             $("#p_"+id).val('')
+//         });
+
+//     function uploadPic(id) {
+//         $("#"+id).change(function() {
+//             var picdata = new FormData();
+//             $.each($("#"+id)[0].files, function(i, file) {
+//                 picdata.append('fileInfo', file);
+//             });
+
+//             var l = $('.ladda-button').ladda();
+//             l.ladda('start');
+//             $.ajax({
+//                 url:'__ROOT__/admin/file/upload?action=uploadimage',
+//                 type:'POST',
+//                 data: picdata,
+//                 cache: false,
+//                 contentType: false,    //不可缺
+//                 processData: false,
+//                 success: function(result){
+//                     l.ladda('stop');
+//                     if(result.error == 0) {
+//                         $("#p_pic").val(result.url);
+//                     }else{
+//                         layer.msg(result.msg);
+//                     }
+//                 }
+//             });
+//         });
+//     }
+
+//     function uploadPics(id) {
+//         $('body').bind('change', id, function(){
+//             var picdata = new FormData();
+//             $.each($("#"+id)[0].files, function(i, file) {
+//                 picdata.append('fileInfo', file);
+//             });
+
+//             var l = $('.ladda-button').ladda();
+//             l.ladda('start');
+//             $.ajax({
+//                 url:'__ROOT__/admin/file/upload?action=uploadimage',
+//                 type:'POST',
+//                 data: picdata,
+//                 cache: false,
+//                 contentType: false,    //不可缺
+//                 processData: false,
+//                 success: function(result){
+//                     l.ladda('stop');
+//                     if(result.error == 0) {
+//                         $("#p_"+id).val(result.url);
+//                     }else{
+//                         layer.msg(result.msg);
+//                     }
+//                 }
+//             });
+//         });
+//     }
+    
+</script>

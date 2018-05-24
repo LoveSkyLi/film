@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>Document</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js?999"></script>
+    <script src="../../js/layer/layer.js"></script>
+    <link rel="stylesheet" href="../../css/index_Details.css?4654">
+    <link rel="stylesheet" href="../../css/reset.css">
+</head>
+
+<body>
+    <div class="model"></div>
+    <div class="wrap" style="display: none"></div>
+    <div class="test">
+        <div class="test_x">×</div>
+        <div class="test_tit">完善您的信息"</div>
+    </div>
+    <div class="fail">
+        <div class="failTitle">请备注审核不通过的原因(100字以内)</div>
+        <textarea class="reason" placeholder="请填写原因"></textarea>
+        <div class="edit">提交</div>
+    </div>
+    <div class="box">
+
+    </div>
+    <div class="flex last">
+        <div class="ok">审核通过</div>
+        <div class="no">审核不通过</div>
+    </div>
+    <div class="success">已审核</div>
+</body>
+<script type="text/javascript">
+    $(function() {
+        console.log(3)
+        var id = getUrlVar('id'); //拆分url得到userName參數值  
+        id = decodeURI(id);
+        var type = getUrlVar('type'); //拆分url得到userName參數值  
+        type = decodeURI(type);
+        // console.log(decodeURI(id));
+        var list = '';
+        var content = '';
+        $.ajax({
+            url: url + 'news/getCheckNewsInfo',
+            type: 'POST',
+            data: {
+                id: id,
+                userSession: '74bcea8beb4fab3a771694408f58a8bf6dd3ccaea031149c058a23ea5e7f695c',//getCookie('usersession'),
+                type: type
+            },
+            success: function(res) {
+                if (res.code == 0) {
+                    console.log(res)
+                    list = `
+
+                        <img src="${res.data.cover}" alt="" class="cover">
+                            
+                        <h1>${res.data.title}</h1>
+                        <p class="name">${res.data.author}</p>
+                        <p class="time">${res.data.pubdate}</p>
+                       
+                    `
+                    $('.box').append(list)
+                    for (var i = 0; i < res.data.content.length; i++) {
+                        if (res.data.content[i].type == 'words') {
+                            content += `
+                           <div class="action">${res.data.content[i].content}</div> 
+                           `
+                        }
+                        if (res.data.content[i].type == 'pic') {
+                            content += `
+                           <img src="${res.data.content[i].content}" alt="">
+                           `
+                        }
+                    }
+                    $('.box').append(content)
+                }
+                if (res.code == 2) {
+                    window.location.href = 'login.html'
+                }
+
+            }
+
+        })
+        $('.ok').click(function() {
+            $.ajax({
+                url: url + 'news/changeNewsStatus',
+                type: 'POST',
+                data: {
+                    userSession: getCookie('usersession'),
+                    id: id,
+                    type: 1
+                },
+                success: (function(res) {
+                    console.log(res)
+                    if (res.code == 0) {
+                        $('.last').css('display', 'none')
+                        $('.success').css('display', 'block')
+                    } else if (res.code == 1) {
+                        layer.msg(res.msg);
+                    } else if (res.code == 2) {
+                        window.location.href = 'login.html'
+                    }
+                })
+            })
+        })
+        $('.no').click(function() {
+            $('.model').css("display", 'block')
+            $('.fail').css("display", 'block')
+        })
+        $('.edit').click(function() {
+            var textarea = $('textarea').val()
+            if (!textarea) {
+                $('.wrap').height($('body').height())
+                $('.wrap').css("display", 'block')
+                $('.test').css("display", 'block')
+                $('.model').css("display", 'none')
+                $('.fail').css("display", 'none')
+                return false
+            }
+
+            $.ajax({
+                url: url + 'news/changeNewsStatus',
+                type: 'POST',
+                data: {
+                    userSession: getCookie('usersession'),
+                    id: id,
+                    type: 2,
+                    reason: textarea
+                },
+                success: (function(res) {
+                    console.log(res)
+                    if (res.code == 0) {
+                        $('.model').css("display", 'none')
+                        $('.fail').css("display", 'none')
+                        $('.last').css('display', 'none')
+                        $('.success').css('display', 'block')
+                    } else if (res.code == 1) {
+                        $('.model').css("display", 'none')
+                        $('.fail').css("display", 'none')
+                        layer.msg(res.msg);
+                        
+                    } else if (res.code == 2) {
+                        window.location.href = 'login.html'
+                    }
+                })
+            })
+        })
+        $('.test_x').click(function() {
+            $('.wrap').css("display", 'none')
+            $('.test').css("display", 'none')
+            $('.model').css("display", 'block')
+            $('.fail').css("display", 'block')
+        })
+    })
+</script>
+
+</html>

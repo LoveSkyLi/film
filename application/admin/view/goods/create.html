@@ -1,0 +1,355 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+	<div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="__ROOT__/admin">后台管理</a></li>
+                        <li class="active">
+                            <span>创建商品</span>
+                        </li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    创建商品
+                </h2>
+                <small>创建小程序的商品</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="hpanel">
+            <div class="panel-body">
+                <form id="myform" method="post" action="__ROOT__/admin/goods/save" enctype="multipart/form-data" class="form-horizontal">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">品牌</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="sort_id" id='sort'>
+                                <option value="0">请选择</option>
+                                {volist name="sortList" id="item"}
+                                <option value="{$item.id}">{$item.name}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                        
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">类别</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="attr_id" id='attr'>
+                                <option value="0">请选择</option>
+                                
+                            </select>
+                        </div>
+                        
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">型号</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="marker_id" id='marker'>
+                                <option value="0">请选择</option>
+                                
+                            </select>
+                        </div>
+                        
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group"><label class="col-sm-2 control-label">封面图片 <span style="color: red">*</span></label>
+                        <div class="col-sm-4">
+                            <div style="width: 180px;height: 153px;float:left;margin-right:10px;">
+                                <input name="pics" id="p_pic" type="hidden" value="">
+                                <input type="file"
+                                       id="pic"
+                                       class="dropify"
+                                       data-height="143"
+                                       data-allowed-file-extensions="jpg jpeg png gif"
+                                       data-default-file=""
+                                       name="pic" onclick="uploadPic('pic')"/>
+                            </div>
+                            <div style="clear:both;padding-top:15px;"><span class="help-block m-b-none">建议尺寸290*306，支持 jpg jpeg png 文件，图片小于5M。</span></div>
+                        </div>
+                    </div>  
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group"><label class="col-sm-2 control-label">展示图片 <span style="color: red">*</span></label>
+                        <div class="col-sm-10">
+                            <div id="pics">
+                                <div style="width: 180px;height: 153px;float:left;margin:10px;">
+                                    <input name="detail[]" id="p_detail1" type="hidden" value="">
+                                    <input type="file"
+                                       id="detail1"
+                                       class="dropify"
+                                       data-height="143"
+                                       data-allowed-file-extensions="jpg jpeg png gif"
+                                       data-default-file=""
+                                       name="detail1" onclick="uploadPics('detail1')"/>
+                                </div>
+                            </div>
+                        <a href="javascript:void(0);" class="btn btn-default" style="margin: 10px;" id="addBtn">添加展示图</a>
+                            
+                        <div style="clear:both;padding-top:15px;"><span class="help-block m-b-none">建议尺寸290*306，支持 jpg jpeg png 文件，图片小于5M。</span></div>
+                             
+                        </div>
+                    </div>
+                   
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">库存 <span style="color: red">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="inventory" id="inventory" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">配件信息 <span style="color: red">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" name="parts" id="parts" class="form-control">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品详情</label>
+                        <div class="col-sm-6">
+                            <textarea name="content" id="editor"></textarea>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <button id="sub" class="ladda-button btn btn-primary" data-style="zoom-in" type="submit">确定</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="common/footer" /}
+<script type="text/javascript">
+
+    $('#addBtn').on('click', function () {
+        var length = $('#pics').children().length;
+        if(length == 6) {
+            layer.msg('最多添加6个');
+            return;
+        }
+
+        var index =length + 1;
+        
+        var html = '<div style="width: 180px;height: 153px;float:left;margin:10px;"> <input name="detail[]" id="p_detail'+ index +'" type="hidden" value=""> <input type="file" id="detail'+ index +'" class="dropify" data-height="143" data-allowed-file-extensions="jpg jpeg png gif" data-default-file="" name="detail'+ index +'" onclick="uploadPics(\'detail'+ index +'\')"/></div>';
+        $("#pics").append(html);
+        var drEvent = $('.dropify').dropify({
+            messages: {
+                'default': '点击这里上传',
+                'replace': '点击这里替换',
+                'remove':  '删除',
+                'error':   '发生错误了'
+            },
+            error: {
+                'imageFormat': '仅支持以下 {{ value }} 格式的图片文件'
+            }
+        }).on('dropify.afterClear',
+        function(event, element) {
+            var id = element.input[0].id;
+            $("#p_"+id).val('')
+        });
+
+    })
+
+
+    $('#sort').change(function(){
+        var sort_id = $(this).val();
+        if (sort_id == 0) {
+            layer.msg('请选择品牌');
+            return false;
+        }
+        $.post('__ROOT__/admin/marker/getAttributeList', {sort_id:sort_id}, function (result) {
+            
+            if(result.error == 0) {
+                
+                $("#attr option").remove();
+                $('#attr').append('<option value="0">请选择</option>');
+                $("#marker option").remove();
+                $('#marker').append('<option value="0">请选择</option>');
+                $.each(result.attributeList, function(index, data){
+                    $('#attr').append('<option value="'+data.id+'">'+data.attr_name+'</option>');
+                })
+            } else {
+                layer.msg('该品牌下没有添加相应类别');
+            }
+        });
+    })
+
+    $('#attr').change(function(){
+        var attr_id = $(this).val();
+        var sort_id = $("#sort").val();
+        if (sort_id == 0) {
+            layer.msg('请选择品牌');
+            return false;
+        }
+
+        if (attr_id == 0) {
+            layer.msg('请选择类别');
+            return false;
+        }
+        $.post('__ROOT__/admin/marker/getMarkerList', {sort_id:sort_id, attr_id:attr_id}, function (result) {
+            if(result.error == 0) {
+                
+                $("#marker option").remove();
+                $('#marker').append('<option value="0">请选择</option>');
+                $.each(result.list, function(index, data){
+                    $('#marker').append('<option value="'+data.id+'">'+data.marker_name+'</option>');
+                })
+            } else {
+                layer.msg('该类别下没有添加相应型号');
+            }
+        });
+    })
+
+    $('#marker').change(function(){
+        var sort    = $('#sort').val();
+        var attr    = $('#attr').val();
+        var marker  = $('#marker').val();
+
+        if (!sort || !attr || !marker) {
+            layer.msg('请查看品牌、类别、型号是否选择');
+            return false;
+        }
+        $.post('__ROOT__/admin/goods/checkGoods', {sort:sort, attr:attr, marker:marker}, function(res){
+            if (res.code == 1) {
+                layer.msg(res.msg);
+                $("#sub").attr('disabled', true)
+            } else {
+                $("#sub").attr('disabled', false)
+                
+            }
+        })
+    })
+
+    UE.getEditor('editor', {
+        serverUrl: '__ROOT__/admin/file/upload?action=uploadimage'
+    });
+
+   var drEvent = $('.dropify').dropify({
+        messages: {
+            'default': '点击这里上传',
+            'replace': '点击这里替换',
+            'remove':  '删除',
+            'error':   '发生错误了'
+        },
+        error: {
+            'imageFormat': '仅支持以下 {{ value }} 格式的图片文件'
+        }
+    }).on('dropify.afterClear',
+        function(event, element) {
+            console.log(element.input[0].id)
+            var id = element.input[0].id;
+            $("#p_"+id).val('')
+        });
+
+    function uploadPic(id) {
+        $("#"+id).change(function() {
+            var picdata = new FormData();
+            $.each($("#"+id)[0].files, function(i, file) {
+                picdata.append('fileInfo', file);
+            });
+
+            var l = $('.ladda-button').ladda();
+            l.ladda('start');
+            $.ajax({
+                url:'__ROOT__/admin/file/upload?action=uploadimage',
+                type:'POST',
+                data: picdata,
+                cache: false,
+                contentType: false,    //不可缺
+                processData: false,
+                success: function(result){
+                    l.ladda('stop');
+                    if(result.error == 0) {
+                        $("#p_pic").val(result.url);
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                }
+            });
+        });
+    }
+
+    function uploadPics(id) {
+        $('body').bind('change', id, function(){
+            var picdata = new FormData();
+            $.each($("#"+id)[0].files, function(i, file) {
+                picdata.append('fileInfo', file);
+            });
+
+            var l = $('.ladda-button').ladda();
+            l.ladda('start');
+            $.ajax({
+                url:'__ROOT__/admin/file/upload?action=uploadimage',
+                type:'POST',
+                data: picdata,
+                cache: false,
+                contentType: false,    //不可缺
+                processData: false,
+                success: function(result){
+                    l.ladda('stop');
+                    if(result.error == 0) {
+                        $("#p_"+id).val(result.url);
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                }
+            });
+        });
+    }
+    $('#myform').on('submit', function () {
+        if ($("#sort").val() == 0) {
+            layer.msg('请选择品牌');
+            return false;
+        }
+
+        if ($("#attr").val() == 0) {
+            layer.msg('请选择类别');
+            return false;
+        }
+
+        if ($("#marker").val() == 0) {
+            layer.msg('请选择型号');
+            return false;
+        }
+
+        if (!$("#p_pic").val()) {
+            layer.msg('请上传封面图');
+            return false;
+        }
+
+        if (!$("#inventory").val()) {
+            layer.msg('请填写库存');
+            return false;
+        }
+
+        if (!$("#parts").val()) {
+            layer.msg('请填写配件信息');
+            return false;
+        }
+        if (!$("input[name^='detail']")[0]) {
+            layer.msg('请上传详情图片');
+            return false;
+        }
+        
+    });
+</script>

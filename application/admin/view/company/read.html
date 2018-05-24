@@ -1,0 +1,189 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+    <div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="#">管理后台</a></li>
+                        <li><a href="__ROOT__/admin/company/index">成员管理</a></li>
+                        <li>{$title}</li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    {$title}
+                </h2>
+                <small>{$title}</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+            <div class="col-lg-12" >
+                <div class="hpanel">
+                    <div class="panel-heading">
+
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <label class="col-sm-2 control-label">联系人</label>
+                            <div class="col-sm-4">
+                                {$info.contact}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 control-label">联系人电话</label>
+                            <div class="col-sm-4">
+                                {$info.phone}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-2 control-label">联系人邮箱</label>
+                            <div class="col-sm-4">
+                                {$info.email}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-heading">
+
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <label class="col-sm-2 control-label">公司名称</label>
+                            <div class="col-sm-4">
+                                {$info.cname_cn}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 control-label">公司英文名</label>
+                            <div class="col-sm-4">
+                                {$info.cname_en}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 control-label">公司网站</label>
+                            <div class="col-sm-4">
+                                {$info.website}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 control-label">公司简介</label>
+                            <div class="col-sm-4">
+                                {$info.brief}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 control-label">许可证</label>
+                            <div class="col-sm-4">
+                                <img src="{$info.license}" class="img-rounded" style="max-width: 500px;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 control-label">申请书</label>
+                            <div class="col-sm-4">
+                                <img src="{$info.apply}" class="img-rounded" style="max-width: 500px;">
+                                    
+                            </div>
+                        </div>
+
+                    </div>
+                        
+                    <div class="panel-heading">
+                        操作状态
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a href="javascript:void(0);" class="btn btn-success action-button" data-id="{$info.id}" data-status="1">审核通过</a>
+
+                                <!-- <a href="javascript:void(0);" class="btn btn-danger action-button" data-id="{$info.id}" data-status="2">审核不通过</a> -->
+
+                                <a href="javascript:void(0);" class="btn btn-info action-prompt" data-toggle="modal" data-target="#addSort" data-id="{$info.id}" data-status="2">审核不通过</a>
+
+                                <a href="javascript:history.back(-1)" class="btn btn-default" data-id="{$info.id}" data-status="6">返回</a>
+                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="addSort" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="hpanel">
+                <div class="color-line" style="background: #3498db;"></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-12">请填写原因</div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="row">
+                        <div class="col-sm-12"><textarea name="reason" id="reason" rows="5" placeholder="请填写原因" class="form-control"></textarea></div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-12" style="text-align:right;">
+                                <input type="hidden" id="id" value="{$info.id}">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right:10px;">关闭</button>
+                                <button type="button" class="btn btn-primary" onclick="addPost()">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{include file="common/footer" /}
+<script type="text/javascript">
+    
+    $('.action-button').on('click', function () {
+        var id = $(this).attr('data-id');
+        var status = $(this).attr('data-status');
+        var that = $(this);
+        layer.confirm('确定要执行此操作吗?', {icon: 3, title:'是否执行?'}, function(index){            
+            layer.close(index);
+            $.post('__ROOT__/admin/company/changeStatus', {id:id, status:status}, function(result){
+                layer.msg(result.msg);
+                
+            })
+            
+        });
+    });
+
+    function addPost() {
+        var reason = $("#reason").val();
+        var id = $("#id").val();
+        if (!reason) {
+            layer.msg('请填写原因');
+            return false;
+        }
+
+        $.ajax({
+            url:'__ROOT__/admin/company/editMemo',
+            type:'POST',
+            data: {
+                reason : reason,
+                id : id
+            },
+            success: function(result) {
+                if(result.error == 0) {
+                    $('#addSort').modal('hide');
+                    layer.msg('操作成功');
+                    location.reload();
+                } else {
+                    swal(msg, "", "warning");
+                }
+            }
+        });
+    };
+</script>

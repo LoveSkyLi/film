@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>Document</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/index_Details.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+</head>
+
+<body>
+    <div class="box">
+    </div>
+</body>
+<script type="text/javascript">
+    $(function() {
+        console.log(3)
+        var id = getUrlVar('id'); //拆分url得到userName參數值  
+        id = decodeURI(id);
+        console.log(decodeURI(id));
+        var list = '';
+        var content = '';
+        $.ajax({
+            url: url + 'news/getNewsInfo',
+            type: 'POST',
+            data: {
+                id: id,
+                userSession: getCookie('usersession')
+            },
+            success: function(res) {
+                console.log(res)
+                if (res.code == 0) {
+                    console.log(res)
+                    list = `
+                        <h1>${res.data.title}</h1>
+                        <p class="name">${res.data.author}</p>
+                        <p class="time">${res.data.pubdate}</p>
+                       
+                    `
+                    $('.box').append(list)
+                    for (var i = 0; i < res.data.content.length; i++) {
+                        if (res.data.content[i].type == 'words') {
+                            content += `
+                           <div class="action">${res.data.content[i].content}</div> 
+                           `
+                        }
+                        if (res.data.content[i].type == 'pic') {
+                            content += `
+                           <img src="${res.data.content[i].content}" alt="">
+                           `
+                        }
+                        if (res.data.content[i].type == 'video') {
+                            content += `
+                          ${res.data.content[i].content}
+                           `
+                        }
+                        if (res.data.content[i].type == 'urlVideo') {
+                            content += `
+                           <div style='width:6.9rem;margin:0 auto'><video src="${res.data.content[i].content}" class='outVideodel' controls="controls"  style= "width:6.8rem;margin:0 auto;text-align: center" alt=""></div>
+                           `
+                        }
+                    }
+                    $('.box').append(content)
+                }
+                if (res.code == 2) {
+                    window.location.href = '../index/login.html'
+                }
+
+            }
+
+        })
+    })
+</script>
+
+</html>

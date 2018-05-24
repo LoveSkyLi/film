@@ -1,0 +1,76 @@
+body{
+    background: #f6f8f9;
+}
+.investigation{
+    width: 100%;
+    height: 0.8rem;
+    text-align: center;
+    line-height: 0.8rem;
+    background: url("../images/shouye_07.png") no-repeat 7.2rem center;
+    background-size: 0.14rem 0.24rem;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 2px 0px #f2f0ef;
+    margin-bottom: 0.1rem;
+}
+.investigation span{
+    font-size: 0.28rem;
+    color: #333333;
+}
+.list{
+    width: 6.90rem;
+	background-color: #ffffff;
+	box-shadow: 0px 0px 2px 0px #f2f0ef;
+    border-radius: 20px;
+    margin: 0.2rem auto 0 auto;
+}
+
+.list>img{
+    width: 100%;
+    height: 3.9rem;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px; 
+}
+.list_list{
+    height: 0.7rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.list_list span{
+    font-size: 0.30rem;
+	color: #333333;
+}
+.list_list img{
+    
+    display: inline-block;
+    margin: 0 0.21rem 0 0.31rem;
+}
+.list_list span{
+    font-size: 0.30rem;
+	color: #333333;
+}
+
+.feiyan{
+    width: 100%;
+    height: 0.6rem;
+    line-height: 0.6rem;
+    text-align: center;
+    color: #999999;
+}
+.my_one{
+    width: 0.3rem;
+    height: 0.32rem;
+}
+.my_two{
+    width: 0.3rem;
+    height: 0.34rem;
+}
+.my_there{
+     width: 0.3rem;
+    height: 0.3rem;
+}
+.my_four{
+    width: 0.3rem;
+    height: 0.3rem;
+}
+

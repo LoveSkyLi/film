@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <title>会议报名</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <link rel="stylesheet" href="../../css/signUp.css">
+    <script src="../../js/comment.js"></script>
+    <link rel="stylesheet" href="../../css/reset.css">
+
+</head>
+
+<body>
+    <div class="box">
+        <div class="model"></div>
+        <div class="waring">
+            <div>请完善您的信息</div>
+            <div class="sure">确定</div>
+        </div>
+        <div class="userInfo">
+            <div class="name">联系人姓名</div>
+            <input class="input username" type="text" name="" placeholder="请填写您的姓名">
+        </div>
+        <div class="userInfo">
+            <div class="name">联系电话</div>
+            <input class="input tell" type="text" name="" placeholder="请填写您的电话">
+        </div>
+        <div class="userInfo">
+            <div class="name">公司名称</div>
+            <input class="input company" type="text" name="" placeholder="请填写您的公司名称">
+        </div>
+        <div class="extend"></div>
+        <div class="flex infotitle">
+            <div class="">参会人员信息</div>
+            <div class="addimg">
+                <img src="../../images/add.png">
+            </div>
+        </div>
+        <div class="infobox">
+
+            <div class="info canhuili">
+                <div class="name">参会人员1</div>
+                <input class="input" type="text" name="name" data-name="姓名" placeholder="请填写您的姓名">
+                <input class="input" type="text" name="duty" data-name="职务" placeholder="请填写您的职务">
+                <input class="input" type="text" name="phone" data-name="电话" placeholder="请填写您的电话">
+
+
+
+
+            </div>
+
+        </div>
+
+        <div class="button">立即报名</div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function() {
+
+        var info_set = getUrlVar('info_set'); //拆分url得到userName參數值  
+        info_set = decodeURI(info_set);
+        var id = getUrlVar('id');
+        id = decodeURI(id);
+        var uid
+        var flag
+        var mid
+            // 获取参加会议列表的项
+        var html = '';
+        var people = {}
+        if (info_set) {
+            var list = info_set.split(',');
+            for (var i = 0; i < list.length; i++) {
+                (function(num) {
+                    html += '<div class="name">' + list[num] + '</div>' + '<input  class="input"  type="text" name="' + list[num] +
+                        '"  placeholder="' + '请' + list[num] + '">' + '<div class="hui"></div>';
+                })(i)
+
+            };
+            $('.extend').append(html);
+        }
+
+        var $input = $('.input');
+
+        var info = '';
+        // 点击创建会员
+
+        $('.addimg').click(function() {
+            var vip = '';
+            var length = $('.infobox').children().length;
+            var index = length;
+            vip = '<div class="info canhuili" >' +
+                '<div class="names">参会人员</div>' + '<div class="del">删除</div>' +
+                '<input  class="input aa" type="text" name="name" data-name="姓名" placeholder="请填写您的姓名">' +
+                '<input  class="input aa" type="text" name="duty" data-name="职务" placeholder="请填写您的职务">' +
+                '<input  class="input aa" type="number" name="phone" data-name="电话" placeholder="请填写您的电话">' +
+                '</div>';
+
+
+            $('.infobox').append(vip)
+            $('.del').click(function() {
+                $(this).parent().remove()
+            })
+
+            for (var i = 0; i < $('.info').length; i++) {
+                (function(num) {
+                    $($('.names')[num]).text('参会人员' + (parseInt(i) + 2))
+                    people[num] = $($('.aa')[num]).val();
+
+                })(i)
+            }
+
+        });
+        // for(var j=0; j<$('.del').length; j++){
+        // 	(function(index){
+        // 		$('.del')[index].click(function(){
+        // 			console.log(33)
+        // 		})
+        // 	})(j)
+        // }
+
+
+        // 点击提交
+
+        $('.button').click(function() {
+            var newArr = [];
+            var jsonStr = '';
+
+            $('.canhuili').each(function() {
+                newArr.push({
+                    '姓名': $(this).children('input[name="name"]').val(), //姓名
+                    '职务': $(this).children('input[name="duty"]').val(), //职务
+                    '电话': $(this).children('input[name="phone"]').val() //姓名
+                });
+            });
+
+            jsonStr = JSON.stringify(newArr)
+                // console.log(jsonStr);
+                // return false;
+                // var valist= []
+                // $input.each(function(index,item){
+                // 	if($($('.input')[index]).val()){
+                // 		valist.push(index)
+                // 	}
+                // })
+
+            // 获取拓展项的值
+            var $extend = $('.extend input')
+            var extend = {}
+            for (var i = 0; i < $extend.length; i++) {
+                (function(num) {
+                    extend[$extend[num]['name']] = $($('.extend input')[num]).val()
+                })(i)
+            }
+
+            var flag = true
+            for (var k = 0; k < $('input').length; k++) {
+                if ($($('input')[k]).val() == '') {
+                    flag = false
+                }
+            }
+            if (flag == true) {
+                $.ajax({
+                    url: url + 'meeting/subOrder',
+                    type: 'POST',
+                    data: {
+                        mid: id,
+                        contact: $('.username').val(),
+                        phone: $('.tell').val(),
+                        cname: $('.company').val(),
+                        extend: JSON.stringify(extend),
+                        member: JSON.stringify(newArr),
+                        userSession: getCookie('usersession')
+                    },
+                    success: function(res) {
+                        if (res.code == 0) {
+                            uid = res.data.uid;
+                            flag = res.data.flag;
+                            mid = res.data.mid;
+
+                            var url = 'signUpok.html'
+                            window.location.href = encodeURI(url + "?uid=" + uid + "&flag=" + flag + "&mid=" + mid)
+                        }
+                        if (res.code == 2) {
+                            console.log(888)
+                                 window.location.href = '../index/login.html'
+                        }
+
+                    }
+                })
+            } else {
+                $('.model').css('display', 'block')
+                $('.waring').css('display', 'block')
+            }
+            $('.input').val() == ''
+        });
+        // 点击关闭模态弹窗
+
+        $(".sure").click(function() {
+            $('.model').css('display', 'none')
+            $('.waring').css('display', 'none')
+        });
+    })
+</script>
+
+</html>

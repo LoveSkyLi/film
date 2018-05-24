@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>公司信息</title>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/comment.js"></script>
+
+
+    <link rel="stylesheet" href="../../css/company.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+</head>
+
+<body>
+    <!-- <div class="company" >公司简介</div>
+	<div class="companyContent" >
+        <div>生命像流水，这些不快的事总要过去，如果注定一辈子要这么过，再不开心也没有用。</div>
+        <div style="text-align: right;">--阿尔伯特·爱因斯坦</div>
+    </div>
+    <div class="top">
+        <div class="company-tell">联系电话</div>
+        <div class="company-tell" style="margin-top: 0.01rem;">+86 79584379852</div>
+    </div>
+    <div class="top">
+        <div class="company-tell">公司地址</div>
+        <div class="company-tell">北美国际商务中心</div>
+    </div> -->
+</body>
+<script type="text/javascript">
+    $(function() {
+        $.ajax({
+            url: url + 'company/getCompanyInfo',
+            type: 'POST',
+            data: {
+                userSession: getCookie('usersession')
+            },
+            success: function(res) {
+                if (res.code == 0) {
+                    console.log(res)
+                    var list = ''
+                    list = `
+                        <div class="company" >公司简介</div>
+                        <div class="companyContent" >
+                            <div>${res.data.brief}</div>
+                        </div>
+                        <div class="top">
+                            <div class="company-tell">联系电话</div>
+                            <div class="company-tell">${res.data.phone}</div>
+                        </div>
+                        <div class="top">
+                            <div class="company-tell">公司地址</div>
+                            <div class="company-tell">${res.data.phone}</div>
+                        </div>
+                    `
+
+                    $('body').append(list)
+                }
+                if (res.code == 2) {
+                    window.location.href = '../index/login.html'
+                }
+            }
+        })
+    })
+</script>
+
+</html>

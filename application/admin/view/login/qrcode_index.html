@@ -1,0 +1,72 @@
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>电商小程序管理后台</title>
+    {css href="__ROOT__/public/css/weui.min.css" /}
+    <style type="text/css">
+        .logo {margin-top: 100px; text-align:center;}
+        .logo img {width:100px;height:100px;border-radius: 50%;}
+        .qrcode {margin-top:30px; text-align:center;}
+        .qrcode img {width:300px; height:300px;}
+        .tips {margin-top: 30px; text-align:center; font-size:14px;}
+        .userinfo {margin-top: 10px;text-align:center;font-size:18px;color:#;}
+        .userinfo img {margin-top:30px;width:100px;height:100px;border-radius: 20px;}
+        .userinfo p {margin-top: 15px;}
+    </style>
+</head>
+<body style="background-color: #f1f3f6;">
+    <div class="logo">
+        电商小程序管理后台登录
+    </div>
+    <div class="qrcode"></div>
+    <div class="tips">
+        为保障帐号安全，请用小程序扫一扫验证身份
+    </div>
+</body>
+<div class="weui-footer" style="margin-top: 20px;">
+    <p class="weui-footer__text">Copyright © 2017 小程序</p>
+</div>
+
+{js href="__ROOT__/public/js/jquery.min.js"/}
+{js href="https://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"/}
+{js href="__ROOT__/public/js/jquery.cookie.js"/}
+
+<script type="text/javascript">
+    $('.qrcode').qrcode("{$qrcodeShow}");
+    var retry_times = 0;
+    var check_login = function() {
+        $.ajax({
+            type: 'GET',
+            url: '__ROOT__/api/qrcode/login/code/{$qrcode}',
+            dataType: 'json',
+            timeout:10000,
+            success:function(data){
+                if(data.status === 'logged'){
+                    $(".tips").html('<i class="weui-icon-success"></i>扫描成功，请在小程序上进行后续操作');
+                }
+
+                if(data.status === 'nopermission') {
+                    $(".tips").html('<i class="weui-icon-warn"></i>无权登录，请检查登录帐号');
+                }
+
+                if(data.status === 'expired'){
+                    $(".tips").html('<i class="weui-icon-warn"></i>二维码失效，请刷新页面获取新的二维码');
+                }
+
+                if(data.status === 'confirm') {
+                    $.cookie('fyshopAdmin', data.cookiesValue, {expires:data.expired, path:'/'});
+                    location.assign('__ROOT__/admin');
+                }
+            },
+            error:function(data){
+                if(retry_times < 5){
+                    retry_times++;
+                    check_login();
+                }
+            }
+        });
+    };
+    setInterval(check_login, 3000);
+</script>
+</html>

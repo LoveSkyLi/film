@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>成员中心</title>
+    <link rel="stylesheet" href="../../css/vip.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+    <script src="../../js/rem.js"></script>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/comment.js"></script>
+</head>
+<body>
+<div class="box">
+    <div class="model"></div>
+    <div class="text">
+        <!-- <div class="close">×</div> -->
+        <div class="titleText">已提交至系统审核请耐心等待"</div>
+    </div>
+
+    <div class="test">
+        <div class="test_x">×</div>
+        <div class="test_tit">完善您的信息"</div>
+    </div>
+    <div class='more'>
+        <div class="test_x">×</div>
+        <div class="test_tit">公司简介在500字以内"</div>
+    </div>
+
+    <div class="fail">
+        <div class="failTitle">申请失败</div>
+        <div class="reason">申请失败的原因</div>
+        <div class="edit">修改信息</div>
+    </div>
+
+    <div class="investigation">
+        <span class="status1">您的会员信息</span>
+        <span class='status2'>入会申请</span>
+        
+    </div>
+
+    <form action="">
+    
+        <ul>
+            <li>
+                <p>联系人姓名</p>
+                <input type="text" placeholder="请填写您的姓名" class="name">
+            </li>
+            <li>
+                <p>联系人电话</p>
+                <input type="text" placeholder="请填写您的电话" class="tel">
+            </li>
+            <li>
+                <p>联系人邮箱</p>
+                <input type="email" name="user_email" placeholder="请填写您的邮箱" class="email">
+            </li>
+            <li>
+                <p>公司中文名称</p>
+                <input type="text" placeholder="请填写您的公司中文名称" class="company">
+            </li>
+            <li>
+                <p>公司英文名称</p>
+                <input type="text" placeholder="请填写您的公司英文名称" class="companyE">
+            </li>
+            <li>
+                <p>公司简介（限500字内）</p>
+                <!-- <input type="text" placeholder="请填写您的公司简介"> -->
+                <textarea name="" id="" cols="30" rows="10" class="summary" placeholder="请填写您的公司简介"></textarea>
+            </li>
+            <li>
+                <p>公司网址</p>
+                <input type="text" placeholder="请填写您的公司网址 " class="url">
+            </li>
+            <li>
+                <p>营业执照</p>
+                <div class="wrap">
+                    <div class="vip_jia">
+                        <img src="../../images/vip.png" alt="" >
+                         <input type="file" name="file0" id="file0" />
+                         <div class="del">删除</div>
+                    </div>
+                 </div>
+                <span class="book">入会申请书</span>
+                <div class="vip_two">
+                    <span><a  href="https://debug.oa.feeyan.com/movie-mp/api/CompanyApply/getApply">点击下载申请书模版</a></span>
+                    <input type="file" name="file1" id="file1" />
+                    <span class="aaa">点击上传盖章申请书</span>
+                </div> 
+                <div class="wrap applyBook" style="display: none">
+                    <div class=" vip_jia ">
+                        <img src="../../images/vip.png" alt="" >
+                    </div>
+                 </div>
+                <h6>请下载、填写、盖章，上传，并将原件即送至以下地址。上传时，请将申请书扫描为图片后，点击上方“点击上传”按钮，并从手机相册内选择扫描好的图片，完成上传。</h6>
+                <h5>北京市海淀区羊坊店路9号 京门大厦3段9楼936室 王一麟收6950473</h5>
+                <div class="submit">提交审核</div>
+            </li>
+        </ul>
+    </form>
+    <div class="feiyan">飞燕平台feeyan.com提供技术支持</div>
+    <!-- <div class="err">审核失败</div> -->
+</div>
+    <ul id="footer">
+        <a href="../index/index.html">
+            <li id="index">
+                <img src="../../images/footer_one.png" alt="">
+                <span>首页</span>
+            </li>
+        </a>
+        <a href="../dynamic/dynamic.html">
+            <li id="dynamic">
+                <img src="../../images/footer_two.png" alt="">
+            <span>近期动态</span>
+            </li>
+        </a>
+        <a href="../vip/vip.html">
+            <li id="vip">
+                <img src="../../images/footer_theres.png" alt="">
+                <span class="color">成员中心</span>
+            </li>
+        </a>
+        <a href="../my/my.html">
+            <li id="my">
+                <img src="../../images/footer_join.png" alt="">
+                <span>加入我们</span>
+            </li>
+        </a>
+    </ul>
+</body>
+<script type="text/javascript">
+    $(function(){
+        $.ajax({
+            url : url + 'member/getUserInfo',
+            type : 'POST',
+            data:{
+                 userSession:a1
+             },
+             success:function(res){
+                console.log(res)
+                if(res.code == 0){
+                    if(res.data.userType ==1){
+                        console.log("申请入会")
+                        $('.status1').css('display','none')
+                        $('.status2').css('display','block')
+                    }else if(res.data.userType ==2){
+                        console.log('审核中')
+                        $('.model').css('display','block')
+                        $('.text').css('display','block')
+                        people()
+
+                    }else if(res.data.userType ==3){
+                        console.log('审核通过')
+                        people()
+                        
+                    }else {
+                        console.log('审核未通过')
+                         $('.model').css('display','block')
+                         $('.fail').css('display','block')
+                         $('.err').css('display','block')
+                          people()
+                    }
+                }
+
+            }
+        })
+        function people(){
+             $.ajax({
+                url : url + 'company/getCompanyInfo',
+                type : 'POST',
+                data:{
+                     userSession:a1
+                 },
+                 success:function(res){
+                    console.log(res)
+                    if(res.code == 0){
+                        $('.name').val(res.data.contact)
+                        $('.tel').val(res.data.phone)
+                        $('.email').val(res.data.email)
+                        $('.company').val(res.data.cname_cn)
+                        $('.companyE').val(res.data.cname_en)
+                        $('.summary').val(res.data.brief)
+                        $('.url').val(res.data.website)
+                        $('.vip_jia img').attr('src',res.data.license)
+                        $('.status2').css('display','none')
+                        $('.status1').css('display','block')
+                        $('.del').css('display','none')
+                        $('.vip_two').css('display','none')
+                        $('.applyBook').css('display','block')
+                        $('h5').css('display','none')
+                        $('h6').css('display','none')
+                        $('.applyBook img').attr('src',res.data.apply)
+                        $('.submit').css('display','none')
+                        $('.reason').text(res.data.audit)
+                    }else if (res.code == 2) {
+                        window.location.href = '../index/login.html'
+                        
+                    }
+                 }
+            })
+        }
+        var license = ''
+        var apply = ''
+        // 点击上传营业执照
+        $("#file0").change(function(){
+            var vdata = new FormData();
+            
+                $.each($(this)[0].files, function(j, file) {
+                vdata.append('file', file);
+                })
+                console.log(vdata)
+            $.ajax({
+                url:url +'file/upload',
+                type:'POST',
+                data: vdata,
+                cache: false,
+                contentType: false, //不可缺
+                processData: false,
+                userSession:a1,
+                success: function(res){
+                    if(res.code ==0){
+                         console.log(res.data.url)
+                         license = res.data.url
+                        $('.vip_jia img').attr('src',res.data.url)
+                    }
+                    if(res.code==2){
+                        window.location.href = '../index/login.html'
+                    }
+               
+               }  
+
+          }) ;
+           
+            
+        })
+        // 删除营业执照
+        $('.del').click(function(){
+            $('.vip_jia  img').attr('src','../../images/vip.png')
+        })
+        // 上传申请书
+        $("#file1").change(function(){
+            var vdata = new FormData();
+            
+                $.each($(this)[0].files, function(j, file) {
+                vdata.append('file', file);
+                })
+                console.log(vdata)
+            $.ajax({
+                url:url +'file/upload',
+                type:'POST',
+                data: vdata,
+                cache: false,
+                contentType: false, //不可缺
+                processData: false,
+                userSession:a1,
+                success: function(res){
+                    if(res.code ==0){
+                         console.log(res.data.url)
+                         apply = res.data.url
+                        // $('.vip_jia img').attr('src',res.data.url)
+                    }
+                    if(res.code==2){
+                        window.location.href = '../index/login.html'
+                    }
+               
+               }  
+
+          }) ;
+           
+            
+        })
+        $('.submit').click(function(){
+
+            var name = $('.name').val(),
+                tel = $('.tel').val(),
+                email = $('.email').val(),
+                company = $('.company').val(),
+                companyE = $('.companyE').val(),
+                summary = $('.summary').val(),
+                urls = $('.url').val()
+                console.log(summary)
+                if(summary.length>500){
+                    $('.model').css('display','block')
+                    $('.more').css('display','block')
+                    // break;
+                    return false
+                }
+                if(!license || !apply){
+                    $('.model').css('display','block')
+                    $('.test').css('display','block')
+                    return false
+                }
+            var arr = []
+            arr.push(name,tel,email,company,companyE,summary,urls)
+            console.log(arr)
+                for(var a of arr) {
+                   
+                    if (a == '') {
+                         console.log('no')
+                        $('.model').css('display','block')
+                        $('.test').css('display','block')
+                        break;  
+                    }
+                }
+
+                
+                $.ajax({
+                    url : url + 'company/subApply',
+                    type: 'POST',
+                    data:{
+                        contact: name,
+                        phone: tel,
+                        email: email,
+                        cname_cn: company,
+                        cname_en: companyE,
+                        brief: summary,
+                        website: urls,
+                        license: license,
+                        apply: apply,
+                        userSession:a1
+                    },
+                    success:function(res) {
+                        // 提交报名
+                        if(res.code==0){
+                            console.log(res)
+                            $.ajax({
+                                url : url + 'member/getUserInfo',
+                                type : 'POST',
+                                data:{
+                                     userSession:a1
+                                 },
+                                 success:function(res){
+                                    console.log(res)
+                                    if(res.code == 0){
+                                        if(res.data.userType ==1){
+                                            console.log("申请入会")
+                                            $('.status1').css('display','none')
+                                            $('.status2').css('display','block')
+                                        }else if(res.data.userType ==1){
+                                            console.log('审核中')
+                                            $('.model').css('display','block')
+                                            $('.text').css('display','block')
+                                        }else if(res.data.userType ==1){
+                                            console.log('审核通过')
+                                            $('.status2').css('display','none')
+                                            $('.status1').css('display','block')
+                                            $('.del').css('display','none')
+                                            $('.vip_two').css('display','none')
+                                            $('.applyBook').css('display','block')
+                                            $('h5').css('display','none')
+                                            $('h6').css('display','none')
+                                            $('.applyBook img').attr('src',apply)
+                                            $('.submit').css('display','none')
+                                            
+                                        }else {
+                                            console.log('审核未通过')
+                                             $('.model').css('display','block')
+                                             $('.fail').css('display','block')
+                                             $('.err').css('display','block')
+                                        }
+                                    }
+
+
+                                 }
+                            })
+                        }
+                        if(res.code==2){
+                            window.location.href = '../index/login.html'
+                        }
+                    }
+                })
+        })
+        $('.close').click(function(){
+            $('.text').css('display','none')
+            $('.model').css('display','none')
+            $('.more').css('display','none')
+        })
+        $('.test_x').click(function(){
+            $('.test').css('display','none')
+            $('.model').css('display','none')
+            $('.more').css('display','none')
+        })
+        // 修改信息
+        $('.edit').click(function(){
+            $('.fail').css('display','none')
+            $('.model').css('display','none')
+            $('.err').css('display','none')
+            $('.submit').css('display','block')
+            window.location.href = 'editVip.html'
+        })
+    })
+</script>
+</html>

@@ -1,0 +1,167 @@
+{include file="common/header" /}
+{include file="common/menu" /}
+
+<div id="wrapper">
+    <div class="normalheader small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a href="#">管理后台</a></li>
+                        <li class="active">
+                            <span>{$title}</span>
+                        </li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    {$title}
+                </h2>
+                <small>{$title}</small>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="hpanel">
+                        <div class="panel-body">
+                            <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        
+                                    </div>
+                                    <div class="col-sm-6" style="text-align: right;margin:0px 0px 10px">
+                                       
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="table-responsive">
+                                            <table id="example2" class="table" role="grid" cellpadding="1" cellspacing="1">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th style="width: 20%; text-align: center;">封面</th>
+                                                    <th style="width: 20%;text-align: center;">型号</th>
+                                                    <th style="width: 20%;text-align: center;">用户名</th>
+                                                    <th style="width: 10%;text-align: center;">状态</th>
+                                                    
+                                                    <th style="text-align: center;">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {foreach name="list" item="item" /}
+                                                    <tr role="row" class="odd" id="goods{$item.id}">
+                                                        <td>
+                                                            <div style="float:left;">
+                                                                <img src="{$item.pics}" style="width: 60px;height: 60px;margin:3px 15px;">
+                                                            </div>
+                                                        </td>
+                                                        
+                                                        <td style="vertical-align:middle;text-align: center;">{$item.marker.marker_name}</td>
+                                                        <td style="vertical-align:middle;text-align: center;">{$item.user.username}</td>
+                                                        <td style="vertical-align:middle;text-align: center;">{$item.status_text}</td>
+                                                        <td style="vertical-align:middle;text-align: center;">
+                                                                <a href="__ROOT__/admin/question/read?id={$item.id}" class="btn btn-info btn-xs">问卷详情</a>
+                                                        </td>
+                                                    </tr>
+                                                {/foreach}
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="dataTables_info">商品总数 {$total} 个</div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="dataTables_paginate paging_simple_numbers">
+                                            <ul class="pagination">
+                                                {$page}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+{include file="common/footer" /}
+
+<script type="text/javascript">
+    $('.action-recommend').on('click', function () {
+        var goodsId = $(this).attr('data-id');
+        var that = $(this);
+        swal({
+            title: "确认要执行该操作吗",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确认",
+            cancelButtonText: "取消"
+        },
+        function () {
+            $.post('__ROOT__/admin/goods/ajaxRecommendGoods', {goodsId:goodsId}, function (result) {
+                if(result.error == 0) {
+                    that.text(result.msg);
+                }
+            });
+        });
+    });
+
+    $('.action-sale').on('click', function () {
+        var goodsId = $(this).attr('data-id');
+        var status  = $(this).attr('data-data')
+        swal({
+                title: "确认要执行该操作吗",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm:true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确认",
+                cancelButtonText: "取消"
+            },
+            function () {
+                $.post('__ROOT__/admin/goods/ajaxChangeStatus', {goodsId:goodsId,status:status}, function (result) {
+                    if(result.error == 0) {
+                        swal("操作成功", "", "success");
+                        $("#goods" + goodsId).remove();
+                    }
+                });
+            });
+    });
+
+    function delGoods(id) {
+        swal({
+            title: "确认是否删除该商品",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确认",
+            cancelButtonText: "取消",
+            closeOnConfirm: false
+        },
+        function (isConfirm) {
+            if(isConfirm) {
+                swal("删除成功", "", "success");
+                $.ajax({
+                    type: 'POST',
+                    url: '__ROOT__/admin/goods/delete',
+                    data: {
+                        id: id
+                    },
+                    success: function(msg){
+                        $("#goods" + id).remove();
+                    }
+                });
+            }
+        });
+    }
+</script>

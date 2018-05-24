@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+     <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/rem.js"></script>
+    <title>Document</title>
+    <style>
+        .box{
+            margin: 2.5rem auto 0 auto;
+            width: 4.2rem;
+            height: 2.2rem;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 2px 0px 
+                rgba(6, 21, 38, 0.2);
+            border-radius: 2px;
+            text-align: center;
+            padding: 0.1px;
+        }
+        .box span{
+            display: block;
+            font-size: 0.30rem;
+            color: #333333;
+            margin-top: 0.5rem;
+        }
+        .div{
+            margin: 0.5rem auto 0 auto;
+            width: 1.82rem;
+            height: 0.54rem;
+            background-image: linear-gradient(
+                #f28c1e, 
+                #f28c1e), 
+            linear-gradient(
+                #f28c1e, 
+                #f28c1e);
+            background-blend-mode: normal, 
+                normal;
+            border-radius: 4px;
+            font-size: 0.28rem;
+            color: #ffffff;
+            line-height: 0.54rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <span>请先申请成为会员</span>
+        <div class="div">去申请</div>
+    </div>
+</body>
+<script type="text/javascript">
+    $('.div').click(function(){
+        window.location.href = '../vip/vip.html'
+    })
+</script>
+</html>
