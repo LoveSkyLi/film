@@ -194,25 +194,7 @@ return [
         'expire' => 0,
 
         
-       /*  // 驱动方式
-            'type'       =>  'Redis',
-            // 缓存外网机器
-            'host'       => '47.93.7.208',
-            //外网端口
-            'port'       => 6378,
-            //缓存内网机器
-            //'host'       => 'r-2ze28815ef215e94.redis.rds.aliyuncs.com',
-            //   //外网端口
-            //'port'       => 6379,
-            //密码
-            'password'   => '5NpLNDKnmg9fkIB3QWMM',
-            // 缓存有效期 0表示永久缓存
-            'expire'     => 0,
-            // 缓存前缀
-            'prefix'     => 'film_', 
-         */
-       
-        
+      
     ],
 
     // +----------------------------------------------------------------------
@@ -258,29 +240,5 @@ return [
         'list_rows' => 10,
     ],
 
-    // //阿里云oss
-    // 'oss' => [
-    //     'cdn_host' => 'https://wxappres.feeyan.com',
-    //     'endpoint_internet' => 'http://oss-cn-beijing.aliyuncs.com',
-    //     'endpoint_internal' => 'http://oss-cn-beijing-internal.aliyuncs.com',
-    //     'access_id'      => 'LTAIPAD3HLAp7ktg',
-    //     'access_secret' => 'zTfPLPhihg0SEvdrOGvpPwdoIGTKuJ',
-    //     'bucket' => 'feeyan-wxapp',
-    // ],
-//阿里云oss
-'oss' => [
-    'cdn_host' => 'https://wxappres.feeyan.com',
-    'endpoint_internet' => 'http://oss-cn-beijing.aliyuncs.com',
-    'endpoint_internal' => 'http://oss-cn-beijing-internal.aliyuncs.com',
-    'access_id'      => 'LTAIPAD3HLAp7ktg',
-    'access_secret' => 'zTfPLPhihg0SEvdrOGvpPwdoIGTKuJ',
-    'bucket' => 'feeyan-wxapp',
-],
-    //小程序
-    //app id: wx4899888d6d55c284
-// secret: bed6c62f7c6aa2d75b148d104c9d3240
-    'wxapp' => [
-        'appId' => 'wx4899888d6d55c284',
-        'appSecret' => 'bed6c62f7c6aa2d75b148d104c9d3240',
-    ],
-];
+
+
